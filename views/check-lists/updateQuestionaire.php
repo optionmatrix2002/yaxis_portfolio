@@ -144,7 +144,7 @@ $("#MenuChecklists").addClass("active");
                 }])->label(false); ?>
             </div>
         </div>
-        <div class="col-sm-12 marginTB10">
+        <!--<div class="col-sm-12 marginTB10">
             <div class="col-sm-2">
                 <label class="required-label">Response Type :</label>
             </div>
@@ -156,7 +156,7 @@ $("#MenuChecklists").addClass("active");
                 }])->label(false); ?>
 
             </div>
-        </div>
+        </div>-->
         <div class="col-sm-12 marginTB10 optionstab"
              style="<?php if (empty($selectedOptions)) { ?>display: none;<?php } ?>">
             <div class="col-sm-2">Options:</div>

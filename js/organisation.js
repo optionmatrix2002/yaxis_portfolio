@@ -51,7 +51,7 @@ $('#organisation_hierarchy')
                                     items = {
                                         showAddHotelWindow: {// The "rename" menu
                                             // item
-                                            label: "Add Hotel",
+                                            label: "Add Office",
                                             "icon": "fa fa-plus text-success",
                                             action: function () {
 
@@ -79,7 +79,7 @@ $('#organisation_hierarchy')
                                     items = {
                                         createDepartment: {// The "rename" menu
                                             // item
-                                            label: "Add Department",
+                                            label: "Add Floor",
                                             "icon": "fa fa-plus text-success",
                                             action: function () {
                                                 openPopup(node.original.action_url);

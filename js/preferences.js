@@ -3,7 +3,28 @@ $('.eventreminder').select2({
     allowClear: true
 });
 
+$(document).ready(function () {
+    $('#startDate').datetimepicker({
+        // useCurrent : false,
+        format: 'hh a',
+        //minDate : moment()
+    });
+    $('#endDate').datetimepicker({
+        // useCurrent : false,
+        format: 'hh a',
+        //minDate : moment()
+    });
+    
+    $('#startDate').datetimepicker().on('dp.change', function (e) {
 
+            var incrementDay = moment(new Date(e.date));
+            console.log(e.date);
+            $('#endDate').data('DateTimePicker').minDate(incrementDay);
+            /*incrementDay.add(1, 'days');
+            $('#endDate').data('DateTimePicker').minDate(incrementDay);
+            $('#endDate').val('');*/
+        });
+});
 $(document).on('click', '.update_preference_btn', function () {
 
     var emailValue = $('#preference_two').val();
@@ -21,6 +42,8 @@ $(document).on('click', '.update_preference_btn', function () {
     $preferenceNewValueEight = $("#preferencene_eight").val();
     $preferenceNewValueNinth = $("#preferencene_nine").val();
     $preferenceNewValueTenth = $("#preferencene_ten").val();
+    $preferenceNewValueFrom = $("#startDate").val();
+    $preferenceNewValueTo = $("#endDate").val();
 
 
     if (emailValue != '') {
@@ -59,6 +82,8 @@ $(document).on('click', '.update_preference_btn', function () {
     $("#preferencenewvalue_eigth").val($preferenceNewValueEight);
     $("#preferencenewvalue_nine").val($preferenceNewValueNinth);
     $("#preferencenewvalue_ten").val($preferenceNewValueTenth);
+    $("#preferencenewvalue_from").val($preferenceNewValueFrom);
+    $("#preferencenewvalue_to").val($preferenceNewValueTo);
 
 
 });

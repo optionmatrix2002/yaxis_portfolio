@@ -261,3 +261,7 @@ a#active-tickets-download-csv:hover, #archive-tickets-download-csv:hover {
     overflow-y: auto;
     height: 250px; 
 }
+
+ .weeklyDays{
+    margin-top: 5px !important;
+} 

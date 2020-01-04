@@ -681,7 +681,8 @@ class AuditsController extends ActiveController
         			}
         			$answerAttachments = AnswerAttachments::find()->select('answer_attachment_path')
         			->where([
-        				'answer_id' => $answerValues[$value['audits_checklist_questions_id']]['answer_id']
+        				'answer_id' => $answerValues[$value['audits_checklist_questions_id']]['answer_id'],
+						'is_deleted'=>0
         			])
         			->asArray()
         			->all();

@@ -128,6 +128,7 @@ class CheckListsController extends Controller
         $valid = false;
         $model = new Checklists();
         $modelAuditMethods = AuditMethods::find()->asArray()->all();
+      //  print_r(Yii::$app->request->post());exit;
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 $data = array();
@@ -173,6 +174,7 @@ class CheckListsController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->cl_audit_span = $audit_span;
+            $model->cl_frequency_duration = $model->cl_frequency_value == 3 ?  $model->cl_frequency_duration : null;
             if ($model->save()) {
                 $data = array();
                 $data['module'] = 'checklist';
@@ -279,14 +281,12 @@ class CheckListsController extends Controller
         $model = new Questions();
         $sectionsModel = new Sections();
         $subSectionsModel = new SubSections();
-
         if ($model && $model->load(Yii::$app->request->post())) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($checklistModel->cl_audit_span == 2) {
                     $this->saveAcrossSectionQuestions($model, Yii::$app->request->post(), $checklist_id);
                 } else {
-
                     $this->saveSpecificSectionQuestions($model, Yii::$app->request->post(), $checklist_id);
                 }
 
@@ -501,6 +501,7 @@ class CheckListsController extends Controller
                     $record = $question;
                     $record['q_sub_section'] = $model->q_sub_section;
                     $record['q_sub_section_is_dynamic'] = 1;
+                    $record['q_response_type'] = 2;
                     unset($record['question_id']);
                     $records[] = $record;
                 }
@@ -536,6 +537,7 @@ class CheckListsController extends Controller
             $model->options = serialize($options);
             $model->q_access_type = json_encode($model->q_access_type);
             $model->q_sub_section = $model->q_sub_section_is_dynamic ? null : $model->q_sub_section;
+            $model->q_response_type = 2;
             $model->q_sub_section_is_dynamic = $checkedValue;
 
             $model->save();
@@ -614,6 +616,7 @@ class CheckListsController extends Controller
                 $record = $question;
                 $record['q_sub_section'] = null;
                 $record['q_sub_section_is_dynamic'] = 1;
+                $record['q_response_type'] = 2;
                 unset($record['question_id']);
                 $records[] = $record;
             }
@@ -646,6 +649,7 @@ class CheckListsController extends Controller
                 $model->q_access_type = json_encode($model->q_access_type);
                 $model->q_sub_section = '';
                 $model->q_sub_section_is_dynamic = $checkedValue;
+                $model->q_response_type=2;
 
                 $model->save();
             }
@@ -672,6 +676,7 @@ class CheckListsController extends Controller
                 $model->options = serialize($options);
                 $model->q_access_type = Json::encode($model->q_access_type);
                 $model->q_sub_section = $subSectionsData;
+                $model->q_response_type=2;
                 $subsection = $subSectionsData;
                 $model->save();
             }
@@ -762,6 +767,7 @@ class CheckListsController extends Controller
                 $record = $question;
                 $record['q_sub_section'] = $newSubSectionId;
                 $record['q_sub_section_is_dynamic'] = '0';
+                $record['q_response_type'] = 2;
                 unset($record['question_id']);
                 $records[] = $record;
             }
@@ -1190,6 +1196,7 @@ class CheckListsController extends Controller
                 $record = [];
                 $record = $question;
                 $record['q_sub_section'] = $newSubSectionId;
+                $record['q_response_type'] = 2;
                 unset($record['question_id']);
                 $records[] = $record;
             }

@@ -230,6 +230,8 @@ class PreferencesController extends Controller
         $preferencenewvalue_eightdata = $post['preferencenewvalue_eigth'];
         $preferencenewvalue_ninedata = $post['preferencenewvalue_nine'];
         $preferencenewvalue_tendata = $post['preferencenewvalue_ten'];
+        $preferencenewvalue_from = $post['preferencenewvalue_from'];
+        $preferencenewvalue_to = $post['preferencenewvalue_to'];
 
 
         $model = $this->findModel($prferences_id);
@@ -282,6 +284,10 @@ class PreferencesController extends Controller
                 case 10:
                     $type = "Low priority";
                     $model->preferences_value = $preferencenewvalue_tendata;
+                    break;
+                case 11:
+                    $type = "Hourly Audit Slot";
+                    $model->preferences_value = json_encode(['from'=>$preferencenewvalue_from,'to'=>$preferencenewvalue_to]);
                     break;
             }
 

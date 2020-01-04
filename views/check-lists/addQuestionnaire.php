@@ -152,7 +152,7 @@ $("#MenuChecklists").addClass("active");
                 }])->label(false); ?>
             </div>
         </div>
-        <div class="col-sm-12 marginTB10">
+       <!-- <div class="col-sm-12 marginTB10">
             <div class="col-sm-3 col-lg-3 col-md-3 marginTB10">
                 <label class="required-label">Response Type :</label>
             </div>
@@ -163,7 +163,7 @@ $("#MenuChecklists").addClass("active");
                 }])->label(false); ?>
 
             </div>
-        </div>
+        </div>-->
         <div class="col-sm-12 marginTB10 optionstab" style="display: none;">
             <div class="col-sm-3 col-lg-3 col-md-3">Options:</div>
             <div class="col-sm-9 col-lg-9 col-md-9">

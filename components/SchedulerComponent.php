@@ -2200,6 +2200,10 @@ Green Park Corporate Audit Team.';
             $auditSchedules = AuditsSchedules::find()
                 ->joinWith(['auditor', 'audit.checklist', 'audit.hotel', 'audit.department'])
                 ->andWhere(['notification_status' => 0, AuditsSchedules::tableName() . '.status' => 3])
+				->andWhere(['or',
+					   ['>=', AuditsSchedules::tableName() . '.created_at', '2019-11-25 17:56:06'],
+					   ['>=', AuditsSchedules::tableName() . '.updated_at', '2019-11-25 17:56:06']
+					])
                 ->asArray()
                 ->all();
             $auditIds = [];
@@ -2239,6 +2243,14 @@ Green Park Corporate Audit Team.';
                  * get list of tickets for sending consolidate email
                  *  
                  */
+				 
+				 /*
+				 Select * from tbl_gp_tickets 
+                        INNER JOIN tbl_gp_answers ans on ans.answer_id = tbl_gp_tickets.answer_id 
+                        INNER JOIN tbl_gp_audits_checklist_questions qus on qus.audits_checklist_questions_id = ans.question_id 
+                        WHERE (tbl_gp_tickets.chronicity = 1 OR qus.process_critical=1) 
+                        AND tbl_gp_tickets.audit_schedule_id = '.$auditScheduled['audit_schedule_id']
+				 */
                 $sql = 'Select * from tbl_gp_tickets 
                         INNER JOIN tbl_gp_answers ans on ans.answer_id = tbl_gp_tickets.answer_id 
                         INNER JOIN tbl_gp_audits_checklist_questions qus on qus.audits_checklist_questions_id = ans.question_id 
@@ -2257,7 +2269,7 @@ Green Park Corporate Audit Team.';
                     $ticket_data['observation']=$email_ticket['description'];
                     $tickets_data[]=$ticket_data;
                 }
-                
+               
                 if(!empty($email_tickets[0]['department_id'])){
                     $user_id = UserDepartments::getDepartmentHead($email_tickets[0]['hotel_id'], $email_tickets[0]['department_id']);
                     $deptHotelModel = \app\models\HotelDepartments::findOne(['department_id'=>$email_tickets[0]['department_id'],'hotel_id'=>$email_tickets[0]['hotel_id'],'is_deleted'=>0]);
@@ -2316,7 +2328,7 @@ Green Park Corporate Audit Team.';
             foreach ($ticketsList as $ticket) {
                 Tickets::sendNotification($ticket, 'ticketAssigned', false);
             }
-
+			
             AuditsSchedules::updateAll([
                 'notification_status' => 1,
             ], [
@@ -2325,9 +2337,8 @@ Green Park Corporate Audit Team.';
 
             echo 'Messaging Done';
         } catch (Exception $e) {
-
             $data['notification_name'] = 'Audit Submitted';
-            $data['user_id'] = $user['user_id'];
+		    $data['user_id'] = $user['user_id'];
             $data['notification_message'] = $e->getMessage();
             $data['notification_type'] = 1;
             $data['response_status'] = '';

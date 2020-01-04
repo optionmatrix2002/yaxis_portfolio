@@ -61,6 +61,7 @@ class Checklists extends \yii\db\ActiveRecord
                     'cl_department_id',
                     'cl_frequency_value',
                     'cl_audit_span',
+                    'cl_frequency_duration',
                     'cl_status'
                 ],
                 'integer'

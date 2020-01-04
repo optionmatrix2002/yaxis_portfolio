@@ -3107,4 +3107,7 @@ form select option:first-child {
 form select option {
     color: #080808;
 }
- 
+.daysBlockForFrequency{
+        border: 1px solid #ddd;
+    margin-top: 10px;
+}

@@ -561,8 +561,7 @@ class Answers extends \yii\db\ActiveRecord
     
     private function raiseTicket($auditDetails, $subSectionID, $answerID, $subject = null, $invalid_Answer = '')
     {
-        
-        $ids = HotelDepartments::find()->joinWith('userDepartment as u')
+        $hotelDep = HotelDepartments::find()->joinWith('userDepartment as u')
         ->where([
             'hotel_id' => $auditDetails['audit']['hotel_id'],
             'department_id' => $auditDetails['audit']['department_id'],
@@ -570,7 +569,7 @@ class Answers extends \yii\db\ActiveRecord
         ->andWhere(['u.is_hod' => 1])
         ->asArray()
         ->all();
-        $ids = ArrayHelper::getColumn($ids, 'id');
+        $ids = ArrayHelper::getColumn($hotelDep, 'id');
         $user = UserDepartments::find()->where(['is_hod' => 1, 'hotel_department_id' => $ids])->asArray()->one();
         
         $user_id = '';
@@ -645,10 +644,11 @@ class Answers extends \yii\db\ActiveRecord
         /*
          * Email to department mail ids if process critical is true
          */
-        /*if($auditDetails['process_critical']==1 || $ticket->chronicity==1){
-            $emails= Departments::findOne(['department_id'=>$ticket->department_id]);
-            if(!empty($emails->department_email)){
-                $resp= EmailsComponent::sendNonComplaintToDepartment(explode(',', $emails->department_email), $ticket->ticket_name, $user_id);
+       /* if($auditDetails['process_critical']==1 || $ticket->chronicity==1 && current($hotelDep)){
+          $emails= Departments::findOne(['department_id'=>$ticket->department_id]);
+		    $emails = current($hotelDep);
+            if(!empty($emails['configured_emails'])){
+                $resp= EmailsComponent::sendNonComplaintToDepartment(explode(',', $emails['configured_emails']), $ticket->ticket_name, $user_id);
             }
         }*/
     }

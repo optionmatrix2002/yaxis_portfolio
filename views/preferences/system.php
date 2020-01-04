@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -6,8 +6,9 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\widgets\ActiveForm;
 use app\models\Preferences;
-
-
+use kartik\daterange\DateRangePicker;
+use kartik\widgets\TimePicker;
+use kartik\widgets\DateTimePicker;
 
 $buttons = '';
 
@@ -20,7 +21,8 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
     <div class="row">
         <div class="col-sm-12 margintop10">
 
-            <?= GridView::widget([
+            <?=
+            GridView::widget([
                 'dataProvider' => $dataProvider,
                 'layout' => '{items}{pager}',
                 'columns' => [
@@ -31,7 +33,6 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                         'headerOptions' => ['class' => 'theadcolor'],
                         'value' => function ($model) {
                             return $model->preferences_label;
-
                         }
                     ],
                     [
@@ -41,7 +42,6 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                         'headerOptions' => ['class' => 'theadcolor'],
                         'value' => function ($model) {
                             return $model->preferences_description;
-
                         }
                     ],
                     [
@@ -58,8 +58,6 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                                 } else {
                                     return $model->preferences_value . " Days";
                                 }
-
-
                             } else if ($model->preferences_id == 8 || $model->preferences_id == 9 || $model->preferences_id == 10) {
 
                                 if ($model->preferences_value == 1) {
@@ -69,18 +67,18 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                                 } else {
                                     return $model->preferences_value . " Days";
                                 }
-
                             } else if ($model->preferences_id == 7) {
 
                                 return "Audit Score " . $model->preferences_value;
-                            } else {
+                            }  else if ($model->preferences_id == 11) {
+                                $fromtos=$model->preferences_value ? json_decode($model->preferences_value, true) : ['from'=>'','to'=>''];
+                               // print_r($fromtos);exit;
+                                return "From: ".$fromtos['from'].", To: ".$fromtos['to'];
+                            }else {
                                 return $model->preferences_value;
-
                             }
-
                         }
                     ],
-
                     [
                         'attribute' => 'preferences_type',
                         'format' => 'raw',
@@ -121,32 +119,33 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                                 case 10:
                                     return Html::textInput('text', '', ['type' => 'text', 'class' => 'form-control preference_type ', 'id' => 'preferencene_ten', 'placeholder' => 'Days(1-99)', 'min' => 1, 'max' => 99]);
                                     break;
+                                case 11:
+                                    return '<div class="col-md-6" style="padding-left:0px;">'.Html::textInput('text', '', ['type' => 'text', 'class' => 'form-control datetimepicker preference_type ', 'id' => 'startDate', 'placeholder' => 'From']).     
+            '</div><div class="col-md-6" style="padding-right:0px;">'.Html::textInput('text', '', ['type' => 'text', 'class' => 'form-control datetimepicker preference_type ', 'id' => 'endDate', 'placeholder' => 'To']).     
+            '</div>';
                             }
-
                         }
                     ],
-
                     [
-
                         'class' => 'yii\grid\ActionColumn',
                         'header' => 'Actions',
                         'headerOptions' => ['class' => 'theadcolor'],
                         'template' => $buttons,
                         'buttons' => [
                             'update' => function ($url, $model) {
-
                                 $id = $model->preferences_id;
-                                return '<a href="javascript:void(0)" title="Save" class="update_preference_btn" data-token =' . yii::$app->utils->encryptData($id) . ' >Save</a>';
-
+                                switch ($model->preferences_id) {
+                                    case 11:
+                                        return '<a href="javascript:void(0)" style="" title="Save" class="update_preference_btn" data-token =' . yii::$app->utils->encryptData($id) . ' >Save</a>';
+                                    default :
+                                        return '<a href="javascript:void(0)" title="Save" class="update_preference_btn" data-token =' . yii::$app->utils->encryptData($id) . ' >Save</a>';
+                                }
                             },
-
-
                         ]
-
-
                     ],
                 ],
-            ]); ?>
+            ]);
+            ?>
 
         </div>
     </div>
@@ -178,6 +177,8 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                 <input type="hidden" name="preferencenewvalue_eigth" id="preferencenewvalue_eigth" value=""/>
                 <input type="hidden" name="preferencenewvalue_nine" id="preferencenewvalue_nine" value=""/>
                 <input type="hidden" name="preferencenewvalue_ten" id="preferencenewvalue_ten" value=""/>
+                <input type="hidden" name="preferencenewvalue_from" id="preferencenewvalue_from" value=""/>
+                <input type="hidden" name="preferencenewvalue_to" id="preferencenewvalue_to" value=""/>
 
                 <div class="col-sm-12" style="margin-top: 20px;">
                     <label>
