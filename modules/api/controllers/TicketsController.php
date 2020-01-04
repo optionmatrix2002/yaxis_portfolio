@@ -13,13 +13,11 @@ use yii\helpers\Json;
 use app\models\TicketComments;
 use app\models\TicketHistory;
 
-class TicketsController extends ActiveController
-{
+class TicketsController extends ActiveController {
 
     public $modelClass = 'app\models\Tickets';
 
-    public function behaviors()
-    {
+    public function behaviors() {
         $behaviors = parent::behaviors();
         $behaviors['authenticate'] = [
             'class' => HttpBearerAuth::className()
@@ -27,8 +25,7 @@ class TicketsController extends ActiveController
         return $behaviors;
     }
 
-    public function actionAllTickets()
-    {
+    public function actionAllTickets() {
         try {
             $output = [];
             $assigned_user_id = Yii::$app->request->post('user_id');
@@ -37,23 +34,23 @@ class TicketsController extends ActiveController
             if ($assigned_user_id) {
                 $allTickets = [];
                 $results = (new yii\db\Query())->select('t.ticket_id,t.priority_type_id,t.ticket_name,t.status as ticketstatus,t.due_date,acq.q_text as question,t.subject')
-                    ->from('{{%tickets}} t')
-                    ->join('LEFT JOIN', "{{%audits_schedules}} as", 'as.audit_schedule_id = t.audit_schedule_id')
-                    ->join('LEFT JOIN', "{{%audits_checklist_questions}} acq", 'acq.audit_id = t.audit_schedule_id')
-                    ->where([
-                        't.assigned_user_id' => $assigned_user_id,
-                    ])
-                    ->orWhere([
-                        'or',
-                        [
-                            't.created_by' => Yii::$app->user->identity->id
-                        ]
-                    ])
-                    ->andWhere([
-                        't.status' => $statusList, 't.is_deleted' => 0
-                    ])
-                    ->groupBy(['t.ticket_id'])
-                    ->all();
+                        ->from('{{%tickets}} t')
+                        ->join('LEFT JOIN', "{{%audits_schedules}} as", 'as.audit_schedule_id = t.audit_schedule_id')
+                        ->join('LEFT JOIN', "{{%audits_checklist_questions}} acq", 'acq.audit_id = t.audit_schedule_id')
+                        ->where([
+                            't.assigned_user_id' => $assigned_user_id,
+                        ])
+                        ->orWhere([
+                            'or',
+                            [
+                                't.created_by' => Yii::$app->user->identity->id
+                            ]
+                        ])
+                        ->andWhere([
+                            't.status' => $statusList, 't.is_deleted' => 0, 't.is_incident' => 0
+                        ])
+                        ->groupBy(['t.ticket_id'])
+                        ->all();
 
                 foreach ($results as $result) {
                     $allTickets[] = [
@@ -87,35 +84,35 @@ class TicketsController extends ActiveController
         }
     }
 
-    public function actionTickets()
-    {
+    public function actionTickets() {
         try {
             $output = [];
             $ticket_id = Yii::$app->request->post('ticket_id');
             if ($ticket_id) {
                 $result = (new yii\db\Query())->select('t.ticket_id,t.ticket_name,qpt.priority_name,t.status as ticketstatus,CONCAT_WS(" ", u.`first_name`, u.`last_name`) as assignedto,t.due_date,as.audit_schedule_id,as.audit_schedule_id,cl.cl_name,as.updated_at as start_date,CONCAT_WS(" ", ua.`first_name`, ua.`last_name`) as auditor,c.name as location_name,h.hotel_name,d.department_name,cl.cl_audit_type,s.s_section_name,t.sub_section_id,ss.ss_subsection_name,as.audit_schedule_name,t.description as observations,t.subject,a.options_values,a.answer_value,que.q_response_type,que.options')
-                    ->from('{{%tickets}} t')
-                    ->join('LEFT JOIN', "{{%question_priority_types}} qpt", 'qpt.priority_type_id = t.priority_type_id')
-                    ->join('LEFT JOIN', "{{%user}} u", 'u.user_id = t.assigned_user_id')
-                    ->join('LEFT JOIN', "{{%answers}} a", 'a.answer_id = t.answer_id')
-                    ->join('LEFT JOIN', "tbl_gp_audits_checklist_questions que", 'que.audits_checklist_questions_id = a.question_id')
-                    ->join('LEFT JOIN', "{{%audits_schedules}} as", 'as.audit_schedule_id = t.audit_schedule_id')
-                    ->join('LEFT JOIN', "{{%audits}} au", 'au.audit_id = as.audit_id')
-                    ->join('LEFT JOIN', "{{%user}} ua", 'ua.user_id = as.auditor_id')
-                    ->join('LEFT JOIN', "{{%checklists}} cl", 'cl.checklist_id = au.checklist_id')
-                    ->join("LEFT JOIN", '{{%hotels}} h', 'h.hotel_id = t.hotel_id')
-                    ->join("LEFT JOIN", '{{%locations}} l', 'l.location_id = h.location_id')
-                    ->join("LEFT JOIN", '{{%cities}} c', 'c.id = l.location_city_id')
-                    ->join("LEFT JOIN", '{{%departments}} d', 'd.department_id = t.department_id')
-                    ->join("LEFT JOIN", '{{%sections}} s', 's.section_id = t.section_id')
-                    ->join("LEFT JOIN", '{{%sub_sections}} ss', 'ss.sub_section_id = t.sub_section_id')
-                    ->where([
-                        't.ticket_id' => $ticket_id,
-                        't.is_deleted' => 0,
-                        'u.is_deleted' => 0,
-                        's.is_deleted' => 0
-                    ])
-                    ->one();
+                        ->from('{{%tickets}} t')
+                        ->join('LEFT JOIN', "{{%question_priority_types}} qpt", 'qpt.priority_type_id = t.priority_type_id')
+                        ->join('LEFT JOIN', "{{%user}} u", 'u.user_id = t.assigned_user_id')
+                        ->join('LEFT JOIN', "{{%answers}} a", 'a.answer_id = t.answer_id')
+                        ->join('LEFT JOIN', "tbl_gp_audits_checklist_questions que", 'que.audits_checklist_questions_id = a.question_id')
+                        ->join('LEFT JOIN', "{{%audits_schedules}} as", 'as.audit_schedule_id = t.audit_schedule_id')
+                        ->join('LEFT JOIN', "{{%audits}} au", 'au.audit_id = as.audit_id')
+                        ->join('LEFT JOIN', "{{%user}} ua", 'ua.user_id = as.auditor_id')
+                        ->join('LEFT JOIN', "{{%checklists}} cl", 'cl.checklist_id = au.checklist_id')
+                        ->join("LEFT JOIN", '{{%hotels}} h', 'h.hotel_id = t.hotel_id')
+                        ->join("LEFT JOIN", '{{%locations}} l', 'l.location_id = h.location_id')
+                        ->join("LEFT JOIN", '{{%cities}} c', 'c.id = l.location_city_id')
+                        ->join("LEFT JOIN", '{{%departments}} d', 'd.department_id = t.department_id')
+                        ->join("LEFT JOIN", '{{%sections}} s', 's.section_id = t.section_id')
+                        ->join("LEFT JOIN", '{{%sub_sections}} ss', 'ss.sub_section_id = t.sub_section_id')
+                        ->where([
+                            't.ticket_id' => $ticket_id,
+                            't.is_incident' => 0,
+                            't.is_deleted' => 0,
+                            'u.is_deleted' => 0,
+                            's.is_deleted' => 0
+                        ])
+                        ->one();
                 if ($result) {
                     $auditTypes = ['0' => 'Internal', 1 => "External"];
                     $answer = '';
@@ -209,19 +206,18 @@ class TicketsController extends ActiveController
         }
     }
 
-    private function getTicketAttachments($ticket_id = '')
-    {
+    private function getTicketAttachments($ticket_id = '') {
 
         $attachments = (new yii\db\Query())->select('ta.ticket_attachment_path,CONCAT_WS(" ", createdBy.`first_name`, createdBy.`last_name`) as createdby,CONCAT_WS(" ", u.`first_name`, u.`last_name`) as assignedto,ta.created_at')
-            ->from('{{%ticket_attachments}} ta')
-            ->join('LEFT JOIN', "{{%tickets}} t", 't.ticket_id = ta.ticket_id')
-            ->join('LEFT JOIN', "{{%user}} u", 'u.user_id = t.assigned_user_id')
-            ->join('LEFT JOIN', "{{%user}} createdBy", 'createdBy.user_id = ta.created_by')
-            ->where([
-                'ta.ticket_id' => $ticket_id,
-                'ta.is_deleted' => 0
-            ])
-            ->all();
+                ->from('{{%ticket_attachments}} ta')
+                ->join('LEFT JOIN', "{{%tickets}} t", 't.ticket_id = ta.ticket_id')
+                ->join('LEFT JOIN', "{{%user}} u", 'u.user_id = t.assigned_user_id')
+                ->join('LEFT JOIN', "{{%user}} createdBy", 'createdBy.user_id = ta.created_by')
+                ->where([
+                    'ta.ticket_id' => $ticket_id,
+                    'ta.is_deleted' => 0
+                ])
+                ->all();
         $ticket_attachments = ($attachments) ? $attachments : [];
         $answerAttachmentsPath = [];
         if ($ticket_attachments) {
@@ -242,32 +238,29 @@ class TicketsController extends ActiveController
         return $answerAttachmentsPath;
     }
 
-    private function getTicketComments($ticket_id = '')
-    {
+    private function getTicketComments($ticket_id = '') {
         $ticket_comments = [];
         $comments = (new yii\db\Query())->select('tc.ticket_comment,tc.ticket_comment_status,CONCAT_WS(" ", u.`first_name`, u.`last_name`) as commentedby,tc.created_at')
-            ->from('{{%ticket_comments}} tc')
-            ->join('LEFT JOIN', "{{%tickets}} t", 't.ticket_id = tc.ticket_id')
-            ->join('LEFT JOIN', "{{%user}} u", 'u.user_id = tc.created_by')
-            ->where([
-                'tc.ticket_id' => $ticket_id
-            ])
-            ->all();
+                ->from('{{%ticket_comments}} tc')
+                ->join('LEFT JOIN', "{{%tickets}} t", 't.ticket_id = tc.ticket_id')
+                ->join('LEFT JOIN', "{{%user}} u", 'u.user_id = tc.created_by')
+                ->where([
+                    'tc.ticket_id' => $ticket_id
+                ])
+                ->all();
         $ticket_comments = ($comments) ? $comments : [];
         return $ticket_comments;
     }
 
-    public function getTicketHistory($ticket_id = '')
-    {
+    public function getTicketHistory($ticket_id = '') {
 
         $history = models\TicketHistory::find()
-            ->select('ticket_message,created_at')->where(['ticket_id' => $ticket_id])->all();
+                        ->select('ticket_message,created_at')->where(['ticket_id' => $ticket_id])->all();
         $ticket_history = ($history) ? $history : [];
         return $ticket_history;
     }
 
-    public function actionUpdateTicketComments()
-    {
+    public function actionUpdateTicketComments() {
         $transaction = Yii::$app->db->beginTransaction();
         try {
 
@@ -359,8 +352,7 @@ class TicketsController extends ActiveController
      * @throws HttpException
      * @throws yii\db\Exception
      */
-    public function actionRaiseDynamicTicket()
-    {
+    public function actionRaiseDynamicTicket() {
         try {
             $transaction = Yii::$app->db->beginTransaction();
             $result = [];
@@ -394,4 +386,41 @@ class TicketsController extends ActiveController
             // throw new HttpException(422, $ex->getMessage());
         }
     }
+
+    /**
+     * @return array
+     * @throws HttpException
+     * @throws yii\db\Exception
+     */
+    public function actionCreateIncident() {
+        try {
+            $result = [];
+            $tickets = new Tickets();
+          
+            if ($tickets->load(Yii::$app->request->post(),'')) {
+                $tickets->is_incident=1;
+                if (!$tickets->save()) {
+                    $result = [
+                        'response' => 'Fail',
+                        'message' => 'Invalid Params',
+                        'data' => $tickets->errors
+                    ];
+                    return $result;
+                }
+
+                $result = [
+                    '200' => 'Success',
+                    'response' => 'Success',
+                    'message' => 'Incident saved successfully'
+                ];
+                return $result;
+            } else {
+                throw new HttpException(422, 'Input not received');
+            }
+        } catch (\Exception $ex) {
+            throw new HttpException(422, Json::encode($ex->getMessage()));
+            // throw new HttpException(422, $ex->getMessage());
+        }
+    }
+
 }

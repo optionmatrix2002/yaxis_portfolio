@@ -216,7 +216,8 @@ class Tickets extends \yii\db\ActiveRecord
                 'targetAttribute' => [
                     'updated_by' => 'user_id'
                 ]
-            ]
+            ],
+            ['is_incident','default', 'value'=> 1,'when' => function ($model) { return $model->is_incident==1;}],
         ];
     }
 
