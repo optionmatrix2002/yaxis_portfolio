@@ -11,12 +11,14 @@ use app\models\User;
 use app\models\LoginForm;
 use app\models\UserInfo;
 use app\models\UserTypes;
+use app\models\Locations;
+use app\models\HotelDepartmentSections;
+use app\models\HotelDepartmentSubSections;
 
 /**
  * Default controller for the `api` module
  */
-class UserController extends ActiveController
-{
+class UserController extends ActiveController {
 
     public $modelClass = 'app\models\User';
 
@@ -25,8 +27,7 @@ class UserController extends ActiveController
      *
      * @return string
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         $output = [];
         $model = new LoginForm();
         $email = $model->username = Yii::$app->request->post('email');
@@ -44,7 +45,7 @@ class UserController extends ActiveController
                 }
 
                 if ($usermodel->save()) {
-                  
+
                     if ($usermodel->image) {
                         $image = "/imageuploads/" . $usermodel->image;
                     } else {
@@ -95,14 +96,13 @@ class UserController extends ActiveController
         return $output;
     }
 
-    public function actionForgotPassword()
-    {
+    public function actionForgotPassword() {
         $output = [];
 
         $email = Yii::$app->request->post('email');
         if (!empty($email)) {
             $usermodel = User::findOne([
-                'email' => $email
+                        'email' => $email
             ]);
             if ($usermodel && $usermodel->findByUsername($email)) {
 
@@ -166,4 +166,107 @@ class UserController extends ActiveController
         }
         return $output;
     }
+
+    public function actionGetMasterData() {
+        $output = [];
+        try {
+            $locations = Locations::find()->joinWith(['hotels', 'hotels.departmentsTest.department'])->where([Locations::tableName() . '.is_deleted' => 0])->asArray()->all();
+            $output = [
+                'response' => $locations,
+                'message' => 'success'
+            ];
+        } catch (Exception $ex) {
+            $output = [
+                'response' => 'fail',
+                'message' => 'No data found'
+            ];
+            Yii::$app->response->statusCode = 200;
+        }
+        return $output;
+    }
+
+    public function actionGetSections() {
+        $output = [];
+        try {
+            $post = Yii::$app->request->post();
+            if (!$post['hotel_id'] || !$post['department_id']) {
+                $output = [
+                    'response' => [],
+                    'message' => 'Invalid Params'
+                ];
+                return $output;
+            }
+            $locations = HotelDepartmentSections::find()->joinWith(['section'])->where([HotelDepartmentSections::tableName() . '.is_deleted' => 0, 'hotel_id' => $post['hotel_id'], 'department_id' => $post['department_id']])->asArray()->all();
+            $output = [
+                'response' => 'success',
+                'data' => $locations
+            ];
+            return $output;
+        } catch (Exception $ex) {
+            $output = [
+                '404' => 'fail',
+                'response' => 'fail',
+                'message' => 'No data found'
+            ];
+            Yii::$app->response->statusCode = 200;
+        }
+        return $output;
+    }
+
+    public function actionGetSubSections() {
+        $output = [];
+        try {
+            $post = Yii::$app->request->post();
+            if (!$post['hotel_id'] || !$post['department_id'] || !$post['section_id']) {
+                $output = [
+                    'response' => [],
+                    'message' => 'Invalid Params'
+                ];
+                return $output;
+            }
+            $locations = HotelDepartmentSubSections::find()->joinWith(['subSection'])->where([HotelDepartmentSubSections::tableName() . '.is_deleted' => 0, 'hotel_id' => $post['hotel_id'], 'department_id' => $post['department_id'], 'section_id' => $post['section_id']])->asArray()->all();
+            $output = [
+                'response' => 'success',
+                'data' => $locations
+            ];
+            return $output;
+        } catch (Exception $ex) {
+            $output = [
+                '404' => 'fail',
+                'response' => 'fail',
+                'message' => 'No data found'
+            ];
+            Yii::$app->response->statusCode = 200;
+        }
+        return $output;
+    }
+
+    public function actionGetUsersList() {
+        $output = [];
+        try {
+            $post = Yii::$app->request->post();
+            if (!$post['hotel_id'] || !$post['department_id'] || !$post['location_id']) {
+                $output = [
+                    'response' => [],
+                    'message' => 'Invalid Params'
+                ];
+                return $output;
+            }
+
+            $users = \app\models\Audits::getAuditorsList($post['department_id'], $post['hotel_id'], $post['location_id'], 3);
+            $output = [
+                'response' => 'success',
+                'data' => $users
+            ];
+            return $output;
+        } catch (Exception $ex) {
+            $output = [
+                'response' => [],
+                'message' => 'No data found'
+            ];
+            Yii::$app->response->statusCode = 200;
+        }
+        return $output;
+    }
+
 }

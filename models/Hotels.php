@@ -73,6 +73,14 @@ class Hotels extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getDepartmentsTest()
+    {
+        return $this->hasMany(HotelDepartments::className(), ['hotel_id' => 'hotel_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getDepartments()
     {
         return $this->hasMany(Departments::className(), ['department_hotel_id' => 'hotel_id']);

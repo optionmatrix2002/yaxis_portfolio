@@ -53,9 +53,9 @@ $config = [
             'useFileTransport' => false,			
 		'transport' => [
             'class' => 'Swift_SmtpTransport',
-            'host' => 'smtp.cloudzimail.com',
-            'username' => 'audit.corp@hotelgreenpark.com',
-            'password' => 'Greenpark@1',
+            'host' => 'smtp.gmail.com',
+             'username' => 'optionmatrix@gmail.com',
+            'password' => 'hg5&%$#SD1sz',
             'port' => '587',     
 			'encryption' => 'TLS'
         ],
