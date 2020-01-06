@@ -100,7 +100,7 @@ function changeStatus(checklist_id)
                             return $model->cl_audit_type == 0 ? "Internal" : "External";
                         },
                     ],
-                    [
+                   /* [
                         'attribute' => 'cl_department_id',
                         'header' => 'Floor',
                         'format' => 'raw',
@@ -108,7 +108,7 @@ function changeStatus(checklist_id)
                         'value' => function ($model) {
                             return $model->clDepartment->department_name;
                         },
-                    ],
+                    ],*/
                     [
                         'attribute' => 'cl_audit_span',
                         'header' => 'Audit Span',

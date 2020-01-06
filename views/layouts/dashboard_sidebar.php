@@ -144,7 +144,7 @@
                         <span class="arrow open"></span>
                     </a>
                     <ul class="sub-menu" id="">
-                        <?php if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
+                       <!-- <?php if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
                             <li class="MenuDeoartment" id="settings-department">
                                 <a href="<?= yii::$app->urlManager->createUrl('departments'); ?>" class="">
                                     <i class="fa fa-building-o"></i>
@@ -167,7 +167,7 @@
                                     Manage Subsection
                                 </a>
                             </li>
-                        <?php } ?>
+                        <?php } ?>-->
 						
 						<?php if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
                             <li class="" id="settings-sub-sections">

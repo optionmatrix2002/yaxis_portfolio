@@ -9,7 +9,7 @@ use yii\bootstrap\Html;
 	<div class="modal-content">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
-				style="color: #fff !important; opacity: 1;" aria-hidden="true">×</button>
+				style="color: #fff !important; opacity: 1;" aria-hidden="true">ï¿½</button>
 			<h4 class="modal-title organisation_setup_title">Confirmation</h4>
 		</div>
 		<div class="modal-body clearfix">
@@ -29,7 +29,7 @@ use yii\bootstrap\Html;
 
 <?php } else if ($node_type == 'hotel') { ?>
                     <label>
-                        Are you sure you want to delete this <?= ucwords($node_type); ?>? You can't undo this action.
+                        Are you sure you want to delete this Office? You can't undo this action.
 
                     </label> <br>
 				<!-- <p>Note: This will delete all Departmens, Sections and Subsections
@@ -37,7 +37,7 @@ use yii\bootstrap\Html;
 
 <?php } else if ($node_type == 'department') { ?>
                     <label>
-                        Are you sure you want to delete this <?= ucwords($node_type); ?>? You can't undo this action.
+                        Are you sure you want to delete this Floor? You can't undo this action.
 
                     </label> <br>
 				<!-- <p>Note: This will delete all Sections and Subsections under it.</p> -->

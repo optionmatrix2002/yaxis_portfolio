@@ -59,7 +59,7 @@ $("#MenuChecklists").addClass("active");
                 <label class="required-label">Section :</label>
             </div>
             <div class="col-sm-8">
-                <?= $form->field($model, 'q_section')->widget(Select2::classname(), ['data' => ArrayHelper::map(Sections::find()->where(['s_department_id' => $department_id, 'is_deleted' => 0])->all(), 'section_id', 's_section_name'), 'language' => 'en', 'options' => ['placeholder' => 'Select Section', 'disabled' => 'disabled'], 'pluginOptions' => ['allowClear' => true]])->label(false); ?>
+                <?= $form->field($model, 'q_section')->widget(Select2::classname(), ['data' => ArrayHelper::map(Sections::find()->where(['is_deleted' => 0,'is_active'=>1])->all(), 'section_id', 's_section_name'), 'language' => 'en', 'options' => ['placeholder' => 'Select Section', 'disabled' => 'disabled'], 'pluginOptions' => ['allowClear' => true]])->label(false); ?>
             </div>
         </div>
         <div class="col-sm-12 margintop10">

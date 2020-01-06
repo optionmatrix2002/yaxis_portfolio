@@ -94,7 +94,7 @@ $(document).on("change","#checklists-cl_frequency_value",function(){
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-lg-12 col-md-12">
+        <!--<div class="col-sm-12 col-lg-12 col-md-12">
             <div class="col-sm-3 col-lg-3 col-md-3">
                 <label  class = "required-label">Department :</label>
             </div>
@@ -103,7 +103,7 @@ $(document).on("change","#checklists-cl_frequency_value",function(){
                     <?= $form->field($model, 'cl_department_id')->dropDownList(ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->asArray()->all(), 'department_id', 'department_name'), ['prompt' => 'Select Floor', 'disabled' => ($model->isNewRecord) ? false : true,], ['disabled' => ($model->isNewRecord) ? false : true, 'class' => 'form-control'])->label(false); ?>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="col-sm-12 col-lg-12 col-md-12">
             <div class="col-sm-3 col-lg-3 col-md-3">
                 <label  class = "required-label">Frequency :</label>

@@ -927,30 +927,109 @@ class OrganisationController extends Controller {
     public function actionManageNewDepartment() {
         $post = yii::$app->request->post();
         $result = [];
-        $result['status'] = false;
-        $result['data'] = '';
-        $result['error'] = '';
-        if ($post) {
-
-            $departmentModel = new Departments();
-            if ($departmentModel->load($post)) {
-                if ($departmentModel->save()) {
-                    $result['status'] = true;
-                    $result['data'] = [
-                        $departmentModel->department_id => $departmentModel->department_name
-                    ];
-                } else {
-                    $error = [];
-                    foreach ($departmentModel->errors as $field => $value) {
-                        $error[$field] = implode(',', $value);
-                    }
-                    $result['error'] = $error;
-                }
+        $output = [];
+        $departmentId = null;
+        $hotelId = Yii::$app->utils->decryptSetUp($post['encrypted_hotel_id']);
+        $departmentModel = new Departments();
+        if ($departmentModel->load($post)) {
+            if ($departmentModel->save()) {
+                $departmentId = $departmentModel->department_id;
+                $post['HotelDepartments']['hotel_id'] = $hotelId;
+                $post['HotelDepartments']['department_id'] = $departmentId;
             } else {
-                $result['error'] = "Error in saving";
+                $error = [];
+                foreach ($departmentModel->errors as $field => $value) {
+                    $error[$field] = implode(',', $value);
+                }
+                $output['error'] = $error;
+                return Json::encode($output);
             }
         }
-        return Json::encode($result);
+
+        if ($hotelId && $departmentId) {
+            if ($departmentId) {
+                $hotelDepartmentModel = HotelDepartments::find()->where([
+                            'hotel_id' => $hotelId,
+                            'department_id' => $departmentId,
+                            'is_deleted' => 0
+                        ])->one();
+            }
+            if (!$hotelDepartmentModel) {
+                $hotelDepartmentModel = new HotelDepartments();
+            }
+            if ($hotelDepartmentModel->load($post)) {
+                $hotelDepartmentModel->hotel_id = $hotelId;
+                try {
+                    $isNewRecord = $hotelDepartmentModel->isNewRecord;
+                    if ($hotelDepartmentModel->save()) {
+
+                        $encryptedDepartmentId = Yii::$app->utils->encryptSetUp($hotelDepartmentModel->department_id, 'department');
+                        $encryptedDepartmentRelId = Yii::$app->utils->encryptSetUp($hotelDepartmentModel->id, 'department');
+                        $encryptedHotelId = Yii::$app->utils->encryptSetUp($hotelId, 'hotel');
+                        if ($isNewRecord) {
+                            $output = [
+                                'success' => "Department added successfully",
+                                "parent_node" => Yii::$app->utils->encryptSetUp($hotelDepartmentModel->hotel_id, 'hotel'),
+                                'node' => [
+                                    'id' => $encryptedDepartmentRelId,
+                                    'hotelId' => $encryptedHotelId,
+                                    "text" => $hotelDepartmentModel->department->department_name,
+                                    "type" => "department",
+                                    'action_url' => Yii::$app->urlManager->createUrl([
+                                        'organisation/load-new-section',
+                                        'department_id' => $encryptedDepartmentRelId,
+                                        'hotelId' => $encryptedHotelId
+                                    ]),
+                                    'delete_url' => Yii::$app->urlManager->createUrl([
+                                        'organisation/load-delete-department',
+                                        'department_id' => $encryptedDepartmentId,
+                                        'hotelId' => $encryptedHotelId
+                                    ]),
+                                    'edit_url' => Yii::$app->urlManager->createUrl([
+                                        'organisation/load-edit-department',
+                                        'department_id' => $encryptedDepartmentId,
+                                        'hotelId' => $encryptedHotelId
+                                    ]),
+                                    'clone_url' => Yii::$app->urlManager->createUrl([
+                                        'organisation/load-clone-department',
+                                        'department_id' => $encryptedDepartmentId
+                                    ]),
+                                    "state" => [
+                                        "opened" => false, // is the node open
+                                        "disabled" => false, // is the node disabled
+                                        "selected" => false // is the node selected
+                                    ],
+                                    'children' => false
+                                ]
+                            ];
+                        } else {
+                            $output = [
+                                'success' => "Floor Updated Successfully",
+                                'node' => [
+                                    'id' => $encryptedDepartmentId,
+                                    "text" => $hotelDepartmentModel->department->department_name
+                                ]
+                            ];
+                        }
+                    } else {
+                        $output = [
+                            'error' => $hotelDepartmentModel->errors
+                        ];
+                    }
+                } catch (Exception $e) {
+                    $output = [
+                        'error' => "Failed to save Floor Details"
+                    ];
+                }
+            }
+            //print_r($hotelDepartmentModel);exit;
+        } else {
+            $output = [
+                'error' => "Invalid Office"
+            ];
+        }
+
+        return Json::encode($output);
     }
 
     /**
@@ -959,33 +1038,114 @@ class OrganisationController extends Controller {
      */
     public function actionManageNewSubSection() {
         $post = yii::$app->request->post();
-        $result = [];
-        $result['status'] = false;
-        $result['data'] = '';
-        $result['error'] = '';
+        $output = [];
+        $sectionModel = Sections::findOne(Yii::$app->utils->decryptSetUp($post['encrypted_section_id']));
         $sectionId = Yii::$app->utils->decryptSetUp($post['encrypted_section_id']);
+        $hotelId = Yii::$app->utils->decryptSetUp($post['encrypted_hotel_id']);
         if ($sectionId) {
 
             $subsection = new SubSections();
             $subsection->ss_section_id = $sectionId;
             if ($subsection->load($post)) {
                 if ($subsection->save()) {
-                    $result['status'] = true;
-                    $result['data'] = [
-                        $subsection->sub_section_id => $subsection->ss_subsection_name
-                    ];
+                    $subSectionId = $subsection->sub_section_id;
+                    $post['HotelDepartmentSubSections']['sub_section_id'] = $subSectionId;
                 } else {
                     $error = [];
                     foreach ($subsection->errors as $field => $value) {
                         $error[$field] = implode(',', $value);
                     }
-                    $result['error'] = $error;
+                    $output['error'] = $error;
                 }
             } else {
-                $result['error'] = "Error in saving";
+                $output['error'] = "Error in saving";
             }
+
+            if (isset($output['error'])) {
+                return Json::encode($output);
+            }
+
+            if ($hotelId && $sectionId) {
+                $subSectionModel = HotelDepartmentSubSections::find()->where([
+                            'section_id' => $sectionId,
+                            'hotel_id' => $hotelId,
+                            'sub_section_id' => $subSectionId,
+                            'is_deleted' => 0
+                        ])->one();
+                $subSectionModel = ($subSectionModel) ? $subSectionModel : new HotelDepartmentSubSections();
+
+                if ($subSectionModel->load($post)) {
+                    $subSectionModel->section_id = $sectionId;
+                    $subSectionModel->hotel_id = $hotelId;
+                    $subSectionModel->department_id = $sectionModel->s_department_id;
+                    try {
+                        $isNewRecord = $subSectionModel->isNewRecord;
+                        if ($subSectionModel->save()) {
+                            $encryptedSubsection = Yii::$app->utils->encryptSetUp($subSectionModel->sub_section_id, 'subsection');
+                            $encryptedSubsectionRel = Yii::$app->utils->encryptSetUp($subSectionModel->id, 'subsection');
+                            $encpHotel = $post['encrypted_hotel_id'];
+                            if ($isNewRecord) {
+                                $output = [
+                                    'success' => "Subsection Added Successfully",
+                                    "parent_node" => yii::$app->utils->encryptSetUp($subSectionModel->section_id, 'section'),
+                                    'node' => [
+                                        'id' => $encryptedSubsectionRel,
+                                        "text" => $subSectionModel->subSection->ss_subsection_name,
+                                        'type' => "subsection",
+                                        'hotelId' => $encpHotel,
+                                        'delete_url' => yii::$app->urlManager->createUrl([
+                                            'organisation/load-delete-subsection',
+                                            'subsection_id' => $encryptedSubsection,
+                                            'hotel_id' => $encpHotel
+                                        ]),
+                                        'edit_url' => yii::$app->urlManager->createUrl([
+                                            'organisation/load-edit-subsection',
+                                            'subsection_id' => $encryptedSubsection,
+                                            'hotel_id' => $encpHotel
+                                        ]),
+                                        'clone_url' => yii::$app->urlManager->createUrl([
+                                            'organisation/load-clone-subsection',
+                                            'subsection_id' => $encryptedSubsection
+                                        ]),
+                                        "state" => [
+                                            "opened" => false, // is the node open
+                                            "disabled" => false, // is the node disabled
+                                            "selected" => false // is the node selected
+                                        ],
+                                        'children' => false
+                                    ]
+                                ];
+                            } else {
+                                $output = [
+                                    'success' => "Subsection Updated Successfully",
+                                    'node' => [
+                                        'id' => $encryptedSubsection,
+                                        "text" => $subSectionModel->subSection->ss_subsection_name
+                                    ]
+                                ];
+                            }
+                        } else {
+                            $output = [
+                                'error' => $subSectionModel->errors
+                            ];
+                        }
+                    } catch (Exception $e) {
+                        $output = [
+                            'error' => "Failed to save Subsection Details"
+                        ];
+                    }
+                }
+            } else {
+                $output = [
+                    'error' => "Invalid Section"
+                ];
+            }
+        } else {
+            $output = [
+                'error' => "Section must not be empty"
+            ];
         }
-        return Json::encode($result);
+        return Json::encode($output);
     }
 
     public function actionAddSubSection() {
@@ -1278,28 +1438,121 @@ class OrganisationController extends Controller {
      */
     public function actionCreateNewSection() {
         $post = Yii::$app->request->post();
-        $result = [];
+        $output = [];
         $departmentId = Yii::$app->utils->decryptSetUp($post['encrypted_department_id']);
+        $hotelId = Yii::$app->utils->decryptSetUp($post['encrypted_hotel_id']);
         if (isset($post['encrypted_department_id'])) {
 
             $sectionModel = new Sections();
             $sectionModel->s_department_id = $departmentId;
             if ($sectionModel->load($post)) {
                 if ($sectionModel->save()) {
-                    $result['status'] = true;
-                    $result['data'] = [
-                        $sectionModel->section_id => $sectionModel->s_section_name
-                    ];
+                    $sectionId = $sectionModel->section_id;
+                    $post['HotelDepartmentSections']['hotel_id'] = $hotelId;
+                    $post['HotelDepartmentSections']['department_id'] = $departmentId;
+                    $post['HotelDepartmentSections']['section_id'] = $sectionId;
                 } else {
                     $error = [];
                     foreach ($sectionModel->errors as $field => $value) {
                         $error[$field] = implode(',', $value);
                     }
-                    $result['error'] = $error;
+                    $output['error'] = $error;
+                    return Json::encode($output);
                 }
             }
+            if ($departmentId && $hotelId) {
+                if ($sectionId) {
+                    $sectionModel = HotelDepartmentSections::find()->where([
+                                'hotel_id' => $hotelId,
+                                'department_id' => $departmentId,
+                                'section_id' => $sectionId,
+                                'is_deleted' => 0
+                            ])->one();
+                }
+                if (!$sectionModel) {
+                    $sectionModel = new HotelDepartmentSections();
+                }
+                $sectionModel->hotel_id = $hotelId;
+                $sectionModel->department_id = $departmentId;
+                $sectionModel->section_id = $sectionId;
+                if ($sectionModel->load($post)) {
+                    try {
+                        $sectionModel->department_id = $departmentId;
+                        $sectionModel->hotel_id = $hotelId;
+                        $isNewRecord = $sectionModel->isNewRecord;
+                        if ($sectionModel->save()) {
+                            $encryptedSectionid = Yii::$app->utils->encryptSetUp($sectionModel->section_id, 'section');
+                            $encryptedSectionRelId = Yii::$app->utils->encryptSetUp($sectionModel->id, 'section');
+                            $encryptedHotelId = Yii::$app->utils->encryptSetUp($hotelId, 'hotel');
+
+                            if ($isNewRecord) {
+                                $output = [
+                                    'success' => "Section Added Successfully",
+                                    "parent_node" => yii::$app->utils->encryptSetUp($sectionModel->department_id, 'department'),
+                                    'node' => [
+                                        'id' => $encryptedSectionRelId,
+                                        'hotelId' => $encryptedHotelId,
+                                        "text" => $sectionModel->section->s_section_name,
+                                        "type" => "section",
+                                        'action_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-new-subsection',
+                                            'section_id' => $encryptedSectionRelId,
+                                            'hotelId' => $encryptedHotelId
+                                        ]),
+                                        'delete_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-delete-section',
+                                            'section_id' => $encryptedSectionid,
+                                            'hotelId' => $encryptedHotelId,
+                                            'departmentId' => $post['encrypted_department_id']
+                                        ]),
+                                        'edit_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-edit-section',
+                                            'section_id' => $encryptedSectionid,
+                                            'hotelId' => $encryptedHotelId,
+                                        ]),
+                                        'clone_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-clone-section',
+                                            'section_id' => $encryptedSectionid
+                                        ]),
+                                        "state" => [
+                                            "opened" => false, // is the node open
+                                            "disabled" => false, // is the node disabled
+                                            "selected" => false // is the node selected
+                                        ],
+                                        'children' => false
+                                    ]
+                                ];
+                            } else {
+                                $output = [
+                                    'success' => "Section Updated Successfully",
+                                    'node' => [
+                                        'id' => $encryptedSectionid,
+                                        "text" => $sectionModel->section->s_section_name
+                                    ]
+                                ];
+                            }
+                        } else {
+                            $output = [
+                                'error' => $sectionModel->errors
+                            ];
+                        }
+                    } catch (Exception $e) {
+                        $output = [
+                            'error' => "Failed to save Section Details"
+                        ];
+                    }
+                }
+            } else {
+                $output = [
+                    'error' => "Invalid Floor"
+                ];
+            }
+        } else {
+            $output = [
+                'error' => "Floor must not be empty"
+            ];
         }
-        return Json::encode($result);
+        return Json::encode($output);
     }
 
     public function actionManageDepartment($department_id = '') {
@@ -1964,7 +2217,7 @@ class OrganisationController extends Controller {
                 if ($hotelDepartmentModel->save()) {
                     $output = ['success' => 'Saved successfully'];
                 } else {
-                    $output = ['error' =>$hotelDepartmentModel->getFirstError('configured_emails')];
+                    $output = ['error' => $hotelDepartmentModel->getFirstError('configured_emails')];
                 }
             } else {
                 $output = ['error' => 'Invalid Office or Floor'];

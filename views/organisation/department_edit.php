@@ -21,7 +21,7 @@ $action = yii::$app->urlManager->createAbsoluteUrl([
     </div>
     <div class="col-sm-12">
         <?= Html::hiddenInput("encrypted_hotel_id", yii::$app->utils->encryptSetUp($hotelModel->hotel_id,'hotel')); ?>
-        <?= $form->field($departmentModel, 'department_name')->textInput(['maxlength' => 50,'class'=>'form-control alphanumericDepartment charsSpecialChars'])->label('Department Name'. Html::tag('span', '*',['class'=>'required'])); ?>
+        <?= $form->field($departmentModel, 'department_name')->textInput(['maxlength' => 50,'class'=>'form-control alphanumericDepartment charsSpecialChars'])->label('Floor Name'. Html::tag('span', '*',['class'=>'required'])); ?>
     </div>
     <div class="col-sm-12">
         <?= $form->field($departmentModel, 'department_description')->textarea(['rows' => 3])->label('Description'. Html::tag('span', '*',['class'=>'required'])); ?>

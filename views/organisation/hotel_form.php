@@ -21,7 +21,7 @@ if ($hotelModel->isNewRecord) {
     </div>
     <div class="col-sm-12">
         <?= Html::hiddenInput("encrypted_location_id", yii::$app->utils->encryptSetUp($locationsModel->location_id,'location')); ?>
-        <?= $form->field($hotelModel, 'hotel_name')->textInput(['maxlength' => 50,'class'=>'form-control charsSpecialChars'])->label('Hotel Name'. Html::tag('span', '*',['class'=>'required'])); ?>
+        <?= $form->field($hotelModel, 'hotel_name')->textInput(['maxlength' => 50,'class'=>'form-control charsSpecialChars'])->label('Office Name'. Html::tag('span', '*',['class'=>'required'])); ?>
     </div>
 
 
