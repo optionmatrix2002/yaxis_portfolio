@@ -56,7 +56,15 @@
                     </a>
                 </li>
             <?php } ?>
-
+                <li id="incidents" class="nav-bids <?php if ($item == "incidents") {
+                    echo "active"; ?>  <?php } ?>">
+                    <a href="<?= yii::$app->urlManager->createUrl('incidents'); ?>" class="nav-link">
+                        <div class="floatleft clsprojects clsbackground"><i class="fa fa-ticket" aria-hidden="true"></i>
+                        </div>
+                        <span class="title">Incidents</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
 
             <?php if (Yii::$app->authManager->checkPermissionAccess('user') || Yii::$app->authManager->checkPermissionAccess('roles') || Yii::$app->authManager->checkPermissionAccess('organisation') || Yii::$app->authManager->checkPermissionAccess('preferences') || Yii::$app->authManager->checkPermissionAccess('eventmaster') || Yii::$app->authManager->checkPermissionAccess('errorlogs')) { ?>
                 <li id="MenuSystemAdmin" class="nav-bids <?php if ($item == "System Admin") {

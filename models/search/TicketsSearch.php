@@ -48,7 +48,7 @@ class TicketsSearch extends Tickets
      *
      * @return ActiveDataProvider
      */
-    public function searchActiveTickets($params)
+    public function searchActiveTickets($params,$isIncident=false)
     {
         $query = Tickets::find()
         ->leftJoin('tbl_gp_answers',"tbl_gp_tickets.answer_id=tbl_gp_answers.answer_id")
@@ -85,7 +85,7 @@ class TicketsSearch extends Tickets
             'chronicity' => $this->chronicity,
             'status' => $this->status,
             'is_deleted' => $this->is_deleted,
-            'is_incident' => 0,
+            'is_incident' => $isIncident,
             self::tableName().'.created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
@@ -161,7 +161,7 @@ class TicketsSearch extends Tickets
 
     }
 
-    public function searchArchivedTickets($params)
+    public function searchArchivedTickets($params,$isIncident=false)
     {
         $query = Tickets::find()->leftJoin('tbl_gp_answers',"tbl_gp_tickets.answer_id=tbl_gp_answers.answer_id")->leftJoin('tbl_gp_audits_checklist_questions',"tbl_gp_answers.question_id=tbl_gp_audits_checklist_questions.audits_checklist_questions_id")->where(['IN', 'status', [3, 5]]);
 
@@ -187,6 +187,7 @@ class TicketsSearch extends Tickets
             'due_date' => $this->due_date,
             'status' => $this->status,
             'is_deleted' => $this->is_deleted,
+            'is_incident'=>$isIncident,
             self::tableName().'.created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at,
