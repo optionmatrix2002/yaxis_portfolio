@@ -177,7 +177,7 @@ $("#MenuAudits").addClass("active");
                     </div>
                     <div class="col-md-12">
                         <div class="col-sm-2 nopadding">
-                            <label>Hotel </label>
+                            <label>Office </label>
                         </div>
                         <div class="col-sm-1 nopadding">
                             <label>: </label>
@@ -188,7 +188,7 @@ $("#MenuAudits").addClass("active");
                     </div>
                     <div class="col-md-12">
                         <div class="col-sm-2 nopadding">
-                            <label>Department </label>
+                            <label>Floor </label>
                         </div>
                         <div class="col-sm-1 nopadding">
                             <label>: </label>

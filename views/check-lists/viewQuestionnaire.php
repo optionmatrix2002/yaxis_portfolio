@@ -22,7 +22,7 @@ View::registerCssFile(yii::$app->urlManager->createUrl('css/questionnaire.css'))
 
     <div class="col-sm-12 nopadding" style="margin-bottom: 10px;">
         <div class="col-sm-12">
-            <h4> <strong>Department : <?= $department_name; ?> </strong></h4>
+            <h4> <strong>Floor : <?= $department_name; ?> </strong></h4>
         </div>
     </div>
     <!-------------------------------------------------------Quations Start here -------------------------------------->

@@ -89,7 +89,7 @@ if (Yii::$app->authManager->checkPermissionAccess('departments/delete')) {
             [
                 'attribute' => 'ss_section_id',
                 'format' => 'raw',
-                'header' => 'Department',
+                'header' => 'Floor',
                 'headerOptions' => ['class' => 'theadcolor'],
                 'value' => function($model) {
                     return $model->ssSection->department->department_name;

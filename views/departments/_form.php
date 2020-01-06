@@ -41,7 +41,7 @@ $actionType = Yii::$app->controller->action->id;
  <?php $form = ActiveForm::begin(); ?>
           <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
 			<div class="col-lg-3 col-sm-3 col-md-3">
-				<label>Department:<span class="span-star">*</span></label>
+				<label>Floor:<span class="span-star">*</span></label>
 			</div>
 			<div class="col-lg-9 col-sm-9 col-md-9">
 				<div class="input-group col-sm-6">

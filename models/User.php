@@ -481,7 +481,7 @@ class User extends ActiveRecord implements IdentityInterface
             }
         } else {
             $list['id'] = '';
-            $list['name'] = 'No Departments';
+            $list['name'] = 'No Floors';
             $resultArray[] = $list;
         }
         return $resultArray;

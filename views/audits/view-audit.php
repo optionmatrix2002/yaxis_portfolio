@@ -217,7 +217,7 @@ $this->registerCssFile("https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker
         </div>
         <div class="col-sm-12 col-lg-12 col-md-12 margintop10">
             <div class="col-sm-3 col-lg-3 col-md-3">
-                <label class="required-label">Hotel :</label>
+                <label class="required-label">Office :</label>
             </div>
             <div class="col-sm-9 col-lg-9 col-md-9">
                 <div class="input-group col-sm-6">
@@ -246,7 +246,7 @@ $this->registerCssFile("https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker
         </div>
         <div class="col-sm-12 col-lg-12 col-md-12 margintop10">
             <div class="col-sm-3 col-lg-3 col-md-3">
-                <label class="required-label">Department :</label>
+                <label class="required-label">Floor :</label>
             </div>
             <div class="col-sm-9 col-lg-9 col-md-9">
                 <div class="input-group col-sm-6">
@@ -256,7 +256,7 @@ $this->registerCssFile("https://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker
                             'options' => ['id' => 'department_id'],
                             'pluginOptions' => [
                                 'depends' => ['hotel_id'],
-                                'placeholder' => 'Select Hotel',
+                                'placeholder' => 'Select Office',
                                 'url' => Url::to(['audits/department'])
                             ]
                         ])->label(false);

@@ -22,7 +22,7 @@ if ($departmentModel->isNewRecord) {
 	<h3 class="text-success ">
 		<i class="fa fa-building-o"></i> <?= $hotelModel->hotel_name; ?>
         </h3>
-	<small>(selected hotel)</small>
+	<small>(selected office)</small>
 </div>
 <div class="col-sm-12">
 	

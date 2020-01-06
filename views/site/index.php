@@ -60,7 +60,7 @@ $("#MenuDashboard").addClass("active");
                                                                         aria-hidden="true"></i>&nbsp;Hotel
                         Trends</a></li>
                 <li><a class="tabs" data-toggle="tab" href="#trends2"><i class="fa fa-line-chart"
-                                                                         aria-hidden="true"></i>&nbsp;Department
+                                                                         aria-hidden="true"></i>&nbsp;Floor
                         Trends</a></li>
                 <li><a class="tabs" data-toggle="tab" href="#ranking"><i class="fa fa-bar-chart"
                                                                          aria-hidden="true"></i>&nbsp;Ranking Table</a>

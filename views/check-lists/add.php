@@ -6,7 +6,7 @@
         <span class="wa-icon wa-icon-notification"></span>
     </span>
     <p id="description-text">
-        New hotel checklists can be added here.
+        New office checklists can be added here.
     </p>
 </div>
 <div class="col-sm-12">
@@ -67,7 +67,7 @@
 
     <div class="col-sm-12 margintop10">
         <div class="col-sm-2">
-            <label>Department :</label>
+            <label>Floor :</label>
         </div>
         <div class="col-sm-10">
             <div class="input-group col-sm-6">
@@ -149,7 +149,7 @@
         <span class="wa-icon wa-icon-notification"></span>
     </span>
     <p id="description-text">
-        New hotel checklists can be added here.
+        New office checklists can be added here.
     </p>
 </div>
 <div class="col-sm-12">
@@ -210,7 +210,7 @@
 
     <div class="col-sm-12 margintop10">
         <div class="col-sm-2">
-            <label>Department :</label>
+            <label>Floor :</label>
         </div>
         <div class="col-sm-10">
             <div class="input-group col-sm-6">

@@ -11,7 +11,7 @@ use yii\helpers\ArrayHelper;
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add Hotel</h4>
+            <h4 class="modal-title">Add Office</h4>
         </div>
         <div class="modal-body">
             <div class="row" >
@@ -42,7 +42,7 @@ use yii\helpers\ArrayHelper;
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">

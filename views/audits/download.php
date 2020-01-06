@@ -90,7 +90,7 @@ View::registerCssFile(yii::$app->urlManager->createUrl('css/auditReports.css'), 
                                 </tr>
                                 <tr>
                                     <td>
-                                        Hotel
+                                    Office
                                     </td>
 
                                     <td>
@@ -99,7 +99,7 @@ View::registerCssFile(yii::$app->urlManager->createUrl('css/auditReports.css'), 
                                 </tr>
                                 <tr>
                                     <td>
-                                        Department
+                                    Floor
                                     </td>
                                     <td>
                                         <?= $modelAudit->department->department_name ?>

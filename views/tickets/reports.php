@@ -129,7 +129,7 @@ $("#tickets").addClass("active");
                     </div>
                     <div class="col-sm-12 col-lg-12 col-md-12">
                         <div class="col-sm-3 col-md-3 col-lg-3 nopadding">
-                            <label>Hotel Name </label>
+                            <label>Office Name </label>
                         </div>
                         <div class="col-sm-1 col-lg-1 col-md-1 nopadding">
                             <label>: </label>
@@ -140,7 +140,7 @@ $("#tickets").addClass("active");
                     </div>
                     <div class="col-sm-12 col-lg-12 col-md-12">
                         <div class="col-sm-3 col-md-3 col-lg-3 nopadding">
-                            <label>Department </label>
+                            <label>Floor </label>
                         </div>
                         <div class="col-sm-1 col-lg-1 col-md-1 nopadding">
                             <label>: </label>
@@ -716,7 +716,7 @@ $("#tickets").addClass("active");
 
                         <div class="col-md-12">
                             <div class="col-sm-2 nopadding">
-                                <label>Hotel </label>
+                                <label>Office </label>
                             </div>
                             <div class="col-sm-1 nopadding">
                                 <label>: </label>
@@ -728,7 +728,7 @@ $("#tickets").addClass("active");
 
                         <div class="col-md-12">
                             <div class="col-sm-2 nopadding">
-                                <label>Department </label>
+                                <label>Floor </label>
                             </div>
                             <div class="col-sm-1 nopadding">
                                 <label>: </label>

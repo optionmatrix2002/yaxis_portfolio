@@ -100,7 +100,7 @@ $("#settings-users").addClass("active");
                     ],
                     [
                         'attribute' => 'hoteld',
-                        'header' => 'Hotel',
+                        'header' => 'Office',
                         'format' => 'raw',
                         'headerOptions' => ['class' => 'theadcolor'],
                         'value' => function ($model) {
@@ -110,7 +110,7 @@ $("#settings-users").addClass("active");
 
                     /* [
                          'attribute' => 'departmentId',
-                         'header' => 'Department',
+                         'header' => 'Floor',
                          'format' => 'raw',
                          'filter' => false,
                          'headerOptions' => ['class' => 'theadcolor'],

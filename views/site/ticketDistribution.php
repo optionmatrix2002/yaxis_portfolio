@@ -106,13 +106,13 @@ $this->registerJs('
     </div>
     <div class="col-lg-4 col-xs-12 col-md-4 text-center">
         <div style="border-top: 3px solid red;padding: 5px;">
-            <h4 class="headstyle">Hotels</h4>
+            <h4 class="headstyle">Offices</h4>
             <div id="chartdivpie2" style="width: 100%; height: 300px; background-color: #FFFFFF;"></div>
         </div>
     </div>
     <div class="col-lg-4 col-xs-12 col-md-4 text-center">
         <div style="border-top: 3px solid red;padding: 5px;">
-            <h4 class="headstyle">Departments</h4>
+            <h4 class="headstyle">Floors</h4>
             <div id="chartdivpie3" style="width: 100%; height: 300px; background-color: #FFFFFF;"></div>
         </div>
     </div>
@@ -137,7 +137,7 @@ $this->registerJs('
                 ],
                 [
                     'attribute' => 'hotel_id',
-                    'header' => 'Hotel Name',
+                    'header' => 'Office Name',
                     'value' => function ($model) {
                         return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
                     },
@@ -146,7 +146,7 @@ $this->registerJs('
                 ],
                 [
                     'attribute' => 'department_id',
-                    'header' => 'Department',
+                    'header' => 'Floor',
                     'value' => function ($model) {
                         return ($model->department_id) ? $model->department->department_name : '--';
                     },

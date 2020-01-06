@@ -113,12 +113,12 @@ $this->title = 'User Details';
                                 'depends' => [
                                     'userlocations-location_id'
                                 ],
-                                'placeholder' => 'Select Hotel',
+                                'placeholder' => 'Select Office',
                                 'url' => Url::to([
                                     'user/hotel'
                                 ]),
                                 'params' => [
-                                    'selectedHotel'
+                                    'selectedOffice'
                                 ]
                             ],
                             'select2Options' => [
@@ -142,7 +142,7 @@ $this->title = 'User Details';
 
         <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
-                <label class="required-label">Department :</label>
+                <label class="required-label">Floor :</label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
@@ -157,7 +157,7 @@ $this->title = 'User Details';
                                 'depends' => [
                                     'userhotels-hotel_id'
                                 ],
-                                'placeholder' => 'Select Department',
+                                'placeholder' => 'Select Floor',
                                 'url' => Url::to([
                                     'user/department'
                                 ]),
@@ -207,7 +207,7 @@ $this->title = 'User Details';
 
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="col-lg-3 col-md-3 col-sm-3">
-                <label>Department Head :</label>
+                <label>Floor Head :</label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="col-lg-1 col-md-1 col-sm-1">

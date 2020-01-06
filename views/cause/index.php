@@ -2,7 +2,7 @@
 //Step1
  $db = mysqli_connect('localhost','root','','greenpark')
  or die('Error connecting to MySQL server.');
-
+ $hotel_id=null;
  if(isset($_POST['task_rec1'])=="GO")
 { 
 $hotel_id = $_POST['hotel_id'];
@@ -67,10 +67,10 @@ table {
               <tr>
     		 <td width="30%" valign="top">
 												<div class="control-group" style="width:90%;">											
-													<label class="control-label" for="prp_id">Hotel name</label>
+													<label class="control-label" for="prp_id">Office name</label>
 													<div class="controls">
 													<select  class="form-control" name="hotel_id">
-													<option value=""> --- Select Hotel Name -- </option>
+													<option value=""> --- Select Office Name -- </option>
 													<option value="81"> GreenPark Hotel- GPH</option>
 													<option value="85"> Marigold Hotel </option>
 													<option value="86">GreenPark Hotel- GPC</option>
@@ -119,12 +119,12 @@ table {
   <table class="table table-striped table-border">
     <tr style="text-aline:center;" class="success">
         <th>Date</th>
-        <th> Department </th>
+        <th>Floor</th>
         <th>Section</th>
-        <th> Problem</th>
-		<th> Problem Classification </th>
-		<th> Root Cause</th>
-        <th> Improvement Plan for Zero Devation </th>
+        <th>Problem</th>
+		<th>Problem Classification</th>
+		<th>Root Cause</th>
+        <th>Improvement Plan for Zero Devation</th>
 	 </tr>
 	 </thead>
    <tbody>

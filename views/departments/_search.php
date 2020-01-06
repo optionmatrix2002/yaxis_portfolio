@@ -28,7 +28,7 @@ use kartik\select2\Select2;
             <?php
             /* echo $form->field($model, 'department_id')
                  ->dropDownList(ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'), [
-                 'prompt' => 'Select Department'
+                 'prompt' => 'Select Floor'
              ], [
                  'class',
                  'form-control'
@@ -36,7 +36,7 @@ use kartik\select2\Select2;
                  ->label(false);
                  */
             ?>
-            <?= $form->field($model, 'department_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'), 'showToggleAll' => false, 'language' => 'en', 'options' => ['placeholder' => 'Select Department'], 'pluginOptions' => ['allowClear' => true]])->label(false); ?>
+            <?= $form->field($model, 'department_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'), 'showToggleAll' => false, 'language' => 'en', 'options' => ['placeholder' => 'Select Floor'], 'pluginOptions' => ['allowClear' => true]])->label(false); ?>
 
         </div>
 

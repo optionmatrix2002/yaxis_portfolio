@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal">&times;</button>
 			<h3 class="modal-title organisation_setup_title">
-				<i class="fa fa-copy"></i> Clone Hotel
+				<i class="fa fa-copy"></i> Clone Office
 			</h3>
 		</div>
 		<div class="modal-body">
@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 					<h3 class="text-success ">
 						<i class="fa fa-building-o"></i> <?= $hotelModel->hotel_name; ?>
                     </h3>
-					<small>(Selected Hotel for cloning)</small>
+					<small>(Selected Office for cloning)</small>
 				</div>
 			</div>
 			<div class="row">

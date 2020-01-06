@@ -30,7 +30,7 @@ use yii\helpers\ArrayHelper;
                 <?php
                 echo $form->field($model, 'cl_department_id')
                     ->dropDownList(ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'), [
-                        'prompt' => 'Select Department'
+                        'prompt' => 'Select Floor'
                     ], [
                         'class',
                         'form-control'

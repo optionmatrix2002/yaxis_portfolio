@@ -76,7 +76,7 @@ if (Yii::$app->authManager->checkPermissionAccess('departments/delete')) {
             [
                 'attribute' => 's_department_id',
                 'format' => 'raw',
-                'header' => 'Department',
+                'header' => 'Floor',
                 'headerOptions' => ['class' => 'theadcolor'],
                 'value' => function($model) {
                     return $model->department->department_name;

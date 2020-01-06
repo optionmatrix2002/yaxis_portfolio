@@ -50,7 +50,7 @@ $this->registerJs('
 
             ?>
             <?= Html::dropDownList('statistics_hotel_id', null, $dimensionTypes, array(
-                'class' => 'form-control', 'prompt' => 'Hotel', 'id' => 'statistics_hotel_id',
+                'class' => 'form-control', 'prompt' => 'Office', 'id' => 'statistics_hotel_id',
                 'options' => array(isset($_GET['statistics_hotel_id']) ? $_GET['statistics_hotel_id'] : '' => array('selected' => true)),
                 'onchange' => '
                     $.post( "' . Yii::$app->urlManager->createUrl('site/departments?id=') . '"+$(this).val(), function( data ) {
@@ -79,7 +79,7 @@ $this->registerJs('
 
             ?>
 
-            <?= Html::dropDownList('statistics_department_id', null, $options, array('class' => 'form-control', 'prompt' => ' Department', 'id' => 'statistics_department_id', 'options' => array(isset($_GET['statistics_department_id']) ? $_GET['statistics_department_id'] : '' => array('selected' => true)),)) ?>
+            <?= Html::dropDownList('statistics_department_id', null, $options, array('class' => 'form-control', 'prompt' => ' Floor', 'id' => 'statistics_department_id', 'options' => array(isset($_GET['statistics_department_id']) ? $_GET['statistics_department_id'] : '' => array('selected' => true)),)) ?>
         </div>
         <div class="col-md-3 col-lg-3  col-sm-3 form-group ">
             <input name="statisticsStartDate" id="statisticsFromDate" class="form-control datetimepicker hasDatepicker"
@@ -176,7 +176,7 @@ $this->registerJs('
                         <tr>
                             <th class="theadcolor">Due Date</th>
                             <th class="theadcolor">Audit ID</th>
-                            <th class="theadcolor">Hotel</th>
+                            <th class="theadcolor">Office</th>
                             <th class="theadcolor">Auditor</th>
                             <th class="theadcolor">Checklist</th>
                             <th class="theadcolor">Status</th>
@@ -226,7 +226,7 @@ $this->registerJs('
                     <tr>
                         <th>Scheduled Date</th>
                         <th>Audit ID</th>
-                        <th>Hotel</th>
+                        <th>Office</th>
                         <th>Auditor</th>
                         <th>Checklist</th>
                         <th>Status</th>

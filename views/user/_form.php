@@ -106,7 +106,7 @@ $("#settings-users").addClass("active");
 
         <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
-                <label class="required-label">Hotel :</label>
+                <label class="required-label">Office :</label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
@@ -127,7 +127,7 @@ $("#settings-users").addClass("active");
                                 'depends' => [
                                     'userlocations-location_id'
                                 ],
-                                'placeholder' => 'Select Hotel',
+                                'placeholder' => 'Select Office',
                                 'url' => Url::to([
                                     'user/hotel'
                                 ]),
@@ -158,7 +158,7 @@ $("#settings-users").addClass("active");
 
         <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
-                <label class="required-label">Department :</label>
+                <label class="required-label">Floor :</label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
@@ -173,7 +173,7 @@ $("#settings-users").addClass("active");
                                 'depends' => [
                                     'userhotels-hotel_id'
                                 ],
-                                'placeholder' => 'Select Department',
+                                'placeholder' => 'Select Floor',
                                 'url' => Url::to([
                                     'user/department'
                                 ]),
@@ -225,7 +225,7 @@ $("#settings-users").addClass("active");
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="col-lg-3 col-md-3 col-sm-3">
-                <label>Department Head for:</label>
+                <label>Floor Head for:</label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
@@ -240,7 +240,7 @@ $("#settings-users").addClass("active");
                                 'depends' => [
                                     'userdepartments-hotel_department_id'
                                 ],
-                                'placeholder' => 'Select Departments',
+                                'placeholder' => 'Select Floors',
                                 'url' => Url::to([
                                     'user/hod-departments'
                                 ]),

@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
  <?php $form = ActiveForm::begin(); ?>
           <div class="col-sm-12 margintop10">
 			<div class="col-sm-2">
-				<label>Department:<span class="span-star">*</span></label>
+				<label>Floor:<span class="span-star">*</span></label>
 			</div>
 			<div class="col-sm-10">
 				<div class="input-group col-sm-6">

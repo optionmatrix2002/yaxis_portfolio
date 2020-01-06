@@ -235,7 +235,7 @@ class OrganisationController extends Controller {
             }
         } else {
             $output = [
-                'error' => 'Subsection cannot be deleted as it contains audit for hotel.'
+                'error' => 'Subsection cannot be deleted as it contains audit for office.'
             ];
         }
 
@@ -314,7 +314,7 @@ class OrganisationController extends Controller {
                 } else {
                     $transaction->rollBack();
                     $output = [
-                        'error' => 'Section cannot be deleted as it contains audits for hotel. '
+                        'error' => 'Section cannot be deleted as it contains audits for office. '
                     ];
                 }
             } catch (Exception $e) {
@@ -380,26 +380,26 @@ class OrganisationController extends Controller {
                             if ($modelHotelDepartmentUpdate) {
                                 $transaction->commit();
                                 $output = [
-                                    'success' => 'Department Deleted Successfully',
+                                    'success' => 'Floor Deleted Successfully',
                                     'node' => Yii::$app->utils->encryptSetUp($hotelDepartment->id, 'department')
                                 ];
                             }
                         } else {
                             $transaction->rollBack();
                             $output = [
-                                'error' => 'Department cannot be deleted as it assigned to user.'
+                                'error' => 'Floor cannot be deleted as it assigned to user.'
                             ];
                         }
                     } else {
                         $transaction->rollBack();
                         $output = [
-                            'error' => 'Department cannot be deleted as section are assigned to it.'
+                            'error' => 'Floor cannot be deleted as section are assigned to it.'
                         ];
                     }
                 } else {
                     $transaction->rollBack();
                     $output = [
-                        'error' => 'Department cannot be deleted as it contains  audits for hotel.'
+                        'error' => 'Floor cannot be deleted as it contains  audits for office.'
                     ];
                 }
             } catch (Exception $e) {
@@ -410,7 +410,7 @@ class OrganisationController extends Controller {
             }
         } else {
             $output = [
-                'error' => 'Department not found'
+                'error' => 'Floor not found'
             ];
         }
         return $output;
@@ -445,20 +445,20 @@ class OrganisationController extends Controller {
                         if ($modelHotelUpdate) {
                             $transaction->commit();
                             $output = [
-                                'success' => 'Hotel Deleted Successfully',
+                                'success' => 'Office Deleted Successfully',
                                 'node' => $hotelId
                             ];
                         }
                     } else {
                         $transaction->rollBack();
                         $output = [
-                            'error' => "Hotel cannot be deleted as it assigned to User"
+                            'error' => "Office cannot be deleted as it assigned to User"
                         ];
                     }
                 } else {
                     $transaction->rollBack();
                     $output = [
-                        'error' => "Hotel cannot be deleted as departments are assigned to it."
+                        'error' => "Office cannot be deleted as floors are assigned to it."
                     ];
                 }
             } catch (Exception $e) {
@@ -475,7 +475,7 @@ class OrganisationController extends Controller {
         } else {
             $transaction->rollBack();
             $output = [
-                'error' => 'Hotel not found'
+                'error' => 'Office not found'
             ];
         }
         return $output;
@@ -521,7 +521,7 @@ class OrganisationController extends Controller {
                     }
                 } else {
                     $output = [
-                        'error' => 'Location cannot be deleted as hotels are assigned to it',
+                        'error' => 'Location cannot be deleted as offices are assigned to it',
                         'node' => $locationId
                     ];
                 }
@@ -596,7 +596,7 @@ class OrganisationController extends Controller {
             }
         }
         return $this->renderAjax('//site/error', [
-                    'message' => "Invalid request or no Hotel",
+                    'message' => "Invalid request or no Office",
                     "name" => 'Server error'
         ]);
     }
@@ -646,7 +646,7 @@ class OrganisationController extends Controller {
             }
         }
         return $this->renderAjax('//site/error', [
-                    'message' => "Invalid request or no Department",
+                    'message' => "Invalid request or no Floor",
                     "name" => 'Server error'
         ]);
     }
@@ -678,7 +678,7 @@ class OrganisationController extends Controller {
             }
         }
         return $this->renderAjax('//site/error', [
-                    'message' => "Invalid request or no Department",
+                    'message' => "Invalid request or no Floor",
                     "name" => 'Server error'
         ]);
     }
@@ -854,7 +854,7 @@ class OrganisationController extends Controller {
                             $encryptedHotel = yii::$app->utils->encryptSetUp($hotelModel->hotel_id, 'hotel');
                             if ($isNewRecord) {
                                 $output = [
-                                    'success' => 'Hotel Added successfully',
+                                    'success' => 'Office Added successfully',
                                     'parent_node' => $post['encrypted_location_id'],
                                     'node' => [
                                         'id' => $encryptedHotel,
@@ -886,7 +886,7 @@ class OrganisationController extends Controller {
                                 ];
                             } else {
                                 $output = [
-                                    'success' => 'Hotel Updated Successfully',
+                                    'success' => 'Office Updated Successfully',
                                     'node' => [
                                         'id' => $encryptedHotel,
                                         "text" => $hotelModel->hotel_name
@@ -902,7 +902,7 @@ class OrganisationController extends Controller {
                     } catch (\Exception $e) {
                         $transaction->rollBack();
                         $output = [
-                            'error' => "Failed to save Hotel Details"
+                            'error' => "Failed to save Office Details"
                         ];
                     }
                 }
@@ -1144,7 +1144,7 @@ class OrganisationController extends Controller {
                             ];
                         } else {
                             $output = [
-                                'success' => "Department Updated Successfully",
+                                'success' => "Floor Updated Successfully",
                                 'node' => [
                                     'id' => $encryptedDepartmentId,
                                     "text" => $hotelDepartmentModel->department->department_name
@@ -1158,13 +1158,13 @@ class OrganisationController extends Controller {
                     }
                 } catch (Exception $e) {
                     $output = [
-                        'error' => "Failed to save Department Details"
+                        'error' => "Failed to save Floor Details"
                     ];
                 }
             }
         } else {
             $output = [
-                'error' => "Invalid Hotel"
+                'error' => "Invalid Office"
             ];
         }
 
@@ -1260,12 +1260,12 @@ class OrganisationController extends Controller {
                 }
             } else {
                 $output = [
-                    'error' => "Invalid Department"
+                    'error' => "Invalid Floor"
                 ];
             }
         } else {
             $output = [
-                'error' => "Department must not be empty"
+                'error' => "Floor must not be empty"
             ];
         }
 
@@ -1336,7 +1336,7 @@ class OrganisationController extends Controller {
                         // $encryptedDepartmentId = Yii::$app->utils->encryptSetUp($hotelDeData->id, 'department');
                         $transaction->commit();
                         $output = [
-                            'success' => "Department Updated Successfully",
+                            'success' => "Floor Updated Successfully",
                             'nodes' => $list
                         ];
                     } else {
@@ -1348,13 +1348,13 @@ class OrganisationController extends Controller {
                 } catch (Exception $e) {
                     $transaction->rollBack();
                     $output = [
-                        'error' => "Failed to save Department Details"
+                        'error' => "Failed to save Floor Details"
                     ];
                 }
             }
         } else {
             $output = [
-                'error' => "Hotel must not be empty"
+                'error' => "Office must not be empty"
             ];
         }
 
@@ -1411,12 +1411,12 @@ class OrganisationController extends Controller {
                 }
             } else {
                 $output = [
-                    'error' => "Invalid Department"
+                    'error' => "Invalid Floor"
                 ];
             }
         } else {
             $output = [
-                'error' => "Department must not be empty"
+                'error' => "Floor must not be empty"
             ];
         }
 
@@ -1883,7 +1883,7 @@ class OrganisationController extends Controller {
                                             } else {
                                                 $transaction->rollBack();
                                                 $output = [
-                                                    'error' => "Failed to clone Department: " . $newDepartmenModal->department_name
+                                                    'error' => "Failed to clone Floor: " . $newDepartmenModal->department_name
                                                 ];
                                             }
                                         }
@@ -1891,14 +1891,14 @@ class OrganisationController extends Controller {
                                 } else {
                                     $transaction->rollBack();
                                     $output = [
-                                        'error' => "Failed to clone Hotel: " . $newHotelModal->hotel_name
+                                        'error' => "Failed to clone Office: " . $newHotelModal->hotel_name
                                     ];
                                 }
                             }
                             if (!isset($output['error'])) {
                                 $transaction->commit();
                                 $output = [
-                                    'success' => "Hotel successfully cloned to selected locations"
+                                    'success' => "Office successfully cloned to selected locations"
                                 ];
                             }
                         } else {
@@ -1914,12 +1914,12 @@ class OrganisationController extends Controller {
                     }
                 } else {
                     $output = [
-                        'error' => 'Hotel not found'
+                        'error' => 'Office not found'
                     ];
                 }
             } else {
                 $output = [
-                    'error' => 'Empty hotel token received'
+                    'error' => 'Empty Office token received'
                 ];
             }
         } else {
@@ -1946,7 +1946,7 @@ class OrganisationController extends Controller {
             }
         }
         return $this->renderAjax('//site/error', [
-                    'message' => "Invalid request or no Department",
+                    'message' => "Invalid request or no Floor",
                     "name" => 'Server error'
         ]);
     }
@@ -1967,7 +1967,7 @@ class OrganisationController extends Controller {
                     $output = ['error' =>$hotelDepartmentModel->getFirstError('configured_emails')];
                 }
             } else {
-                $output = ['error' => 'Invalid hotel or department'];
+                $output = ['error' => 'Invalid Office or Floor'];
             }
         }
         return json_encode($output);

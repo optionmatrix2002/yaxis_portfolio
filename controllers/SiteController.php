@@ -286,12 +286,12 @@ class SiteController extends Controller
         $posts = $postsQuery->all();
 
         if (!empty($posts)) {
-            echo "<option value=''>Department</option>";
+            echo "<option value=''>Floor</option>";
             foreach ($posts as $post) {
                 echo "<option value='" . $post->department_id . "'>" . $post->department_name . "</option>";
             }
         } else {
-            echo "<option value=''>Department</option>";
+            echo "<option value=''>Floor</option>";
         }
     }
 
@@ -350,7 +350,7 @@ class SiteController extends Controller
                 \Yii::$app->response->format = Response::FORMAT_JSON;
                 return [
                     'success' => false,
-                    'content' => 'Please select Hotel, Department and Audit ID to view report.',
+                    'content' => 'Please select Office, Floor and Audit ID to view report.',
                     'count' => $audit_count
                 ];
             }

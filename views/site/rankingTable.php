@@ -34,7 +34,7 @@ use yii\widgets\Pjax;
                             [
                                 'attribute' => 'department_name',
                                 'format' => 'raw',
-                                'header' => 'Department',
+                                'header' => 'Floor',
                                 'headerOptions' => ['class' => 'theadcolor']
                             ],
                             [

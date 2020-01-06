@@ -169,7 +169,7 @@ class EmailsComponent extends Component
             
             $message5=str_replace('&lt;&lt;observation&gt;&gt;', $tickets_model->description, $message4);*/
             
-            $message6=str_replace('&lt;&lt;hotel&gt;&gt;', $tickets_model->hotel->hotel_name, $message3);
+            $message6=str_replace('&lt;&lt;office&gt;&gt;', $tickets_model->hotel->hotel_name, $message3);
             
             $message=str_replace('&lt;&lt;departmenthead&gt;&gt;', $name, $message6);
             
@@ -240,7 +240,7 @@ class EmailsComponent extends Component
             
             $message3=str_replace('&lt;&lt;ticket&gt;&gt;', $html, $message2);
             
-            $message4=str_replace('&lt;&lt;hotel&gt;&gt;', $tickets_model->hotel->hotel_name, $message3);
+            $message4=str_replace('&lt;&lt;office&gt;&gt;', $tickets_model->hotel->hotel_name, $message3);
             
             $message=str_replace('&lt;&lt;departmenthead&gt;&gt;', $name, $message4);
            

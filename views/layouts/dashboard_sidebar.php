@@ -148,7 +148,7 @@
                             <li class="MenuDeoartment" id="settings-department">
                                 <a href="<?= yii::$app->urlManager->createUrl('departments'); ?>" class="">
                                     <i class="fa fa-building-o"></i>
-                                    Manage Department
+                                    Manage Floor
                                 </a>
                             </li>
                         <?php }

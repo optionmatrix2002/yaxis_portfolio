@@ -38,8 +38,8 @@ $config = [
             'transport' => [
             'class' => 'Swift_SmtpTransport',
             'host' => 'smtp.cloudzimail.com',//'smtp.gmail.com',
-            'username' => 'audit.corp@hotelgreenpark.com',//'audit.corp@hotelgreenpark.com',
-            'password' => 'Greenpark@1',//'Greenpark2017',
+            'username' => 'sivakumar.k369@gmail.com',
+            'password' => 'Sreedharbabu',
             'port' => '587',     
 			'encryption' => 'TLS'
         ],

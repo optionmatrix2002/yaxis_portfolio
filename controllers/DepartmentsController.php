@@ -124,7 +124,7 @@ class DepartmentsController extends Controller
     {
         $model = $this->findModel(Yii::$app->utils->decryptData($id));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', "Department updated successfully.");
+            Yii::$app->session->setFlash('success', "Floor updated successfully.");
             return $this->redirect([
                 '/departments'
             ]);
@@ -205,22 +205,22 @@ class DepartmentsController extends Controller
                                 ], 'department_id=' . $decryptedDepartment);
                                 if ($modelDepartmentUpdate) {
                                     $transaction->commit();
-                                    Yii::$app->session->setFlash('success', 'Department deleted successfully');
+                                    Yii::$app->session->setFlash('success', 'Floor deleted successfully');
                                 }
                             } else {
-                                Yii::$app->session->setFlash('error', 'Department cannot be deleted as it assigned to hotel.');
+                                Yii::$app->session->setFlash('error', 'Floor cannot be deleted as it assigned to office.');
                             }
                         } else {
-                            Yii::$app->session->setFlash('error', 'Department cannot be deleted as it contains section.');
+                            Yii::$app->session->setFlash('error', 'Floor cannot be deleted as it contains section.');
                         }
                     } else {
-                        Yii::$app->session->setFlash('error', 'Department cannot be deleted as it contains tickets.');
+                        Yii::$app->session->setFlash('error', 'Floor cannot be deleted as it contains tickets.');
                     }
                 } else {
-                    Yii::$app->session->setFlash('error', 'Department cannot be deleted as it contains audits.');
+                    Yii::$app->session->setFlash('error', 'Floor cannot be deleted as it contains audits.');
                 }
             } else {
-                Yii::$app->session->setFlash('error', 'Department cannot be deleted as it contains checklists.');
+                Yii::$app->session->setFlash('error', 'Floor cannot be deleted as it contains checklists.');
             }
         } catch (\Exception $e) {
             $transaction->rollBack();

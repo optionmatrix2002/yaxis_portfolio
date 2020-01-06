@@ -21,82 +21,82 @@ use app\models\Departments;
 class SchedulerComponent extends Component
 {
 
-    const AUDIT_ASSIGN = 'Audit $_AUDIT_ID is scheduled. <br>Hotel : $_HOTEL <br> Department : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br> Due Date: $_DUE_DATE.';
+    const AUDIT_ASSIGN = 'Audit $_AUDIT_ID is scheduled. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br> Due Date: $_DUE_DATE.';
     const AUDIT_ASSIGN_MESSAGE = 'Hi $_FULL_NAME,
 Audit $_AUDIT_ID is scheduled  .
-Hotel : $_HOTEL 
-Department : $_DEPARTMENT 
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
 Checklist : $_CHECKLIST 
 Due Date: $_DUE_DATE.
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
-    const AUDIT_ASSIGN_NOTIFICATION = 'Hi $_FULL_NAME &Audit $_AUDIT_ID is scheduled. &Hotel : $_HOTEL &Department : $_DEPARTMENT &Checklist : $_CHECKLIST &Due Date: $_DUE_DATE.';
+    const AUDIT_ASSIGN_NOTIFICATION = 'Hi $_FULL_NAME &Audit $_AUDIT_ID is scheduled. &Office : $_HOTEL &Floor : $_DEPARTMENT &Checklist : $_CHECKLIST &Due Date: $_DUE_DATE.';
 
 
-    const AUDIT_REMINDER = 'Reminder: Audit $_AUDIT_ID is pending for submission by $_DUE_DATE. <br>Hotel : $_HOTEL <br> Department : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    const AUDIT_REMINDER = 'Reminder: Audit $_AUDIT_ID is pending for submission by $_DUE_DATE. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
 
     const AUDIT_REMINDER_MESSAGE = 'Hi $_FULL_NAME
 
 Reminder: Audit $_AUDIT_ID is pending for submission by $_DUE_DATE.
 
-Hotel : $_HOTEL 
-Department : $_DEPARTMENT 
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
 Checklist : $_CHECKLIST 
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
 
-    const AUDIT_OVER_DUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due date $_DUE_DATE. <br>Hotel : $_HOTEL <br> Department : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    const AUDIT_OVER_DUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due date $_DUE_DATE. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
 
     const AUDIT_OVER_DUE_MESSAGE = 'Hi $_FULL_NAME
 
 Overdue Reminder: Audit $_AUDIT_ID has breached due date $_DUE_DATE.
 
-Hotel : $_HOTEL 
-Department : $_DEPARTMENT 
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
 Checklist : $_CHECKLIST 
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
 
-    const LOW_SCORE_AUDIT = 'Low Score Alert:<br> Audit : $_AUDIT_ID <br>Hotel : $_HOTEL <br> Department : $_DEPARTMENT<br>  Checklist : $_CHECKLIST  <br> has scored $_SCORE_PERCENTAGE.';
-    const LOW_SCORE_AUDIT_NOTIFICATION = 'Low Score Alert: &Audit $_AUDIT_ID &Hotel : $_HOTEL &Department : $_DEPARTMENT Department &Checklist : $_CHECKLIST has scored $_SCORE_PERCENTAGE.';
+    const LOW_SCORE_AUDIT = 'Low Score Alert:<br> Audit : $_AUDIT_ID <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT<br>  Checklist : $_CHECKLIST  <br> has scored $_SCORE_PERCENTAGE.';
+    const LOW_SCORE_AUDIT_NOTIFICATION = 'Low Score Alert: &Audit $_AUDIT_ID &Office : $_HOTEL &Floor : $_DEPARTMENT &Checklist : $_CHECKLIST has scored $_SCORE_PERCENTAGE.';
 
     const LOW_SCORE_AUDIT_MESSAGE = 'Hi $_FULL_NAME
 
 Low Score Alert:
 Audit :  $_AUDIT_ID
-Hotel : $_HOTEL
-Department $_DEPARTMENT 
+Office : $_HOTEL
+Floor : $_DEPARTMENT 
 Checklist $_CHECKLIST  has scored $_SCORE_PERCENTAGE.
 
 Best Regards,
 Green Park Corporate Audit Team.';
 
 
-    const AUDIT_SUBMITTED = 'Audit $_AUDIT_ID has been submitted. <br>Hotel : $_HOTEL <br> Department : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br>';
-    const AUDIT_SUBMITTED_NOTIFICATION = 'Audit $_AUDIT_ID has been submitted. &Hotel : $_HOTEL &Department : $_DEPARTMENT  &Checklist : $_CHECKLIST .';
+    const AUDIT_SUBMITTED = 'Audit $_AUDIT_ID has been submitted. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br>';
+    const AUDIT_SUBMITTED_NOTIFICATION = 'Audit $_AUDIT_ID has been submitted. &Office : $_HOTEL &Floor : $_DEPARTMENT  &Checklist : $_CHECKLIST .';
 
     const AUDIT_SUBMITTED_MESSAGE = 'Hi $_FULL_NAME
 
 Audit $_AUDIT_ID has been submitted. 
-Hotel : $_HOTEL
-Department :  $_DEPARTMENT
+Office : $_HOTEL
+Floor :  $_DEPARTMENT
 Checklist : $_CHECKLIST 
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
-    const TICKET_ASSIGN = 'Ticket $_TICKET_ID is assigned to you. <br>Hotel : $_HOTEL<br>  Department : $_DEPARTMENT <br>Subject: $_QUESTION<br> Due Date: $_DUE_DATE.';
+    const TICKET_ASSIGN = 'Ticket $_TICKET_ID is assigned to you. <br>Office : $_HOTEL<br>  Floor : $_DEPARTMENT <br>Subject: $_QUESTION<br> Due Date: $_DUE_DATE.';
     const TICKET_ASSIGN_MESSAGE = 'Hi $_FULL_NAME
 
 Ticket $_TICKET_ID is assigned to you .
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 Subject: $_QUESTION
 Due Date : $_DUE_DATE.
 
@@ -104,122 +104,122 @@ Best Regards,
 Green Park Corporate Audit Team.';
 
 
-    const TICKET_ASSIGN_NOTIFICATION = 'Ticket $_TICKET_ID is assigned to you. &Hotel : $_HOTEL &Department : $_DEPARTMENT &Subject $_QUESTION &Due Date: $_DUE_DATE.';
+    const TICKET_ASSIGN_NOTIFICATION = 'Ticket $_TICKET_ID is assigned to you. &Office : $_HOTEL &Floor : $_DEPARTMENT &Subject $_QUESTION &Due Date: $_DUE_DATE.';
 
-    const TICKET_SUBMITTED = 'Ticket $_TICKET_ID has been $_STATUS. <br>Hotel : $_HOTEL <br> Department: $_DEPARTMENT <br>Subject : $_QUESTION.';
+    const TICKET_SUBMITTED = 'Ticket $_TICKET_ID has been $_STATUS. <br>Office : $_HOTEL <br> Floor: $_DEPARTMENT <br>Subject : $_QUESTION.';
 
     const TICKET_SUBMITTED_MESSAGE = 'Hi $_FULL_NAME   
 Ticket $_TICKET_ID  status has been changed to $_STATUS.
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 Subject: $_QUESTION
 
 Best Regards,
 Green Park Corporate Audit Team.';
 
-    const TICKET_SUBMITTED_NOTIFICATION = 'Ticket $_TICKET_ID has been $_STATUS. &Hotel : $_HOTEL  &Department : $_DEPARTMENT &Subject : "$_QUESTION".';
+    const TICKET_SUBMITTED_NOTIFICATION = 'Ticket $_TICKET_ID has been $_STATUS. &Office : $_HOTEL  &Floor : $_DEPARTMENT &Subject : "$_QUESTION".';
 
-    const TICKET_REJECTED = 'Ticket $_TICKET_ID  has been rejected .<br>Hotel : $_HOTEL  <br>Department : $_DEPARTMENT <br>Subject : "$_QUESTION".';
-    const TICKET_REJECTED_NOTIFICATION = 'Ticket $_TICKET_ID  has been rejected .&Hotel : $_HOTEL  &Department : $_DEPARTMENT &Subject : "$_QUESTION".';
+    const TICKET_REJECTED = 'Ticket $_TICKET_ID  has been rejected .<br>Office : $_HOTEL  <br>Floor : $_DEPARTMENT <br>Subject : "$_QUESTION".';
+    const TICKET_REJECTED_NOTIFICATION = 'Ticket $_TICKET_ID  has been rejected .&Office : $_HOTEL  &Floor : $_DEPARTMENT &Subject : "$_QUESTION".';
     const TICKET_REJECTED_MESSAGE = 'Hi $_FULL_NAME
 Ticket $_TICKET_ID  has been rejected .
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL 
-Department : $_DEPARTMENT 
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
 
-    const TICKET_REMINDER = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Hotel : $_HOTEL <br>Department : $_DEPARTMENT';
-    const TICKET_REMINDER_NOTIFICATION = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.&Subject : "$_QUESTION" &Hotel : $_HOTEL &Department : $_DEPARTMENT';
+    const TICKET_REMINDER = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
+    const TICKET_REMINDER_NOTIFICATION = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.&Subject : "$_QUESTION" &Office : $_HOTEL &Floor : $_DEPARTMENT';
 
     const TICKET_REMINDER_MESSAGE = 'Hi $_FULL_NAME
 
 Reminder: Ticket $_TICKET_ID  is pending for resolution by $_DUE_DATE.
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 
 Best Regards,
 Green Park Corporate Audit Team.';
 
 
-    const TICKET_OVER_DUE = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Hotel : $_HOTEL <br>Department : $_DEPARTMENT';
-    const TICKET_OVER_DUE_NOTIFICATION = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.&Subject : "$_QUESTION" &Hotel : $_HOTEL &Department : $_DEPARTMENT';
+    const TICKET_OVER_DUE = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
+    const TICKET_OVER_DUE_NOTIFICATION = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.&Subject : "$_QUESTION" &Office : $_HOTEL &Floor : $_DEPARTMENT';
     const TICKET_OVER_DUE_MESSAGE = 'Hi $_FULL_NAME
 
 Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
-    const TICKET_ESCALATION_ONE = 'Escalation 1: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Hotel : $_HOTEL <br>Department : $_DEPARTMENT';
+    const TICKET_ESCALATION_ONE = 'Escalation 1: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
 
     const TICKET_ESCALATION_ONE_MESSAGE = 'Hi $_FULL_NAME
 
 Escalation 1: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
 
-    const TICKET_ESCALATION_TWO = 'Escalation 2: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Hotel : $_HOTEL <br>Department : $_DEPARTMENT';
+    const TICKET_ESCALATION_TWO = 'Escalation 2: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_TWO_MESSAGE = 'Hi $_FULL_NAME
 
 Escalation 2: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
 
-    const TICKET_ESCALATION_THREE = 'Escalation 3: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Hotel : $_HOTEL <br>Department : $_DEPARTMENT';
+    const TICKET_ESCALATION_THREE = 'Escalation 3: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
 
     const TICKET_ESCALATION_THREE_MESSAGE = 'Hi $_FULL_NAME
 
 Escalation 3: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
-    const TICKET_ESCALATION_FOUR = 'Escalation 4: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Hotel : $_HOTEL <br>Department : $_DEPARTMENT';
+    const TICKET_ESCALATION_FOUR = 'Escalation 4: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_FOUR_MESSAGE = 'Hi $_FULL_NAME
 
 Escalation 4: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
 
-    const TICKET_ESCALATION_FIVE = 'Escalation 5: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Hotel : $_HOTEL <br>Department : $_DEPARTMENT';
+    const TICKET_ESCALATION_FIVE = 'Escalation 5: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_FIVE_MESSAGE = 'Hi $_FULL_NAME
 
 Escalation 5: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
 
 Subject : "$_QUESTION"
-Hotel : $_HOTEL
-Department : $_DEPARTMENT
+Office : $_HOTEL
+Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
@@ -287,8 +287,8 @@ Green Park Corporate Audit Team.';
                     $ticketNames[] = $attributes['ticket_id'];
                     $mailContent .= 'Ticket : ' . $attributes['ticket_id'] . '<br>';
                     $mailContent .= 'Subject : ' . $attributes['question'] . '<br>';
-                    $mailContent .= 'Hotel : ' . $hotelName . '<br>';
-                    $mailContent .= 'Department : ' . $departmentName . '<br>';
+                    $mailContent .= 'Office : ' . $hotelName . '<br>';
+                    $mailContent .= 'Floor : ' . $departmentName . '<br>';
                     $mailContent .= 'Due Date : ' . date('d-m-Y', strtotime($attributes['due_date']));
                     $mailContent .= '<br><br>';
                 }
@@ -409,8 +409,8 @@ Green Park Corporate Audit Team.';
                 $ticketNames[] = $attributes['ticket_id'];
                 $mailContent .= 'Ticket : ' . $attributes['ticket_id'] . '<br>';
                 $mailContent .= 'Subject : ' . $attributes['question'] . '<br>';
-                $mailContent .= 'Hotel : ' . $hotelName . '<br>';
-                $mailContent .= 'Department : ' . $departmentName . '<br>';
+                $mailContent .= 'Office : ' . $hotelName . '<br>';
+                $mailContent .= 'Floor : ' . $departmentName . '<br>';
                 $mailContent .= 'Due Date : ' . date('d-m-Y', strtotime($attributes['due_date']));
                 $mailContent .= '<br><br>';
             }
@@ -580,8 +580,8 @@ Green Park Corporate Audit Team.';
                 $ticketNames[] = $attributes['ticket_id'];
                 $mailContent .= 'Ticket : ' . $attributes['ticket_id'] . '<br>';
                 $mailContent .= 'Subject : ' . $attributes['question'] . '<br>';
-                $mailContent .= 'Hotel : ' . $hotelName . '<br>';
-                $mailContent .= 'Department : ' . $departmentName . '<br>';
+                $mailContent .= 'Office : ' . $hotelName . '<br>';
+                $mailContent .= 'Floor : ' . $departmentName . '<br>';
                 $mailContent .= 'Due Date : ' . date('d-m-Y', strtotime($attributes['due_date']));
                 $mailContent .= '<br><br>';
             }
@@ -921,8 +921,8 @@ Green Park Corporate Audit Team.';
                         $ticketNames[] = $ticket['ticket_id'];
                         $mailContent .= 'Ticket : ' . $ticket['ticket_id'] . '<br>';
                         $mailContent .= 'Subject : ' . $ticket['question'] . '<br>';
-                        $mailContent .= 'Hotel : ' . $hotelName . '<br>';
-                        $mailContent .= 'Department : ' . $departmentName . '<br>';
+                        $mailContent .= 'Office : ' . $hotelName . '<br>';
+                        $mailContent .= 'Floor : ' . $departmentName . '<br>';
                         $mailContent .= 'Due Date : ' . date('d-m-Y', strtotime($ticket['due_date']));
                         $mailContent .= '<br><br>';
                     }
@@ -986,8 +986,8 @@ Green Park Corporate Audit Team.';
                         $ticketNames[] = $ticket['ticket_id'];
                         $mailContent .= 'Ticket : ' . $ticket['ticket_id'] . '<br>';
                         $mailContent .= 'Subject : ' . $ticket['question'] . '<br>';
-                        $mailContent .= 'Hotel : ' . $hotelName . '<br>';
-                        $mailContent .= 'Department : ' . $departmentName . '<br>';
+                        $mailContent .= 'Office : ' . $hotelName . '<br>';
+                        $mailContent .= 'Floor : ' . $departmentName . '<br>';
                         $mailContent .= 'Due Date : ' . date('d-m-Y', strtotime($ticket['due_date']));
                         $mailContent .= '<br><br>';
                     }
@@ -1051,8 +1051,8 @@ Green Park Corporate Audit Team.';
                         $ticketNames[] = $ticket['ticket_id'];
                         $mailContent .= 'Ticket : ' . $ticket['ticket_id'] . '<br>';
                         $mailContent .= 'Subject : ' . $ticket['question'] . '<br>';
-                        $mailContent .= 'Hotel : ' . $hotelName . '<br>';
-                        $mailContent .= 'Department : ' . $departmentName . '<br>';
+                        $mailContent .= 'Office : ' . $hotelName . '<br>';
+                        $mailContent .= 'Floor : ' . $departmentName . '<br>';
                         $mailContent .= 'Due Date : ' . date('d-m-Y', strtotime($ticket['due_date']));
                         $mailContent .= '<br><br>';
                     }
@@ -2307,7 +2307,7 @@ Green Park Corporate Audit Team.';
                     $mailContent .= '<br><br>';
                 }
                 $content = 'Following Tickets are assigned.<br><br>';
-                $content .= '<b>Hotel</b> : ' . $hotelName . '<br>';
+                $content .= '<b>Office</b> : ' . $hotelName . '<br>';
                 $content .= '<b>Department</b> : ' . $departmentName . '<br><br>';
                 $content .= $mailContent;
                 $params['recipientMail'] = $user['email'];

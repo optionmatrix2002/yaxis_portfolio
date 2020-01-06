@@ -57,7 +57,7 @@ $this->registerJs('
 
                 echo $form->field($model, 'hotel_id')
                     ->dropDownList(ArrayHelper::map($hotels, 'hotel_id', 'hotel_name'), [
-                        'prompt' => 'Hotel',
+                        'prompt' => 'Office',
                         'onchange' => '
                 $.post( "' . Yii::$app->urlManager->createUrl('site/departments?id=') . '"+$(this).val(), function( data ) {
                   $( "select#auditssearch-department_id" ).html( data );
@@ -78,7 +78,7 @@ $this->registerJs('
                 <?php
                 /*echo $form->field($model, 'department_id')
                     ->dropDownList([], [
-                        'prompt' => 'Department',
+                        'prompt' => 'Floor',
                         'onchange' => '
                 $.post( "' . Yii::$app->urlManager->createUrl('site/audits?id=') . '"+$(this).val(), function( data ) {
                   $( "select#auditssearch-audit_id" ).html( data );
@@ -94,7 +94,7 @@ $this->registerJs('
                 <?php
                 echo $form->field($model, 'department_id')
                     ->dropDownList([], [
-                        'prompt' => 'Department',
+                        'prompt' => 'Floor',
                         'onchange' => '
                 $.post( "' . Yii::$app->urlManager->createUrl('site/audits?id=' . '"+$(this).val()+"' . '&hotel_id=') . '"+$("#auditssearch-hotel_id").val(), function( data ) {
                   $( "select#auditssearch-audit_id" ).html( data );

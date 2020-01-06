@@ -11,7 +11,7 @@ use yii\web\View;
 /* @var $searchModel app\models\search\DepartmentsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Departments';
+$this->title = 'Floors';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -39,14 +39,14 @@ if (Yii::$app->authManager->checkPermissionAccess('departments/delete')) {
 }
 ?>
 <div class="container-fluid">
-    <h2>Manage Department</h2>
+    <h2>Manage Floors</h2>
 </div> 
 <div class="wa-notification wa-notification-alt">
     <span class="wa-iconBoxed">
         <span class="fa fa-file-text-o header-icon-fontcolor"></span>
     </span>
    <p id="description-text">
-       Master Data of Departments can be managed from here.
+       Master Data of Floors can be managed from here.
     </p>
 </div>
   <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -80,7 +80,7 @@ if (Yii::$app->authManager->checkPermissionAccess('departments/delete')) {
                 [
                 'attribute' => 'department_name',
                 'format' => 'raw',
-                'header' => 'Department',
+                'header' => 'Floor',
                 'headerOptions' => ['class' => 'theadcolor'],
                 ],
               [

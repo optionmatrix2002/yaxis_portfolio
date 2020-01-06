@@ -70,7 +70,7 @@ $gridColumnsInfo = [
     ],
     [
         'attribute' => 'hotel_id',
-        'header' => 'Hotel',
+        'header' => 'Office',
         'value' => function ($model) {
             return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
         },
@@ -78,7 +78,7 @@ $gridColumnsInfo = [
     ],
     [
         'attribute' => 'department_id',
-        'header' => 'Department',
+        'header' => 'Floor',
         'value' => function ($model) {
             return ($model->department_id) ? $model->department->department_name : '--';
         },
@@ -294,14 +294,14 @@ $archivedTickets = [
     ],
     [
         'attribute' => 'hotel_id',
-        'header' => 'Hotel',
+        'header' => 'Office',
         'value' => function ($model) {
             return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
         },
     ],
     [
         'attribute' => 'department_id',
-        'header' => 'Department',
+        'header' => 'Floor',
         'value' => function ($model) {
             return ($model->department_id) ? $model->department->department_name : '--';
         },
@@ -641,7 +641,7 @@ $archivedTickets = [
                             ],
                             [
                                 'attribute' => 'hotel_id',
-                                'header' => 'Hotel',
+                                'header' => 'Office',
                                 'value' => function ($model) {
                                     return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
                                 },
@@ -650,7 +650,7 @@ $archivedTickets = [
                             ],
                             [
                                 'attribute' => 'department_id',
-                                'header' => 'Department',
+                                'header' => 'Floor',
                                 'value' => function ($model) {
                                     return ($model->department_id) ? $model->department->department_name : '--';
                                 },
@@ -888,7 +888,7 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                             ],
                             [
                                 'attribute' => 'hotel_id',
-                                'header' => 'Hotel',
+                                'header' => 'Office',
                                 'value' => function ($model) {
                                     return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
                                 },
@@ -897,7 +897,7 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                             ],
                             [
                                 'attribute' => 'department_id',
-                                'header' => 'Department',
+                                'header' => 'Floor',
                                 'value' => function ($model) {
                                     return ($model->department_id) ? $model->department->department_name : '--';
                                 },

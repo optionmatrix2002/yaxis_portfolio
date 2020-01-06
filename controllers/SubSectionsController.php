@@ -171,7 +171,7 @@ class SubSectionsController extends Controller
                 ])->count();
                 if ($modelHotelDepartmentSubSection != 0) {
                     
-                    Yii::$app->session->setFlash('error', "Subsection cannot be deleted as it assigned to hotel");
+                    Yii::$app->session->setFlash('error', "Subsection cannot be deleted as it assigned to office");
                 } else {
                     $modelSubSection = SubSections::updateAll([
                         'is_deleted' => 1,

@@ -21,7 +21,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
         <span class="wa-icon wa-icon-notification"></span>
     </span>
     <p id="description-text">
-        Adding Locations, Assigning Hotels, Departments and sections can be managed from this screen.
+        Adding Locations, Assigning Offices, Departments and sections can be managed from this screen.
     </p>
 </div>
 
@@ -38,7 +38,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
 
         </div>
         <div class="col-sm-12">
-            <h4>Manage Hotels & Departments </h4>
+            <h4>Manage Offices & Floors </h4>
             <div class=" col-sm-6">
                 <div id="tree_25" class="">
                     <ul class="">
@@ -105,7 +105,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         <h4>Edit Location</h4>
                     </div>
                     <div class="col-md-6" >
-                        <p id="addhotel" style="border: 1px solid #ccc" class="btn btn-md changediv pull-right">Add Hotel</p>
+                        <p id="addhotel" style="border: 1px solid #ccc" class="btn btn-md changediv pull-right">Add Office</p>
                     </div>
                 </div>
                 <div class="row">
@@ -142,10 +142,10 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
             <form id="" name="addhotel" method="post" >
                 <div class="row">
                     <div class="col-md-6 ">
-                        <h4>Add Hotel</h4>
+                        <h4>Add Office</h4>
                     </div>
                     <div class="col-md-6" >
-                        <p id="adddepartment" class="btn btn-md changediv pull-right" style="border: 1px solid #ccc">Add Department</p>
+                        <p id="adddepartment" class="btn btn-md changediv pull-right" style="border: 1px solid #ccc">Add Floor</p>
                     </div>
                 </div>                                  
                 <div class="row" >
@@ -162,11 +162,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="" />
+                                <input type="text" class="form-control" placeholder="Office Name" value="" />
                             </div>
                         </div>
                     </div>
@@ -203,7 +203,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
             <form id="" name="adddepartment" method="post">
                 <div class="row">
                     <div class="col-md-6 ">
-                        <h4>Add Department</h4>
+                        <h4>Add Floor</h4>
                     </div>
                     <div class="col-md-6" >
                         <p id="addsection" class="btn btn-md changediv pull-right"  style="border: 1px solid #ccc" >Add Section</p>
@@ -222,11 +222,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
                             </div>
                         </div>
                     </div>
@@ -252,12 +252,12 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Department :</label>
+                            <label>Floor :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class=" col-sm-10">
                                 <select class="form-control" name="departments[]" id="departmentsmultiple" multiple="multiple">
-                                    <option>select Department</option>
+                                    <option>select Floor</option>
                                     <option value="Engineering">Engineering</option>
                                     <option value="Finance">Finance</option>
                                     <option value="IT">IT</option>
@@ -309,11 +309,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
                             </div>
                         </div>
                     </div>
@@ -339,11 +339,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Department :</label>
+                            <label>Floor :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class=" col-sm-10">
-                                <input type="text" name="department" class="form-control" placeholder="Department" value="Engineering" readonly>
+                                <input type="text" name="department" class="form-control" placeholder="Floor" value="Engineering" readonly>
                             </div>
                         </div>
                     </div>
@@ -397,11 +397,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
                             </div>
                         </div>
                     </div>
@@ -427,11 +427,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Department :</label>
+                            <label>Floor :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class=" col-sm-10">
-                                <input type="text" name="department" class="form-control" placeholder="Department" value="Engineering" readonly>
+                                <input type="text" name="department" class="form-control" placeholder="Floor" value="Engineering" readonly>
                             </div>
                         </div>
                     </div>
@@ -479,10 +479,10 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
             <form id="" name="addhotel" method="post" >
                 <div class="row">
                     <div class="col-md-6 ">
-                        <h4>Edit Hotel</h4>
+                        <h4>Edit Office</h4>
                     </div>
                     <div class="col-md-6" >
-                        <p id="adddepartment" class="btn btn-md changediv pull-right" style="border: 1px solid #ccc">Add Department</p>
+                        <p id="adddepartment" class="btn btn-md changediv pull-right" style="border: 1px solid #ccc">Add Floor</p>
                     </div>
                 </div>
                 <div class="row" >
@@ -499,11 +499,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="Green Park"/>
+                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park"/>
                             </div>
                         </div>
                     </div>
@@ -541,7 +541,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
             <form id="" name="editdepartmentdiv" method="post">
                 <div class="row">
                     <div class="col-md-6 ">
-                        <h4>Edit Department</h4>
+                        <h4>Edit Floor</h4>
                     </div>
                     <div class="col-md-6" >
                         <p id="addsection" class="btn btn-md changediv pull-right"  style="border: 1px solid #ccc" >Add Section</p>
@@ -561,11 +561,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
                             </div>
                         </div>
                     </div>
@@ -591,11 +591,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Department :</label>
+                            <label>Floor :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10">
-                                <input type="text" name="department" class="form-control" placeholder="Department" value="Engineering">
+                                <input type="text" name="department" class="form-control" placeholder="Floor" value="Engineering">
                             </div>
                         </div>
                     </div>
@@ -645,11 +645,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
                             </div>
                         </div>
                     </div>
@@ -676,7 +676,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Department :</label>
+                            <label>Floor :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class=" col-sm-10">
@@ -739,11 +739,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Hotel Name :</label>
+                            <label>Office Name :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Hotel Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
                             </div>
                         </div>
                     </div>
@@ -769,11 +769,11 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                     </div>
                     <div class="col-sm-12" style="margin-top: 20px;">
                         <div class="col-sm-12 ">
-                            <label>Department :</label>
+                            <label>Floor :</label>
                         </div>
                         <div class="col-sm-12 ">
                             <div class=" col-sm-10">
-                                <input type="text" name="department" class="form-control" placeholder="Department" value="Engineering" readonly>
+                                <input type="text" name="department" class="form-control" placeholder="Floor" value="Engineering" readonly>
                             </div>
                         </div>
                     </div>

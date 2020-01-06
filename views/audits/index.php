@@ -33,7 +33,7 @@ $(".dropdown-toggle").dropdown();
         <span class="fa fa-file-text-o header-icon-fontcolor"></span>
     </span>
     <p id="description-text">
-        Audits for departments across hotels can be scheduled and managed here.
+        Audits for departments across offices can be scheduled and managed here.
 
     </p>
 </div>
@@ -90,7 +90,7 @@ $(".dropdown-toggle").dropdown();
                             [
                                 'attribute' => 'audit.hotel_id',
                                 'format' => 'raw',
-                                'header' => 'Hotel',
+                                'header' => 'Office',
                                 'headerOptions' => ['class' => 'theadcolor'],
                                 'value' => function ($model) {
                                     return $model->audit->hotel->hotel_name;
@@ -99,7 +99,7 @@ $(".dropdown-toggle").dropdown();
                             [
                                 'attribute' => 'audit.department_id',
                                 'format' => 'raw',
-                                'header' => 'Department',
+                                'header' => 'Floor',
                                 'headerOptions' => ['class' => 'theadcolor'],
                                 'value' => function ($model) {
                                     return $model->audit->department->department_name;
@@ -297,7 +297,7 @@ $(".dropdown-toggle").dropdown();
                                 [
                                     'attribute' => 'hotel_id',
                                     'format' => 'raw',
-                                    'header' => 'Hotel',
+                                    'header' => 'Office',
                                     'headerOptions' => ['class' => 'theadcolor'],
                                     'value' => function ($model) {
                                         return $model->hotel->hotel_name;
@@ -306,7 +306,7 @@ $(".dropdown-toggle").dropdown();
                                 [
                                     'attribute' => 'department_id',
                                     'format' => 'raw',
-                                    'header' => 'Department',
+                                    'header' => 'Floor',
                                     'headerOptions' => ['class' => 'theadcolor'],
                                     'value' => function ($model) {
                                         return $model->department->department_name;
@@ -405,7 +405,7 @@ $(".dropdown-toggle").dropdown();
                                 [
                                     'attribute' => 'hotel_id',
                                     'format' => 'raw',
-                                    'header' => 'Hotel',
+                                    'header' => 'Office',
                                     'headerOptions' => ['class' => 'theadcolor'],
                                     'value' => function ($model) {
                                         return $model->audit->hotel->hotel_name;
@@ -414,7 +414,7 @@ $(".dropdown-toggle").dropdown();
                                 [
                                     'attribute' => 'department_id',
                                     'format' => 'raw',
-                                    'header' => 'Department',
+                                    'header' => 'Floor',
                                     'headerOptions' => ['class' => 'theadcolor'],
                                     'value' => function ($model) {
                                         return $model->audit->department->department_name;

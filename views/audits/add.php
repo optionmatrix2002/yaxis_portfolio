@@ -16,7 +16,7 @@
     
     <div class="col-sm-12 margintop10">
         <div class="col-sm-2">
-            <label>Hotel :</label>
+            <label>Office :</label>
         </div>
         <div class="col-sm-10">
             <div class="input-group col-sm-6">
@@ -45,7 +45,7 @@
     </div>
     <div class="col-sm-12 margintop10">
         <div class="col-sm-2">
-            <label>Department :</label>
+            <label>Floor :</label>
         </div>
         <div class="col-sm-10">
             <div class="input-group col-sm-6">

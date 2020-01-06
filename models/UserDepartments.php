@@ -120,7 +120,7 @@ class UserDepartments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'hotel_department_id' => 'Department',
+            'hotel_department_id' => 'Floor',
             'created_by' => 'Created By',
             'created_at' => 'Created At',
             'updated_by' => 'Updated By',

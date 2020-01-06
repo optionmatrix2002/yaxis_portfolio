@@ -41,11 +41,11 @@ $action_type = Yii::$app->controller->action->id;
  
          <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
-                <label>Department:<span class="span-star">*</span></label>
+                <label>Floor:<span class="span-star">*</span></label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
-                   <?= $form->field($model, 's_department_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'),'showToggleAll' => false,'language' => 'en','options' => ['placeholder' => 'Select Department'],'pluginOptions' => ['allowClear' => true]])->label(false); ?>
+                   <?= $form->field($model, 's_department_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'),'showToggleAll' => false,'language' => 'en','options' => ['placeholder' => 'Select Floor'],'pluginOptions' => ['allowClear' => true]])->label(false); ?>
                 </div>
             </div>
           </div>

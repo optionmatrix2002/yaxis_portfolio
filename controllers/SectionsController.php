@@ -192,10 +192,10 @@ class SectionsController extends Controller
                                     Yii::$app->session->setFlash('success', 'Section deleted successfully');
                                 }
                             } else {
-                                Yii::$app->session->setFlash('error', 'Section cannot be deleted as it assigned to hotel.');
+                                Yii::$app->session->setFlash('error', 'Section cannot be deleted as it assigned to office.');
                             }
                         } else {
-                            Yii::$app->session->setFlash('error', 'Section cannot be deleted as it assigned to hotel.');
+                            Yii::$app->session->setFlash('error', 'Section cannot be deleted as it assigned to office.');
                         }
                     } else {
                         Yii::$app->session->setFlash('error', 'Section cannot be deleted as sub section is assigned.');

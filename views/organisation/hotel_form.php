@@ -38,7 +38,7 @@ if ($hotelModel->isNewRecord) {
     </div>
     <div class='col-sm-12' style="margin-top: 20px;">
         <div class="col-sm-12 text-center">
-            <button id="save_hotel_submit_btn" type="submit" class="btn btn-success"><?=$hotelModel->isNewRecord ? 'Add':'Update'; ?> Hotel</button>
+            <button id="save_hotel_submit_btn" type="submit" class="btn btn-success"><?=$hotelModel->isNewRecord ? 'Add':'Update'; ?> Office</button>
             <button class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>

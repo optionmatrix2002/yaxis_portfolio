@@ -76,7 +76,7 @@ $this->registerJs('
 
                 echo $form->field($model, 'hotel_id')
                     ->dropDownList($dimensionTypes, [
-                        'prompt' => 'Hotel','id'=>'ranking_aduit_id'
+                        'prompt' => 'Office','id'=>'ranking_aduit_id'
                     ], [
                         'class',
                         'form-control'

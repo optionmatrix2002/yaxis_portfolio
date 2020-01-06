@@ -102,7 +102,7 @@ function changeStatus(checklist_id)
                     ],
                     [
                         'attribute' => 'cl_department_id',
-                        'header' => 'Department',
+                        'header' => 'Floor',
                         'format' => 'raw',
                         'headerOptions' => ['class' => 'theadcolor'],
                         'value' => function ($model) {

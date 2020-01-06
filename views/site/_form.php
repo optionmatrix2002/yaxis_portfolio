@@ -87,7 +87,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/modelpopup.js'), ['dep
                                'data'=>$hotel_data,
                                'pluginOptions'=>[
                                    'depends'=>['audits-location_id'],
-                                   'placeholder'=>'Select Hotel',
+                                   'placeholder'=>'Select Office',
                                    'url'=>Url::to(['audits/hotel'])
                                ]
                            ])->label(false);
@@ -102,7 +102,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/modelpopup.js'), ['dep
 		</div>
      	<div class="col-sm-12 margintop10">
 			<div class="col-sm-2">
-				<label class="required-label">Department :</label>
+				<label class="required-label">Floor :</label>
 			</div>
 			<div class="col-sm-10">
 				<div class="input-group col-sm-6">
@@ -115,7 +115,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/modelpopup.js'), ['dep
                                 'data'=>$department_data,
                                 'pluginOptions'=>[
                                     'depends'=>['hotel_id'],
-                                    'placeholder'=>'Select Department',
+                                    'placeholder'=>'Select Floor',
                                     'url'=>Url::to(['audits/department'])
                                 ]
                             ])->label(false);

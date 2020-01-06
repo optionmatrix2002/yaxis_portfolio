@@ -78,7 +78,7 @@ $("#MenuAudits").addClass("active");
     </div>
     <div class="col-sm-12 margintop10">
         <div class="col-sm-3 col-lg-3 col-md-3">
-            <label class="required-label">Hotel :</label>
+            <label class="required-label">Office :</label>
         </div>
         <div class="col-sm-9 col-lg-9 col-md-9">
             <div class="input-group col-sm-6">
@@ -99,7 +99,7 @@ $("#MenuAudits").addClass("active");
                                 'depends' => [
                                     'audits-location_id'
                                 ],
-                                'placeholder' => 'Select Hotel',
+                                'placeholder' => 'Select Office',
                                 'url' => Url::to([
                                     'audits/hotel'
                                 ])
@@ -143,7 +143,7 @@ $("#MenuAudits").addClass("active");
                                 'depends' => [
                                     'hotel_id'
                                 ],
-                                'placeholder' => 'Select Department',
+                                'placeholder' => 'Select Floor',
                                 'url' => Url::to([
                                     'audits/department'
                                 ])

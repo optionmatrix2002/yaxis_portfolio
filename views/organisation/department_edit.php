@@ -17,7 +17,7 @@ $action = yii::$app->urlManager->createAbsoluteUrl([
         <h3 class="text-success ">
             <i class="fa fa-building-o"></i> <?= $hotelModel->hotel_name; ?>
         </h3>
-        <small>(selected hotel)</small>
+        <small>(selected Office)</small>
     </div>
     <div class="col-sm-12">
         <?= Html::hiddenInput("encrypted_hotel_id", yii::$app->utils->encryptSetUp($hotelModel->hotel_id,'hotel')); ?>
