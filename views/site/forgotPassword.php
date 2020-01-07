@@ -8,9 +8,9 @@ use yii\helpers\Html;
 <div class="content">
     <!-- BEGIN LOGO -->
     <div class="logo">
-        <img src="<?=yii::$app->urlManager->createUrl("img/yaxislogo.png"); ?>"  width="200"/>
+        <img src="<?=yii::$app->urlManager->createUrl("img/yaxislogo.png"); ?>"/>
 
-        <h1 style="color:white">Forgot Password</h1>
+        <h3 style="color:white">Forgot Password</h3>
 
         <div class="menu-toggler sidebar-toggler hide">
             <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
