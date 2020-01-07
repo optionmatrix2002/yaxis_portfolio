@@ -24,7 +24,7 @@ if ($sectionsModel->isNewRecord) {
     <h3 class="text-success ">
         <i class="fa fa-home"></i> <?= $hotelDepartmentModel->department->department_name; ?>
     </h3>
-    <small>(selected department)</small>
+    <small>(selected floor)</small>
 </div>
 
 <div class="col-sm-12">

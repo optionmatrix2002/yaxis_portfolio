@@ -296,7 +296,12 @@ $(document).on(
                                     response.node.text);
                         }
                     } else if (response.error) {
-                        toastr.error(response.error);
+                         var errors = response.error;
+                        if (errors['hotel_name']) {
+                            var deparmentNameField = $('.field-hotels-hotel_name');
+                            deparmentNameField.addClass("has-error");
+                            deparmentNameField.find('p').html(errors['hotel_name']);
+                        }
                     }
                 },
                 complete: function () {

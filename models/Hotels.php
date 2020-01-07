@@ -42,6 +42,7 @@ class Hotels extends \yii\db\ActiveRecord
         return [
             [['location_id', 'hotel_name', 'hotel_phone_number', 'hotel_address'], 'required'],
             [['location_id', 'hotel_status', 'created_by', 'modified_by'], 'integer'],
+            ['hotel_name','unique'],
             [['hotel_address'], 'string'],
             [['created_date', 'modified_date'], 'safe'],
             [['hotel_name'], 'string', 'max' => 100],
