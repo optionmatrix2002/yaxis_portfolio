@@ -29,7 +29,7 @@ $action = yii::$app->urlManager->createAbsoluteUrl([
     <div class='col-sm-12' style="margin-top: 20px;">
         <div class="col-sm-12 text-center">
             <button id="save_department_submit_btn" type="submit"
-                    class="btn btn-success"><?=$departmentModel->isNewRecord ? 'Save':'Update'; ?> Department</button>
+                    class="btn btn-success"><?=$departmentModel->isNewRecord ? 'Save':'Update'; ?> Floor</button>
             <button class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
