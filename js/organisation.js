@@ -117,14 +117,14 @@ $('#organisation_hierarchy')
                                     openPopup(node.original.configure_email_url);
                                 }
                             },
-                            createSection: { // The "rename" menu
-                                // item
-                                label: "Add Section",
-                                "icon": "fa fa-plus text-success",
-                                action: function() {
-                                    openPopup(node.original.action_url);
-                                }
-                            },
+                            /*  createSection: { // The "rename" menu
+                                  // item
+                                  label: "Add Section",
+                                  "icon": "fa fa-plus text-success",
+                                  action: function() {
+                                      openPopup(node.original.action_url);
+                                  }
+                              },*/
                             editDepartment: { // The "delete" menu
                                 // item
                                 label: "Edit",
