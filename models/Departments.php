@@ -146,10 +146,10 @@ class Departments extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'department_id' => Yii::t('app', 'Department'),
-            'department_name' => Yii::t('app', 'Department Name'),
+            'department_id' => Yii::t('app', 'Floor'),
+            'department_name' => Yii::t('app', 'Floor Name'),
             'department_description' => Yii::t('app', 'Description'),
-            'department_email' => Yii::t('app', 'Department Email'),
+            'department_email' => Yii::t('app', 'Floor Email'),
             'created_by' => Yii::t('app', 'Created By'),
             'modified_by' => Yii::t('app', 'Modified By'),
             'created_date' => Yii::t('app', 'Created Date'),

@@ -57,12 +57,12 @@ class Hotels extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'hotel_id' => Yii::t('app', 'Hotel ID'),
+            'hotel_id' => Yii::t('app', 'Office ID'),
             'location_id' => Yii::t('app', 'Location'),
-            'hotel_name' => Yii::t('app', 'Hotel Name'),
+            'hotel_name' => Yii::t('app', 'Office Name'),
             'hotel_phone_number' => Yii::t('app', 'Phone Number'),
             'hotel_address' => Yii::t('app', 'Address'),
-            'hotel_status' => Yii::t('app', 'Hotel Status'),
+            'hotel_status' => Yii::t('app', 'Office Status'),
             'created_by' => Yii::t('app', 'Created By'),
             'modified_by' => Yii::t('app', 'Modified By'),
             'created_date' => Yii::t('app', 'Created Date'),

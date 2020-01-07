@@ -128,22 +128,13 @@ function changeStatus(checklist_id)
                         'value' => function ($model) {
                             switch ($model->cl_frequency_value) {
                                 case 1:
-                                    $frequency = "Weekly";
+                                    $frequency = "Hourly";
                                     break;
                                 case 2:
-                                    $frequency = "Bi-Weekly";
+                                    $frequency = "Daily";
                                     break;
                                 case 3:
-                                    $frequency = "Monthly";
-                                    break;
-                                case 4:
-                                    $frequency = "Quarterly";
-                                    break;
-                                case 5:
-                                    $frequency = "Half-Yearly";
-                                    break;
-                                case 6:
-                                    $frequency = "Yearly";
+                                    $frequency = "Weekly";
                                     break;
                             }
 
