@@ -96,9 +96,7 @@ class SubSectionsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new SubSections([
-            'scenario' => 'mastredatasubsection'
-        ]);
+        $model = new SubSections();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', "Subsection created successfully.");
             return $this->redirect([

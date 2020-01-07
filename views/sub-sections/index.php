@@ -86,7 +86,7 @@ if (Yii::$app->authManager->checkPermissionAccess('departments/delete')) {
                     return $model->ssSection->s_section_name;
                 }
             ],
-            [
+           /* [
                 'attribute' => 'ss_section_id',
                 'format' => 'raw',
                 'header' => 'Floor',
@@ -94,7 +94,7 @@ if (Yii::$app->authManager->checkPermissionAccess('departments/delete')) {
                 'value' => function($model) {
                     return $model->ssSection->department->department_name;
                 }
-            ],
+            ],*/
             [
                 'attribute' => 'ss_subsection_remarks',
                 'format' => 'raw',

@@ -47,13 +47,13 @@ class SubSections extends \yii\db\ActiveRecord
                 ],
                 'required'
             ],
-            [
+          /*  [
                 [
                     'department_id'
                 ],
                 'required',
                 'on' => 'mastredatasubsection'
-            ],
+            ],*/
             [
                 [
                     'ss_section_id',

@@ -39,7 +39,7 @@ $action_type = Yii::$app->controller->action->id;
 <div class="user-form">
  <?php $form = ActiveForm::begin(); ?>
  
-         <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
+         <!--<div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label>Floor:<span class="span-star">*</span></label>
             </div>
@@ -48,7 +48,7 @@ $action_type = Yii::$app->controller->action->id;
                    <?= $form->field($model, 's_department_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'),'showToggleAll' => false,'language' => 'en','options' => ['placeholder' => 'Select Floor'],'pluginOptions' => ['allowClear' => true]])->label(false); ?>
                 </div>
             </div>
-          </div>
+          </div>-->
           <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label>Section Name:<span class="span-star">*</span></label>
@@ -106,7 +106,7 @@ $action_type = Yii::$app->controller->action->id;
                 <div class="col-lg-9 col-md-9 col-sm-9">
                     <div class="col-sm-6 input-group">                
                         <?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success']) ?>
-                        <?= Html::a( 'Cancel',['/sections'],['class'=>'btn btn-default']); ?>
+                        <?= Html::a( 'Cancel',['/sections'],['class'=>'btn btn-default mg-left-10']); ?>
                     </div>
                 </div>
             </div>

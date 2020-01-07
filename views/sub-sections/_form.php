@@ -43,7 +43,7 @@ $actionType = Yii::$app->controller->action->id;
     <div class="user-form">
         <?php $form = ActiveForm::begin(); ?>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
+        <!--<div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label>Floor :<span class="span-star">*</span></label>
             </div>
@@ -52,7 +52,7 @@ $actionType = Yii::$app->controller->action->id;
                     <?php echo $form->field($model, 'department_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'), 'id' => 'departmentId','showToggleAll' => false,'language' => 'en','options' => ['placeholder' => 'Select Floor'],'pluginOptions' => ['allowClear' => true]])->label(false); ?>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label>Section :<span class="span-star">*</span></label>
@@ -60,7 +60,8 @@ $actionType = Yii::$app->controller->action->id;
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
                     <?php
-                    $section_selected = app\models\Sections::findOne($model->ss_section_id);
+                   echo $form->field($model, 'ss_section_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Sections::find()->where(['is_deleted' => 0])->all(), 'section_id', 's_section_name'), 'id' => 'ss_section_id','showToggleAll' => false,'language' => 'en','options' => ['placeholder' => 'Select Section'],'pluginOptions' => ['allowClear' => true]])->label(false); 
+                   /* $section_selected = app\models\Sections::findOne($model->ss_section_id);
                     $section_data = [];
                     if (! empty($section_selected->section_id)) {
                         $section_data = [
@@ -106,7 +107,7 @@ $actionType = Yii::$app->controller->action->id;
                                 ]
                             ])
                             ->label(false);
-                    }
+                    }*/
                     ?>
                 </div>
             </div>

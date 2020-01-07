@@ -39,14 +39,14 @@ class Sections extends \yii\db\ActiveRecord
         return [
             [
                 [
-                    's_department_id',
+                   // 's_department_id',
                     's_section_name'
                 ],
                 'required'
             ],
             [
                 [
-                    's_department_id',
+                   // 's_department_id',
                     'created_by',
                     'modified_by'
                 ],
@@ -71,11 +71,11 @@ class Sections extends \yii\db\ActiveRecord
                     's_section_name'
                 ],
                 'unique',
-                'targetAttribute' => [
+              /*  'targetAttribute' => [
                     's_section_name',
                     's_department_id'
-                ],
-                'message' => 'The combination Section and Department has already been taken.',
+                ],*/
+                'message' => 'The Section name has already been taken.',
                 'filter' => [
                     '=',
                     'is_deleted',
