@@ -930,6 +930,15 @@ class OrganisationController extends Controller {
         $output = [];
         $departmentId = null;
         $hotelId = Yii::$app->utils->decryptSetUp($post['encrypted_hotel_id']);
+        $departmentNamesCount = HotelDepartments::find()->joinWith(['department'])->where([
+                            'hotel_id' => $hotelId,
+                            HotelDepartments::tableName() . '.is_deleted' => 0,
+             Departments::tableName().'.department_name'=>trim($post['Departments']['department_name'])
+                        ])->count();
+        if ($departmentNamesCount>=1) {
+            $output['error'] = ['department_name' => 'Floor name already exists for this Office'];
+            return Json::encode($output);
+        }
         $departmentModel = new Departments();
         if ($departmentModel->load($post)) {
             if ($departmentModel->save()) {
@@ -968,7 +977,7 @@ class OrganisationController extends Controller {
                         $encryptedHotelId = Yii::$app->utils->encryptSetUp($hotelId, 'hotel');
                         if ($isNewRecord) {
                             $output = [
-                                'success' => "Department added successfully",
+                                'success' => "Floor added successfully",
                                 "parent_node" => Yii::$app->utils->encryptSetUp($hotelDepartmentModel->hotel_id, 'hotel'),
                                 'node' => [
                                     'id' => $encryptedDepartmentRelId,
@@ -1268,7 +1277,7 @@ class OrganisationController extends Controller {
                         $encryptedHotelId = Yii::$app->utils->encryptSetUp($hotelId, 'hotel');
                         if ($isNewRecord) {
                             $output = [
-                                'success' => "Department added successfully",
+                                'success' => "Floor added successfully",
                                 "parent_node" => Yii::$app->utils->encryptSetUp($hotelDepartmentModel->hotel_id, 'hotel'),
                                 'node' => [
                                     'id' => $encryptedDepartmentRelId,
@@ -1561,6 +1570,18 @@ class OrganisationController extends Controller {
         if (isset($post['encrypted_hotel_id'])) {
             $hotelId = Yii::$app->utils->decryptSetUp($post['encrypted_hotel_id']);
             $departmentId = Yii::$app->utils->decryptSetUp($department_id);
+            $departmentsNamesCount = HotelDepartments::find()->joinWith(['department'])->where([
+                                'hotel_id' => $hotelId,
+                                HotelDepartments::tableName() . '.is_deleted' => 0,
+                                Departments::tableName().'.department_name'=>trim($post['Departments']['department_name'])
+                            ])->andWhere(['<>',HotelDepartments::tableName() .'.department_id', $departmentId])->count();
+           /* print_r($departments);exit;
+            $depNames = array_map('strtolower', ArrayHelper::getColumn($departments, 'department_name'));
+            print_r($depNames);exit;*/
+            if ($departmentsNamesCount >=1) {
+                $output['error'] = ['department_name' => 'Floor name already exists for this Office'];
+                return Json::encode($output);
+            }
             $hotelDepartmentModel = Departments::findOne($departmentId);
             if ($hotelDepartmentModel->load($post)) {
 

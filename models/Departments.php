@@ -59,7 +59,7 @@ class Departments extends \yii\db\ActiveRecord
                 ],
                 'integer'
             ],
-            [
+            /*[
                 [
                     'department_name'
                 ],
@@ -70,7 +70,7 @@ class Departments extends \yii\db\ActiveRecord
                     'is_deleted',
                     0
                 ]
-            ],
+            ],*/
             [
                 [
                     'department_name'
