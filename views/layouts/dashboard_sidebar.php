@@ -151,8 +151,8 @@
                                     Manage Floor
                                 </a>
                             </li>
-                        <?php }
-                        if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
+                        <?php } ?>-->
+                       <?php if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
                             <li class="" id="settings-sections">
                                 <a href="<?= yii::$app->urlManager->createUrl('sections'); ?>" class="">
                                     <i class="fa fa-home"></i>
@@ -167,7 +167,7 @@
                                     Manage Subsection
                                 </a>
                             </li>
-                        <?php } ?>-->
+                        <?php } ?>
 						
 						<?php if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
                             <li class="" id="settings-sub-sections">

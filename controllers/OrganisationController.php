@@ -1792,12 +1792,12 @@ class OrganisationController extends Controller {
                     case "hotel":
                         $output = $this->fetchDepartmentsHierarchy($get['id']); // Getting deparment for the Hotel
                         break;
-                    case "department":
+                   /* case "department":
                         $output = $this->fetchSectionsHierarchy($get['id'], $get['hotelId']); // Getting deparment for the Hotel
                         break;
                     case "section":
                         $output = $this->fetchSubsectionsHierarchy($get['id'], $get['hotelId']); // Getting deparment for the Hotel
-                        break;
+                        break;*/
                     default:
                         break;
                 }
@@ -1957,10 +1957,10 @@ class OrganisationController extends Controller {
                         "selected" => false // is the node selected
                     ],
                     // 'children' => Sections::find()->where(['s_department_id' => $department->department_id])->exists()
-                    'children' => HotelDepartmentSections::find()->where([
+                  /*  'children' => HotelDepartmentSections::find()->where([
                         'hotel_id' => $hotelId,
                         'department_id' => $department->department_id
-                    ])->exists()
+                    ])->exists()*/
                 ];
             }
         }
