@@ -26,7 +26,7 @@ use yii\helpers\ArrayHelper;
         <div class="col-lg-3 col-md-6 col-sm-12">
                 <?= $form->field($model, 'checklistname_search')->textInput(['class' => 'form-control', 'placeholder' => 'Checklist Name'])->label(false); ?>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
+        <!--<div class="col-lg-3 col-md-6 col-sm-12">
                 <?php
                 echo $form->field($model, 'cl_department_id')
                     ->dropDownList(ArrayHelper::map(\app\models\Departments::find()->where(['is_deleted' => 0])->all(), 'department_id', 'department_name'), [
@@ -37,7 +37,7 @@ use yii\helpers\ArrayHelper;
                     ])
                     ->label(false);
                 ?>
-        </div>
+        </div>-->
         <div class="col-lg-3 col-md-6 col-sm-12">
                 <?= $form->field($model, 'cl_audit_span')->dropDownList(['1' => 'Section Specific', '2' => 'Across Section'], ['prompt' => 'Select Audit Span'], ['class', 'form-control'])->label(false); ?>
         </div>
