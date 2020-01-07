@@ -108,7 +108,7 @@ if ($departmentModel->isNewRecord) {
                         });
                         $('form#hoteldepartment_form')[0].reset();
                         $("#popup_model").modal("hide");
-                        toastr.success("Department created successfully");
+                        toastr.success("Floor created successfully");
                         var jsTreeInstance = $('#organisation_hierarchy').jstree(true);
                         if (result.parent_node) {
                             jsTreeInstance.create_node(result.parent_node, result.node);

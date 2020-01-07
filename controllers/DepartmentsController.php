@@ -102,7 +102,7 @@ class DepartmentsController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
-            Yii::$app->session->setFlash('success', "Department created successfully.");
+            Yii::$app->session->setFlash('success', "Floor created successfully.");
             return $this->redirect([
                 '/departments'
             ]);
