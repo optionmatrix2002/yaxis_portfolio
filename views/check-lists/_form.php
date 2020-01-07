@@ -232,7 +232,7 @@ $(document).on("change","#checklists-cl_frequency_value",function(){
             <div class="col-sm-9 col-lg-9 col-md-9">
                 <div class="col-sm-9 col-lg-9 col-md-9 input-group">
                     <?= Html::submitButton($model->isNewRecord ? 'Save & Proceed to Questionnaire' : 'Update & Proceed to Questionnaire', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success']) ?>
-                    <?= Html::a('Cancel', ['/check-lists'], ['class' => 'btn btn-default']); ?>
+                    <?= Html::a('Cancel', ['/check-lists'], ['class' => 'btn btn-default mg-left-10']); ?>
                 </div>
             </div>
         </div>

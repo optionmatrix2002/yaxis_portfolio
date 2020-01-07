@@ -265,3 +265,7 @@ a#active-tickets-download-csv:hover, #archive-tickets-download-csv:hover {
  .weeklyDays{
     margin-top: 5px !important;
 } 
+
+.mg-left-10{
+    margin-left: 10px;
+}
