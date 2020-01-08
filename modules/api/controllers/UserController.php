@@ -14,6 +14,8 @@ use app\models\UserTypes;
 use app\models\Locations;
 use app\models\HotelDepartmentSections;
 use app\models\HotelDepartmentSubSections;
+use app\models\Sections;
+use app\models\SubSections;
 
 /**
  * Default controller for the `api` module
