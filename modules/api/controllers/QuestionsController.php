@@ -113,7 +113,6 @@ class QuestionsController extends ActiveController
                 ])
                     ->asArray()
                     ->all();
-                print_r($hotelSections);exit;
                 $hotelSubSections = SubSections::find()->where([
                     'is_deleted' => 0
                 ])
