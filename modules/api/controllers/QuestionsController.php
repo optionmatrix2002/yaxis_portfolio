@@ -230,7 +230,6 @@ class QuestionsController extends ActiveController
                     $questions_sections = ArrayHelper::index($questions_set, null, 'q_section');
                     $department_id = $audits['audit']['department_id'];
                     $all_sections = ArrayHelper::index(Sections::find()->where([
-                        's_department_id' => $department_id,
                         'is_deleted' => 0
                     ])
                         ->asArray()
