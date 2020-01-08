@@ -29,6 +29,7 @@ class TicketsController extends ActiveController {
         try {
             $output = [];
             $assigned_user_id = Yii::$app->request->post('user_id');
+            $is_incident = Yii::$app->request->post('is_incident');
             $userType = Yii::$app->user->identity->user_type;
             $statusList = $userType == '3' ? [0, 1, 4] : [2, 3];
             if ($assigned_user_id) {
@@ -47,7 +48,7 @@ class TicketsController extends ActiveController {
                             ]
                         ])
                         ->andWhere([
-                            't.status' => $statusList, 't.is_deleted' => 0, 't.is_incident' => 0
+                            't.status' => $statusList, 't.is_deleted' => 0, 't.is_incident' => $is_incident
                         ])
                         ->groupBy(['t.ticket_id'])
                         ->all();
@@ -422,5 +423,5 @@ class TicketsController extends ActiveController {
             // throw new HttpException(422, $ex->getMessage());
         }
     }
-
+    
 }
