@@ -170,7 +170,7 @@ class UserController extends ActiveController {
     public function actionGetMasterData() {
         $output = [];
         try {
-            $locations = Locations::find()->joinWith(['hotels', 'hotels.departmentsTest.department'])->where([Locations::tableName() . '.is_deleted' => 0])->asArray()->all();
+            $locations = Locations::find()->joinWith(['locationCity','hotels', 'hotels.departmentsTest.department'])->where([Locations::tableName() . '.is_deleted' => 0])->asArray()->all();
             $output = [
                 'response' => $locations,
                 'message' => 'success'
@@ -189,17 +189,10 @@ class UserController extends ActiveController {
         $output = [];
         try {
             $post = Yii::$app->request->post();
-            if (!$post['hotel_id'] || !$post['department_id']) {
-                $output = [
-                    'response' => [],
-                    'message' => 'Invalid Params'
-                ];
-                return $output;
-            }
-            $locations = HotelDepartmentSections::find()->joinWith(['section'])->where([HotelDepartmentSections::tableName() . '.is_deleted' => 0, 'hotel_id' => $post['hotel_id'], 'department_id' => $post['department_id']])->asArray()->all();
+            $sections = Sections::find()->where([Sections::tableName() . '.is_deleted' => 0])->asArray()->all();
             $output = [
                 'response' => 'success',
-                'data' => $locations
+                'data' => $sections
             ];
             return $output;
         } catch (Exception $ex) {
@@ -217,17 +210,17 @@ class UserController extends ActiveController {
         $output = [];
         try {
             $post = Yii::$app->request->post();
-            if (!$post['hotel_id'] || !$post['department_id'] || !$post['section_id']) {
+            if (!$post['section_id']) {
                 $output = [
                     'response' => [],
                     'message' => 'Invalid Params'
                 ];
                 return $output;
             }
-            $locations = HotelDepartmentSubSections::find()->joinWith(['subSection'])->where([HotelDepartmentSubSections::tableName() . '.is_deleted' => 0, 'hotel_id' => $post['hotel_id'], 'department_id' => $post['department_id'], 'section_id' => $post['section_id']])->asArray()->all();
+            $subSections = SubSections::find()->where([SubSections::tableName() . '.is_deleted' => 0, 'ss_section_id' => $post['section_id']])->asArray()->all();
             $output = [
                 'response' => 'success',
-                'data' => $locations
+                'data' => $subSections
             ];
             return $output;
         } catch (Exception $ex) {

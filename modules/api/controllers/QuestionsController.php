@@ -108,16 +108,13 @@ class QuestionsController extends ActiveController
 
                 $mainAudit = $auditScheduled->audit;
 
-                $hotelSections = models\HotelDepartmentSections::find()->where([
-                    'hotel_id' => $mainAudit->hotel_id,
-                    'department_id' => $mainAudit->department_id,
+                $hotelSections = models\Sections::find()->where([
                     'is_deleted' => 0
                 ])
                     ->asArray()
                     ->all();
-                $hotelSubSections = HotelDepartmentSubSections::find()->where([
-                    'hotel_id' => $mainAudit->hotel_id,
-                    'department_id' => $mainAudit->department_id,
+                print_r($hotelSections);exit;
+                $hotelSubSections = SubSections::find()->where([
                     'is_deleted' => 0
                 ])
                     ->asArray()
