@@ -37,20 +37,19 @@ use app\models\HotelDepartmentSections;
 use kartik\mpdf\Pdf;
 use yii\filters\AccessControl;
 use app\components\AccessRule;
+use DateTime;
 
 /**
  * AuditsController implements the CRUD actions for Audits model.
  */
-class AuditsController extends Controller
-{
+class AuditsController extends Controller {
 
     public $layout = 'dashboard_layout';
 
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         $behaviors['access'] = [
             'class' => AccessControl::className(),
             'ruleConfig' => [
@@ -112,23 +111,22 @@ class AuditsController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new AuditsSearch();
         $auditScheduleModel = new AuditsSchedules();
 
         // echo "<pre>"; print_r(Yii::$app->request->queryParams); die();
 
         $dataProviderAudits = $searchModel->searchAudits(Yii::$app->request->queryParams);
-        $dataProviderAuditsSchedules = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams,[3,4]);
-        $dataProviderAuditsSchedulesChilds = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams,[0,1,2]);
+        $dataProviderAuditsSchedules = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams, [3, 4]);
+        $dataProviderAuditsSchedulesChilds = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams, [0, 1, 2]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProviderAudits' => $dataProviderAudits,
-            'dataProviderAuditsSchedules' => $dataProviderAuditsSchedules,
-            'dataProviderAuditsSchedulesChilds'=>$dataProviderAuditsSchedulesChilds,
-            'auditScheduleModel' => $auditScheduleModel
+                    'searchModel' => $searchModel,
+                    'dataProviderAudits' => $dataProviderAudits,
+                    'dataProviderAuditsSchedules' => $dataProviderAuditsSchedules,
+                    'dataProviderAuditsSchedulesChilds' => $dataProviderAuditsSchedulesChilds,
+                    'auditScheduleModel' => $auditScheduleModel
         ]);
     }
 
@@ -138,10 +136,9 @@ class AuditsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id)
+                    'model' => $this->findModel($id)
         ]);
     }
 
@@ -151,8 +148,7 @@ class AuditsController extends Controller
      *
      * @return mixed
      */
-    public function actionCreateOld()
-    {
+    public function actionCreateOld() {
         $valid = false;
         $model = new Audits();
         $auditLocationsModel = new Locations();
@@ -182,8 +178,8 @@ class AuditsController extends Controller
                     if ($model->save()) {
                         $model->audit_name = $model->audit_name . $model->audit_id;
                         $updateAuditId = Audits::updateAll([
-                            'audit_name' => $model->audit_name
-                        ], 'audit_id=' . $model->audit_id);
+                                    'audit_name' => $model->audit_name
+                                        ], 'audit_id=' . $model->audit_id);
 
                         /* For Daya calculation */
                         $startDate = $stdt;
@@ -215,7 +211,6 @@ class AuditsController extends Controller
                                 }
                             }
                         }
-
                     } else {
 
                         throw new \Exception('Error saving Audit');
@@ -227,11 +222,11 @@ class AuditsController extends Controller
 
 
                     $auditScheduled = AuditsSchedules::find()
-                        ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
-                        ->andWhere([AuditsSchedules::tableName() . '.audit_id' => $model->audit_id])
-                        ->orderBy(['audit_schedule_id' => SORT_ASC])
-                        ->asArray()
-                        ->one();
+                            ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
+                            ->andWhere([AuditsSchedules::tableName() . '.audit_id' => $model->audit_id])
+                            ->orderBy(['audit_schedule_id' => SORT_ASC])
+                            ->asArray()
+                            ->one();
 
                     $user = User::findOne($auditScheduled['auditor_id']);
                     $arrNotifications = [];
@@ -260,7 +255,7 @@ class AuditsController extends Controller
 
                     Yii::$app->session->setFlash('success', "Audit  $model->audit_name created successfully");
                     return $this->redirect(\Yii::$app->urlManager->createUrl([
-                        'audits'
+                                        'audits'
                     ]));
                 }
             } catch (\Exception $e) {
@@ -273,13 +268,11 @@ class AuditsController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model,
-            'auditLocationsModel' => $auditLocationsModel,
-            'auditsSchedulesModel' => $auditsSchedulesModel
-
+                    'model' => $model,
+                    'auditLocationsModel' => $auditLocationsModel,
+                    'auditsSchedulesModel' => $auditsSchedulesModel
         ]);
     }
-
 
     /**
      * Creates a new Audits model.
@@ -287,13 +280,25 @@ class AuditsController extends Controller
      *
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Audits();
         $auditLocationsModel = new Locations();
         $auditsSchedulesModel = new AuditsSchedules();
-
+        $frequencyTimeSlot = 1;
+        $startTime = null;
+        $slotResponse = null;
         if ($model->load(Yii::$app->request->post())) {
+            $checkListId = $model->checklist_id;
+            $frequency = Checklists::find()->select(['cl_frequency_value', 'cl_frequency_duration'])->where(['checklist_id' => $checkListId])->one();
+
+            if ($frequency && $frequency->cl_frequency_value == 1) {
+                //Hourly
+                $slotResponse = \app\models\Preferences::getAuditSlot();
+                if ($slotResponse) {
+                    $frequencyTimeSlot = $slotResponse['count'];
+                    $startTime = $slotResponse['start_time'];
+                }
+            }
             $postInfo = Yii::$app->request->post('Audits');
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -309,64 +314,67 @@ class AuditsController extends Controller
                     $model->audit_name = $model->audit_name . $model->audit_id;
                     Audits::updateAll([
                         'audit_name' => $model->audit_name
-                    ], 'audit_id=' . $model->audit_id);
+                            ], 'audit_id=' . $model->audit_id);
+                    for ($i = 1; $i <= $frequencyTimeSlot; $i++) {
+                        $addHour = $i-1;
+                        $auditsSchedulesModel->audit_schedule_id = null;
+                        $auditsSchedulesModel->isNewRecord = true;
+                        $auditsSchedulesModel->start_time = $startTime ? date('H:i', strtotime($startTime . '+'.$i.' hour')) : null;
+                        $auditsSchedulesModel->audit_schedule_name = $model->audit_name . "-" . $i;
+                        $auditsSchedulesModel->audit_id = $model->audit_id;
+                        $auditsSchedulesModel->auditor_id = $model->user_id;
+                        $auditsSchedulesModel->start_date = $stdt;
+                        $auditsSchedulesModel->end_date = $enddt;
+                        $auditsSchedulesModel->deligation_user_id = ''; // $model->user_id;
+                        $auditsSchedulesModel->deligation_status = 0;
+                        $auditsSchedulesModel->status = 0;
+                        $auditsSchedulesModel->is_deleted = 0;
+                        if ($auditsSchedulesModel->save()) {
 
-                    $auditsSchedulesModel->audit_schedule_name = $model->audit_name . "-1";
-                    $auditsSchedulesModel->audit_id = $model->audit_id;
-                    $auditsSchedulesModel->auditor_id = $model->user_id;
-                    $auditsSchedulesModel->start_date = $stdt;
-                    $auditsSchedulesModel->end_date = $enddt;
-                    $auditsSchedulesModel->deligation_user_id = ''; // $model->user_id;
-                    $auditsSchedulesModel->deligation_status = 0;
-                    $auditsSchedulesModel->status = 0;
-                    $auditsSchedulesModel->is_deleted = 0;
-                    if ($auditsSchedulesModel->save()) {
+                            $auditScheduled = AuditsSchedules::find()
+                                    ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
+                                    ->andWhere([AuditsSchedules::tableName() . '.audit_id' => $model->audit_id])
+                                    ->orderBy(['audit_schedule_id' => SORT_ASC])
+                                    ->asArray()
+                                    ->one();
 
-                        $auditScheduled = AuditsSchedules::find()
-                            ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
-                            ->andWhere([AuditsSchedules::tableName() . '.audit_id' => $model->audit_id])
-                            ->orderBy(['audit_schedule_id' => SORT_ASC])
-                            ->asArray()
-                            ->one();
+                            $user = User::findOne($auditScheduled['auditor_id']);
+                            $arrNotifications = [];
+                            $arrNotifications['type'] = 'auditAssigned';
+                            $arrNotifications['toEmail'] = $user->email;
+                            $arrNotifications['mobileNumber'] = $user->phone;
+                            $arrNotifications['deviceToken'] = $user->device_token;
 
-                        $user = User::findOne($auditScheduled['auditor_id']);
-                        $arrNotifications = [];
-                        $arrNotifications['type'] = 'auditAssigned';
-                        $arrNotifications['toEmail'] = $user->email;
-                        $arrNotifications['mobileNumber'] = $user->phone;
-                        $arrNotifications['deviceToken'] = $user->device_token;
+                            $attributes = $auditScheduled;
+                            $attributes['department'] = isset($auditScheduled['audit']['department']['department_name']) ? $auditScheduled['audit']['department']['department_name'] : '';
+                            $attributes['checkList'] = isset($auditScheduled['audit']['checklist']['cl_name']) ? $auditScheduled['audit']['checklist']['cl_name'] : '';
+                            $attributes['hotel'] = isset($auditScheduled['audit']['hotel']['hotel_name']) ? $auditScheduled['audit']['hotel']['hotel_name'] : '';
 
-                        $attributes = $auditScheduled;
-                        $attributes['department'] = isset($auditScheduled['audit']['department']['department_name']) ? $auditScheduled['audit']['department']['department_name'] : '';
-                        $attributes['checkList'] = isset($auditScheduled['audit']['checklist']['cl_name']) ? $auditScheduled['audit']['checklist']['cl_name'] : '';
-                        $attributes['hotel'] = isset($auditScheduled['audit']['hotel']['hotel_name']) ? $auditScheduled['audit']['hotel']['hotel_name'] : '';
-
-                        $arrNotifications['data'] = $attributes;
-                        $arrNotifications['userId'] = $user->user_id;
-                        Yii::$app->scheduler->triggerNotifications($arrNotifications);
+                            $arrNotifications['data'] = $attributes;
+                            $arrNotifications['userId'] = $user->user_id;
+                            Yii::$app->scheduler->triggerNotifications($arrNotifications);
 
 
-                        $arrData = [];
-                        $arrData['module'] = 'audit';
-                        $arrData['type'] = 'create';
-                        $arrData['message'] = "Audit - <b>" . $model->audit_name . '</b> is created by ' . Yii::$app->user->identity->first_name . ' ' . Yii::$app->user->identity->last_name . '.';
-                        Yii::$app->events->createEvent($arrData);
-
-                        $transaction->commit();
-                        Yii::$app->session->setFlash('success', "Audit  $model->audit_name created successfully");
-                        return $this->redirect(\Yii::$app->urlManager->createUrl([
-                            'audits'
-                        ]));
+                            $arrData = [];
+                            $arrData['module'] = 'audit';
+                            $arrData['type'] = 'create';
+                            $arrData['message'] = "Audit - <b>" . $model->audit_name . '</b> is created by ' . Yii::$app->user->identity->first_name . ' ' . Yii::$app->user->identity->last_name . '.';
+                            Yii::$app->events->createEvent($arrData);
+                        }
                     }
-                    throw new \Exception('Error saving Audit');
 
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', "Audit  $model->audit_name created successfully");
+                    return $this->redirect(\Yii::$app->urlManager->createUrl([
+                                        'audits'
+                    ]));
+                    throw new \Exception('Error saving Audit');
                 } else {
                     $model->start_date = date('d-m-Y', strtotime($model->start_date));
                     return $this->render('create', [
-                        'model' => $model,
-                        'auditLocationsModel' => $auditLocationsModel,
-                        'auditsSchedulesModel' => $auditsSchedulesModel
-
+                                'model' => $model,
+                                'auditLocationsModel' => $auditLocationsModel,
+                                'auditsSchedulesModel' => $auditsSchedulesModel
                     ]);
                 }
             } catch (\Exception $e) {
@@ -380,18 +388,17 @@ class AuditsController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model,
-            'auditLocationsModel' => $auditLocationsModel,
-            'auditsSchedulesModel' => $auditsSchedulesModel
-
+                    'model' => $model,
+                    'auditLocationsModel' => $auditLocationsModel,
+                    'auditsSchedulesModel' => $auditsSchedulesModel
         ]);
     }
 
     /*
      * return total days count from start date and end date
      */
-    public function dateDiff($startdate, $enddate)
-    {
+
+    public function dateDiff($startdate, $enddate) {
         $start_ts = strtotime($startdate);
         $end_ts = strtotime($enddate);
         $diff = $end_ts - $start_ts;
@@ -401,8 +408,7 @@ class AuditsController extends Controller
     /**
      * Switch case for Intervel types
      */
-    public function getIntervelId($frequencyId)
-    {
+    public function getIntervelId($frequencyId) {
         switch ($frequencyId) {
             case 1:
                 $interval = "+ 7 days";
@@ -427,8 +433,7 @@ class AuditsController extends Controller
         return $interval;
     }
 
-    public function totalDays($frequencyId)
-    {
+    public function totalDays($frequencyId) {
         $list = [
             1 => 7,
             2 => 14,
@@ -447,18 +452,17 @@ class AuditsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdateOld($id)
-    {
+    public function actionUpdateOld($id) {
         $valid = false;
         $model = $this->findModel(Yii::$app->utils->decryptData($id));
         if (!in_array($model->status, [
-            0,
-            1,
-            2
-        ])) {
+                    0,
+                    1,
+                    2
+                ])) {
             Yii::$app->session->setFlash('error', "Audit $model->audit_name cannot be updated as it is cancelled or completed.");
             return $this->redirect([
-                'index'
+                        'index'
             ]);
         }
         $auditsSchedulesModel = new AuditsSchedules();
@@ -479,7 +483,6 @@ class AuditsController extends Controller
                 /**
                  * ***********************Delete audit schedules****************************
                  */
-
                 $enddt = Yii::$app->formatter->asDate($postInfo['Audits']['end_date'], 'php:Y-m-d');
                 $stdt = $model->start_date;
                 $model->end_date = $enddt;
@@ -495,20 +498,20 @@ class AuditsController extends Controller
                         $interval = $this->getIntervelId($frequencyId); // funtion return Intervel Type
 
                         $auditCompletedMaxDate = AuditsSchedules::find()->select([
-                            'max(end_date) as maxDate'
-                        ])
-                            ->where([
-                                'status' => [
-                                    1,
-                                    2,
-                                    3
-                                ]
-                            ])
-                            ->andWhere([
-                                'audit_id' => $model->audit_id
-                            ])
-                            ->asArray()
-                            ->one();
+                                    'max(end_date) as maxDate'
+                                ])
+                                ->where([
+                                    'status' => [
+                                        1,
+                                        2,
+                                        3
+                                    ]
+                                ])
+                                ->andWhere([
+                                    'audit_id' => $model->audit_id
+                                ])
+                                ->asArray()
+                                ->one();
 
                         $originalSelectedEndDate = $auditCompletedMaxDate['maxDate'];
                         $auditCompletedMaxDate = $auditCompletedMaxDate['maxDate'];
@@ -528,13 +531,13 @@ class AuditsController extends Controller
                             ]);
 
                             $scheduledName = AuditsSchedules::find()->select([
-                                'audit_schedule_name'
-                            ])
-                                ->where([
-                                    'end_date' => $originalSelectedEndDate
-                                ])
-                                ->asArray()
-                                ->one();
+                                        'audit_schedule_name'
+                                    ])
+                                    ->where([
+                                        'end_date' => $originalSelectedEndDate
+                                    ])
+                                    ->asArray()
+                                    ->one();
                             $scheduledName = $scheduledName['audit_schedule_name'];
                             $stdt = $originalSelectedEndDate;
 
@@ -613,7 +616,7 @@ class AuditsController extends Controller
 
                     Yii::$app->session->setFlash('success', "Audit $model->audit_name updated successfully");
                     return $this->redirect([
-                        'update?id=' . $id
+                                'update?id=' . $id
                     ]);
                 }
             } catch (\Exception $e) {
@@ -622,15 +625,14 @@ class AuditsController extends Controller
             }
         }
         return $this->render('update', [
-            'model' => $model,
-            'dataProvider' => $dataProvider,
-            'auditLocationsModel' => $auditLocationsModel,
-            'auditsSchedulesModel' => $auditsSchedulesModel,
-            'auditScheduleSearch' => $auditScheduleSearch,
-            'nameAudits' => $nameAudits
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
+                    'auditLocationsModel' => $auditLocationsModel,
+                    'auditsSchedulesModel' => $auditsSchedulesModel,
+                    'auditScheduleSearch' => $auditScheduleSearch,
+                    'nameAudits' => $nameAudits
         ]);
     }
-
 
     /**
      * Updates an existing Audits model.
@@ -639,20 +641,19 @@ class AuditsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $valid = false;
         $model = $this->findModel(Yii::$app->utils->decryptData($id));
-        /*if (!in_array($model->status, [
-            0,
-            1,
-            2
-        ])) {
-            Yii::$app->session->setFlash('error', "Audit $model->audit_name cannot be updated as it is cancelled or completed.");
-            return $this->redirect([
-                'index'
-            ]);
-        }*/
+        /* if (!in_array($model->status, [
+          0,
+          1,
+          2
+          ])) {
+          Yii::$app->session->setFlash('error', "Audit $model->audit_name cannot be updated as it is cancelled or completed.");
+          return $this->redirect([
+          'index'
+          ]);
+          } */
         $auditsSchedulesModel = new AuditsSchedules();
         $auditLocationsModel = new Locations();
         $auditScheduleSearch = new AuditsSchedulesSearch();
@@ -681,7 +682,7 @@ class AuditsController extends Controller
 
                     Yii::$app->session->setFlash('success', "Audit $model->audit_name updated successfully");
                     return $this->redirect([
-                        'update?id=' . $id
+                                'update?id=' . $id
                     ]);
                 }
             } catch (\Exception $e) {
@@ -690,12 +691,12 @@ class AuditsController extends Controller
             }
         }
         return $this->render('update', [
-            'model' => $model,
-            'dataProvider' => $dataProvider,
-            'auditLocationsModel' => $auditLocationsModel,
-            'auditsSchedulesModel' => $auditsSchedulesModel,
-            'auditScheduleSearch' => $auditScheduleSearch,
-            'nameAudits' => $nameAudits
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
+                    'auditLocationsModel' => $auditLocationsModel,
+                    'auditsSchedulesModel' => $auditsSchedulesModel,
+                    'auditScheduleSearch' => $auditScheduleSearch,
+                    'nameAudits' => $nameAudits
         ]);
     }
 
@@ -706,8 +707,7 @@ class AuditsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete()
-    {
+    public function actionDelete() {
         $post = yii::$app->request->post();
         $decryptedAudit = yii::$app->utils->decryptData($post['deletable_audit_id']);
         $transaction = \Yii::$app->db->beginTransaction();
@@ -717,12 +717,12 @@ class AuditsController extends Controller
             AuditsSchedules::updateAll([
                 'is_deleted' => 1,
                 'updated_by' => \Yii::$app->user->getId()
-            ], 'audit_id=' . $decryptedAudit);
+                    ], 'audit_id=' . $decryptedAudit);
 
             Audits::updateAll([
                 'is_deleted' => 1,
                 'updated_by' => \Yii::$app->user->getId()
-            ], 'audit_id=' . $decryptedAudit);
+                    ], 'audit_id=' . $decryptedAudit);
 
 
             $transaction->commit();
@@ -734,13 +734,12 @@ class AuditsController extends Controller
             Yii::$app->events->createEvent($arrData);
 
             Yii::$app->session->setFlash('success', 'Audit deleted successfully');
-
         } catch (\Exception $e) {
             $transaction->rollBack();
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
         return $this->redirect([
-            'index'
+                    'index'
         ]);
     }
 
@@ -752,8 +751,7 @@ class AuditsController extends Controller
      * @return Audits the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Audits::findOne($id)) !== null) {
             return $model;
         } else {
@@ -763,8 +761,7 @@ class AuditsController extends Controller
 
     /**
      */
-    public function actionHotel()
-    {
+    public function actionHotel() {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
@@ -785,8 +782,7 @@ class AuditsController extends Controller
         ]);
     }
 
-    public function actionDepartment()
-    {
+    public function actionDepartment() {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
@@ -818,8 +814,7 @@ class AuditsController extends Controller
         ]);
     }
 
-    public function actionCheckList()
-    {
+    public function actionCheckList() {
         $finalArray = [];
         $result = [];
         if (isset($_POST['depdrop_parents'])) {
@@ -829,30 +824,30 @@ class AuditsController extends Controller
                 $hotel_id = $parents[1];
                 header('Content-type: application/json');
                 $sections = HotelDepartmentSections::find()->select('section_id')
-                    ->where([
-                        'hotel_id' => $hotel_id,
-                        'department_id' => $department_id,
-                        'is_deleted' => 0
-                    ])
-                    ->all();
+                        ->where([
+                            'hotel_id' => $hotel_id,
+                            'department_id' => $department_id,
+                            'is_deleted' => 0
+                        ])
+                        ->all();
                 $sections = ArrayHelper::getColumn($sections, 'section_id');
                 $result = [];
                 if ($sections) {
                     $result = Checklists::find()->alias('cl')
-                        ->select([
-                            'cl.checklist_id',
-                            'cl.cl_name'
-                        ])
-                        ->joinWith('questions as q')
-                        ->where([
-                            'cl_department_id' => $department_id,
-                            'cl.is_deleted' => 0,
-                            'cl_status' => 1,
-                            'q.is_deleted' => 0,
-                            'q.q_section' => $sections
-                        ])
-                        ->asArray()
-                        ->all();
+                            ->select([
+                                'cl.checklist_id',
+                                'cl.cl_name'
+                            ])
+                            ->joinWith('questions as q')
+                            ->where([
+                                'cl_department_id' => $department_id,
+                                'cl.is_deleted' => 0,
+                                'cl_status' => 1,
+                                'q.is_deleted' => 0,
+                                'q.q_section' => $sections
+                            ])
+                            ->asArray()
+                            ->all();
                 }
                 foreach ($result as $res) {
                     if ($res['questions']) {
@@ -875,8 +870,7 @@ class AuditsController extends Controller
         ]);
     }
 
-    public function actionAuditUser()
-    {
+    public function actionAuditUser() {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
@@ -886,38 +880,38 @@ class AuditsController extends Controller
                 header('Content-type: application/json');
 
                 $hotelDepartmentId = HotelDepartments::find()->where([
-                    'hotel_id' => $hotel_id,
-                    'department_id' => $department_id,
-                    'is_deleted' => 0
-                ])
-                    ->select([
-                        'id'
-                    ])
-                    ->one();
+                            'hotel_id' => $hotel_id,
+                            'department_id' => $department_id,
+                            'is_deleted' => 0
+                        ])
+                        ->select([
+                            'id'
+                        ])
+                        ->one();
                 $userArrayIds = [];
                 $userId = UserDepartments::find()->where([
-                    'hotel_department_id' => $hotelDepartmentId->id
-                ])
-                    ->select([
-                        'user_id'
-                    ])
-                    ->asArray()
-                    ->all();
+                            'hotel_department_id' => $hotelDepartmentId->id
+                        ])
+                        ->select([
+                            'user_id'
+                        ])
+                        ->asArray()
+                        ->all();
                 $userArrayIds = yii\helpers\ArrayHelper::getColumn($userId, 'user_id');
 
                 $out = User::find()->where([
-                    'IN',
-                    'user_id',
-                    $userArrayIds,
-                    'is_deleted' => 0,
-                    'user_type' => 2
-                ])
-                    ->select([
-                        'id' => 'user_id',
-                        'name' => 'first_name'
-                    ])
-                    ->asArray()
-                    ->all();
+                            'IN',
+                            'user_id',
+                            $userArrayIds,
+                            'is_deleted' => 0,
+                            'user_type' => 2
+                        ])
+                        ->select([
+                            'id' => 'user_id',
+                            'name' => 'first_name'
+                        ])
+                        ->asArray()
+                        ->all();
                 echo Json::encode([
                     'output' => $out,
                     'selected' => ''
@@ -931,8 +925,7 @@ class AuditsController extends Controller
         ]);
     }
 
-    public function actionCreateAudit()
-    {
+    public function actionCreateAudit() {
         if (Yii::$app->request->isAjax && Yii::$app->request->post()) {
 
             $response = [];
@@ -945,20 +938,20 @@ class AuditsController extends Controller
             $auditModel->end_date = date('Y-m-d', strtotime($auditModel->end_date));
 
             $startDateConflictAudits = AuditsSchedules::find()->where(['audit_id' => $auditModel->audit_id])
-                ->andWhere(['between', 'start_date', $auditModel->start_date, $auditModel->end_date])
-                ->andWhere(['is_deleted' => 0])
-                ->andWhere(['IN', 'status', [0, 1, 2, 3]])
-                ->asArray()->all();
+                            ->andWhere(['between', 'start_date', $auditModel->start_date, $auditModel->end_date])
+                            ->andWhere(['is_deleted' => 0])
+                            ->andWhere(['IN', 'status', [0, 1, 2, 3]])
+                            ->asArray()->all();
 
             if ($startDateConflictAudits) {
                 $response['message'] = 'Audit already exists between given scheduled dates. Please select different dates.';
                 return Json::encode($response);
             }
             $endDateConflictAudits = AuditsSchedules::find()->where(['audit_id' => $auditModel->audit_id])
-                ->andWhere(['between', 'end_date', $auditModel->start_date, $auditModel->end_date])
-                ->andWhere(['is_deleted' => 0])
-                ->andWhere(['IN', 'status', [0, 1, 2, 3]])
-                ->asArray()->all();
+                            ->andWhere(['between', 'end_date', $auditModel->start_date, $auditModel->end_date])
+                            ->andWhere(['is_deleted' => 0])
+                            ->andWhere(['IN', 'status', [0, 1, 2, 3]])
+                            ->asArray()->all();
             if ($endDateConflictAudits) {
                 $response['message'] = 'Audit already exists between given scheduled dates. Please select different dates.';
                 return Json::encode($response);
@@ -977,13 +970,12 @@ class AuditsController extends Controller
 
             Yii::$app->session->setFlash('success', 'Audit ' . $auditModel->audit_schedule_name . ' is scheduled successfully');
             return $this->redirect([
-                'update?id=' . Yii::$app->utils->encryptData($auditModel->audit_id)
+                        'update?id=' . Yii::$app->utils->encryptData($auditModel->audit_id)
             ]);
         }
     }
 
-    public function actionUpdateAuditUser()
-    {
+    public function actionUpdateAuditUser() {
         $post = yii::$app->request->post();
         if ($post && $post['update_auditschedule_id']) {
             if ($post['AuditsSchedules']['auditor_id'] != "") {
@@ -1003,17 +995,17 @@ class AuditsController extends Controller
                 $scheduledAudit->auditor_id = $auditSchedule['auditor_id'];
 
                 $startDateConflictAudits = AuditsSchedules::find()->where(['audit_id' => $scheduledAudit->audit_id])
-                    ->andWhere(['between', 'start_date', $scheduledAudit->start_date, $scheduledAudit->end_date])
-                    ->andWhere(['!=', 'audit_schedule_id', $decryptedAuditScheduleId])
-                    ->asArray()->all();
+                                ->andWhere(['between', 'start_date', $scheduledAudit->start_date, $scheduledAudit->end_date])
+                                ->andWhere(['!=', 'audit_schedule_id', $decryptedAuditScheduleId])
+                                ->asArray()->all();
                 if ($startDateConflictAudits) {
                     $response['error'] = 'Audit already exists between given scheduled dates. Please select different dates.';
                     return Json::encode($response);
                 }
                 $endDateConflictAudits = AuditsSchedules::find()->where(['audit_id' => $scheduledAudit->audit_id])
-                    ->andWhere(['between', 'end_date', $scheduledAudit->start_date, $scheduledAudit->end_date])
-                    ->andWhere(['!=', 'audit_schedule_id', $decryptedAuditScheduleId])
-                    ->asArray()->all();
+                                ->andWhere(['between', 'end_date', $scheduledAudit->start_date, $scheduledAudit->end_date])
+                                ->andWhere(['!=', 'audit_schedule_id', $decryptedAuditScheduleId])
+                                ->asArray()->all();
                 if ($endDateConflictAudits) {
                     $response['error'] = 'Audit already exists between given scheduled dates. Please select different dates.';
                     return Json::encode($response);
@@ -1029,10 +1021,10 @@ class AuditsController extends Controller
                     if ($oldAuditor != $scheduledAudit->auditor_id) {
 
                         $auditScheduled = AuditsSchedules::find()
-                            ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
-                            ->andWhere(['audit_schedule_id' => $decryptedAuditScheduleId])
-                            ->asArray()
-                            ->one();
+                                ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
+                                ->andWhere(['audit_schedule_id' => $decryptedAuditScheduleId])
+                                ->asArray()
+                                ->one();
 
                         $arrNotifications = [];
                         $arrNotifications['type'] = 'auditorUpdate';
@@ -1079,8 +1071,7 @@ class AuditsController extends Controller
         return json_encode($output);
     }
 
-    public function actionGetAuditUserId()
-    {
+    public function actionGetAuditUserId() {
         $post = yii::$app->request->post();
         if ($post) {
 
@@ -1098,20 +1089,19 @@ class AuditsController extends Controller
         }
     }
 
-    public function actionGetCheckListFrequency()
-    {
+    public function actionGetCheckListFrequency() {
         $response = [];
         if (Yii::$app->request->isPost) {
             $checklist_id = Yii::$app->request->post('checklist_id');
             if ($checklist_id) {
                 try {
                     $getFrequencyId = Checklists::find()->select('interval_name')
-                        ->join('LEFT JOIN', 'tbl_gp_interval i', 'i.interval_id=tbl_gp_checklists.cl_frequency_value')
-                        ->where([
-                            'checklist_id' => $checklist_id
-                        ])
-                        ->asArray()
-                        ->one();
+                            ->join('LEFT JOIN', 'tbl_gp_interval i', 'i.interval_id=tbl_gp_checklists.cl_frequency_value')
+                            ->where([
+                                'checklist_id' => $checklist_id
+                            ])
+                            ->asArray()
+                            ->one();
 
                     if ($getFrequencyId) {
                         $response = [
@@ -1132,8 +1122,7 @@ class AuditsController extends Controller
         return json_encode($response);
     }
 
-    public function actionCancel()
-    {
+    public function actionCancel() {
         $output = [];
         $post = yii::$app->request->post();
         if ($post) {
@@ -1142,30 +1131,30 @@ class AuditsController extends Controller
             if (!empty($decryptedAuditScheduleId)) {
 
                 $getAuditId = AuditsSchedules::find()->where([
-                    'audit_schedule_id' => $decryptedAuditScheduleId
-                ])->one();
+                            'audit_schedule_id' => $decryptedAuditScheduleId
+                        ])->one();
 
                 if ($getAuditId) {
 
                     $modelAuditSchedule = AuditsSchedules::updateAll([
-                        'status' => '4',
-                        'updated_by' => \Yii::$app->user->getId()
-                    ], 'audit_schedule_id=' . $decryptedAuditScheduleId);
+                                'status' => '4',
+                                'updated_by' => \Yii::$app->user->getId()
+                                    ], 'audit_schedule_id=' . $decryptedAuditScheduleId);
 
 
                     $AuditCount = AuditsSchedules::find()->where([
-                        'audit_id' => $getAuditId->audit_id
-                    ])
-                        ->andWhere([
-                            'IN',
-                            'status',
-                            [
-                                0,
-                                1,
-                                2,
-                            ]
-                        ])
-                        ->count();
+                                'audit_id' => $getAuditId->audit_id
+                            ])
+                            ->andWhere([
+                                'IN',
+                                'status',
+                                [
+                                    0,
+                                    1,
+                                    2,
+                                ]
+                            ])
+                            ->count();
 
                     $arrData = [];
                     $arrData['module'] = 'audit';
@@ -1177,28 +1166,26 @@ class AuditsController extends Controller
 
                         Audits::updateAll([
                             'status' => '4'
-                        ], 'audit_id=' . $getAuditId->audit_id);
+                                ], 'audit_id=' . $getAuditId->audit_id);
 
                         Yii::$app->session->setFlash('success', "Audit  $getAuditId->audit_schedule_name canceled successfully");
 
                         return $this->redirect(\Yii::$app->urlManager->createUrl([
-                            'audits'
+                                            'audits'
                         ]));
                     } else {
 
                         Yii::$app->session->setFlash('success', 'Schedule Audit ' . $getAuditId->audit_schedule_name . ' canceled successfully');
                         if ($fromIndex) {
                             return $this->redirect(\Yii::$app->urlManager->createUrl([
-                                'audits'
+                                                'audits'
                             ]));
                         } else {
                             return $this->redirect([
-                                'update?id=' . Yii::$app->utils->encryptData($getAuditId->audit_id)
+                                        'update?id=' . Yii::$app->utils->encryptData($getAuditId->audit_id)
                             ]);
                         }
-
                     }
-
                 }
             }
         } else {
@@ -1209,9 +1196,7 @@ class AuditsController extends Controller
         return json_encode($output);
     }
 
-
-    public function actionViewAudit($id)
-    {
+    public function actionViewAudit($id) {
         $valid = false;
         $model = $this->findModel(Yii::$app->utils->decryptData($id));
         $auditsSchedulesModel = new AuditsSchedules();
@@ -1221,12 +1206,11 @@ class AuditsController extends Controller
         $dataProvider = $auditScheduleSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('view-audit', [
-            'model' => $model,
-            'dataProvider' => $dataProvider,
-            'auditLocationsModel' => $auditLocationsModel,
-            'auditsSchedulesModel' => $auditsSchedulesModel,
-            'auditScheduleSearch' => $auditScheduleSearch
-
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
+                    'auditLocationsModel' => $auditLocationsModel,
+                    'auditsSchedulesModel' => $auditsSchedulesModel,
+                    'auditScheduleSearch' => $auditScheduleSearch
         ]);
     }
 
@@ -1236,11 +1220,11 @@ class AuditsController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionReports($id)
-    {
+    public function actionReports($id) {
+
         $model = AuditsSchedules::findOne(Yii::$app->utils->decryptData($id), 'status', 'IN', [
-            '3',
-            '4'
+                    '3',
+                    '4'
         ]);
 
 
@@ -1257,8 +1241,8 @@ class AuditsController extends Controller
         $questionsList = Audits::getAuditQuestionsAndAnswers($model->audit_schedule_id);
 
         $sectionSpecificQuestions = ArrayHelper::index($questionsList, null, [
-            'q_section',
-            'q_sub_section'
+                    'q_section',
+                    'q_sub_section'
         ]);
 
         $arrTotalQuestions = [];
@@ -1274,7 +1258,6 @@ class AuditsController extends Controller
                         ArrayHelper::multisort($question, 'question_id');
                         $modelAnswers[$subsectionId]['questions'] = $question;
                         $modelAnswers[$subsectionId]['sectionName'] = isset($sectionsList[$sectionId]) ? $sectionsList[$sectionId] : $sectionId;
-
                     }
                 }
                 $arrTotalQuestions[$sectionId] = $modelAnswers;
@@ -1284,7 +1267,6 @@ class AuditsController extends Controller
         /**
          * **************************End Quessionaries***********************
          */
-
         $totalScore = 0;
         if ($model->status == 3) {
             $this->actionMpdfDemo1();
@@ -1294,39 +1276,37 @@ class AuditsController extends Controller
 
 
         $tickets = Tickets::find()->where([
-            'audit_schedule_id' => $model->audit_schedule_id
-        ])
-            ->asArray()
-            ->all();
+                    'audit_schedule_id' => $model->audit_schedule_id
+                ])
+                ->asArray()
+                ->all();
 
         $nonCompliance = count($tickets);
 
         $chronicTickets = Tickets::find()->where([
-            'audit_schedule_id' => $model->audit_schedule_id,
-            'chronicity' => 1
-        ])
-            ->asArray()
-            ->all();
+                    'audit_schedule_id' => $model->audit_schedule_id,
+                    'chronicity' => 1
+                ])
+                ->asArray()
+                ->all();
 
         $chronicIssues = count($chronicTickets);
 
         return $this->render('reports', [
-            'model' => $model,
-            'modelAudit' => $modelAudit,
-            'modelAnswers' => $arrTotalQuestions,
-            'modelChecklists' => $modelChecklists,
-            'modelAuditAttachment' => $modelAuditAttachment,
-            'answersCount' => $answersCount,
-            'getAuditAttachments' => $getAuditAttachments,
-            'totalScore' => $totalScore,
-            'nonCompliance' => $nonCompliance,
-            'chronicIssues' => $chronicIssues
-
+                    'model' => $model,
+                    'modelAudit' => $modelAudit,
+                    'modelAnswers' => $arrTotalQuestions,
+                    'modelChecklists' => $modelChecklists,
+                    'modelAuditAttachment' => $modelAuditAttachment,
+                    'answersCount' => $answersCount,
+                    'getAuditAttachments' => $getAuditAttachments,
+                    'totalScore' => $totalScore,
+                    'nonCompliance' => $nonCompliance,
+                    'chronicIssues' => $chronicIssues
         ]);
     }
 
-    public function actionUpload()
-    {
+    public function actionUpload() {
         $post = Yii::$app->request->post();
         $audit_schedule_id = Yii::$app->utils->encryptData($post['audit_schedule_id']);
         $model = new AuditAttachments();
@@ -1352,13 +1332,12 @@ class AuditsController extends Controller
             }
         }
         return $this->redirect([
-            'audits/reports',
-            'id' => $audit_schedule_id
+                    'audits/reports',
+                    'id' => $audit_schedule_id
         ]);
     }
 
-    public function actionDeleteAuditAttachemnt()
-    {
+    public function actionDeleteAuditAttachemnt() {
         $post = yii::$app->request->post();
         $audit_schedule_id = Yii::$app->utils->encryptData($post['audit_schedule_id']);
 
@@ -1367,9 +1346,9 @@ class AuditsController extends Controller
             $decryptedRole = yii::$app->utils->decryptData($post['deletable_auditattachment_id']);
 
             $modelAuditAttachmentUpdate = AuditAttachments::updateAll([
-                'is_deleted' => 1,
-                'updated_by' => \Yii::$app->user->getId()
-            ], ' audit_attachment_id=' . $decryptedRole);
+                        'is_deleted' => 1,
+                        'updated_by' => \Yii::$app->user->getId()
+                            ], ' audit_attachment_id=' . $decryptedRole);
             if ($modelAuditAttachmentUpdate) {
                 Yii::$app->session->setFlash('success', "Attachment deleted successfully");
             } else {
@@ -1379,16 +1358,15 @@ class AuditsController extends Controller
             Yii::$app->session->setFlash('error', "Invalid request");
         }
         return $this->redirect([
-            'audits/reports',
-            'id' => $audit_schedule_id
+                    'audits/reports',
+                    'id' => $audit_schedule_id
         ]);
     }
 
-    public function actionMpdfDemo1()
-    {
+    public function actionMpdfDemo1() {
         $model = AuditsSchedules::findOne(Yii::$app->utils->decryptData($_GET['id']), 'status', 'IN', [
-            '3',
-            '4'
+                    '3',
+                    '4'
         ]);
         $modelAuditAttachment = new AuditAttachments();
         $modelAudit = Audits::getAuditDetails($model->audit_id); // get Audit details
@@ -1403,8 +1381,8 @@ class AuditsController extends Controller
         $questionsList = Audits::getAuditQuestionsAndAnswers($model->audit_schedule_id);
 
         $sectionSpecificQuestions = ArrayHelper::index($questionsList, null, [
-            'q_section',
-            'q_sub_section'
+                    'q_section',
+                    'q_sub_section'
         ]);
 
         $arrTotalQuestions = [];
@@ -1418,7 +1396,6 @@ class AuditsController extends Controller
                         ArrayHelper::multisort($question, 'question_id');
                         $modelAnswers[$subsectionId]['questions'] = $question;
                         $modelAnswers[$subsectionId]['sectionName'] = isset($sectionsList[$sectionId]) ? $sectionsList[$sectionId] : $sectionId;
-
                     }
                 }
                 $arrTotalQuestions[$sectionId] = $modelAnswers;
@@ -1428,18 +1405,18 @@ class AuditsController extends Controller
         $totalScore = AuditsSchedules::getAuditScore($model->audit_schedule_id);
 
         $tickets = Tickets::find()->where([
-            'audit_schedule_id' => $model->audit_schedule_id
-        ])
-            ->asArray()
-            ->all();
+                    'audit_schedule_id' => $model->audit_schedule_id
+                ])
+                ->asArray()
+                ->all();
         $nonCompliance = count($tickets);
 
         $chronicTickets = Tickets::find()->where([
-            'audit_schedule_id' => $model->audit_schedule_id,
-            'chronicity' => 1
-        ])
-            ->asArray()
-            ->all();
+                    'audit_schedule_id' => $model->audit_schedule_id,
+                    'chronicity' => 1
+                ])
+                ->asArray()
+                ->all();
         $chronicIssues = count($chronicTickets);
 
         $content = $this->renderPartial('download', [
@@ -1453,8 +1430,7 @@ class AuditsController extends Controller
             'totalScore' => $totalScore,
             'nonCompliance' => $nonCompliance,
             'chronicIssues' => $chronicIssues,
-            'chronicTickets'=>$chronicTickets
-
+            'chronicTickets' => $chronicTickets
         ]);
 
         $inlineCss = '.h4color{color:orange; text-align:center} 
@@ -1523,7 +1499,6 @@ class AuditsController extends Controller
             'destination' => Pdf::DEST_FILE,
             'format' => Pdf::FORMAT_A4,
             'orientation' => Pdf::ORIENT_PORTRAIT,
-
             'cssInline' => $inlineCss,
             'methods' => [
                 'SetHeader' => ['Green Park Corporate Audit Team.'],
@@ -1535,8 +1510,7 @@ class AuditsController extends Controller
         return $pdf->render();
     }
 
-    public function actionDownload()
-    {
+    public function actionDownload() {
         return $this->render('download');
     }
 
@@ -1544,8 +1518,7 @@ class AuditsController extends Controller
      * @return mixed
      * @throws \yii\db\Exception
      */
-    public function actionGenerateAcrossSectionReport()
-    {
+    public function actionGenerateAcrossSectionReport() {
         $model = AuditsSchedules::findOne(Yii::$app->utils->decryptData($_GET['id']));
 
         if ($model->audit->checklist->cl_audit_span == 2) {
@@ -1639,7 +1612,6 @@ class AuditsController extends Controller
 
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
-
                 'methods' => [
                     'SetHeader' => ['Green Park Corporate Audit Team.'],
                     'SetFooter' => ['{PAGENO}'],
@@ -1654,8 +1626,7 @@ class AuditsController extends Controller
         }
     }
 
-    public function actionSendAttachments()
-    {
+    public function actionSendAttachments() {
         if (Yii::$app->request->isAjax) {
             try {
                 $postInformation = Yii::$app->request->post();
@@ -1713,14 +1684,12 @@ class AuditsController extends Controller
 
             return Json::encode($response);
         }
-
     }
 
     /**
      *
      */
-    public function actionGetAuditorList()
-    {
+    public function actionGetAuditorList() {
         $finalArray = [];
 
         $post = Yii::$app->request->post();
@@ -1752,8 +1721,7 @@ class AuditsController extends Controller
         ]);
     }
 
-    public function actionGetRowDetails()
-    {
+    public function actionGetRowDetails() {
         if (Yii::$app->request->isAjax) {
             $expandRowKey = Yii::$app->request->post('expandRowKey');
             $searchModel = Yii::createObject(\app\models\search\AuditsSchedulesSearch::className());
@@ -1762,8 +1730,7 @@ class AuditsController extends Controller
         }
     }
 
-    public function actionDeleteAudit()
-    {
+    public function actionDeleteAudit() {
         $output = [];
         $post = yii::$app->request->post();
         if ($post) {
@@ -1773,15 +1740,15 @@ class AuditsController extends Controller
             if (!empty($decryptedAuditScheduleId)) {
 
                 $getAuditId = AuditsSchedules::find()->where([
-                    'audit_schedule_id' => $decryptedAuditScheduleId
-                ])->one();
+                            'audit_schedule_id' => $decryptedAuditScheduleId
+                        ])->one();
 
                 if ($getAuditId) {
 
                     AuditsSchedules::updateAll([
                         'is_deleted' => 1,
                         'updated_by' => \Yii::$app->user->getId()
-                    ], 'audit_schedule_id=' . $decryptedAuditScheduleId);
+                            ], 'audit_schedule_id=' . $decryptedAuditScheduleId);
 
                     self::saveAuditEndDate($getAuditId->audit_id);
 
@@ -1793,11 +1760,11 @@ class AuditsController extends Controller
                     Yii::$app->session->setFlash('success', 'Schedule Audit ' . $getAuditId->audit_schedule_name . ' deleted successfully');
                     if (!$fromIndex) {
                         return $this->redirect([
-                            'update?id=' . Yii::$app->utils->encryptData($getAuditId->audit_id)
+                                    'update?id=' . Yii::$app->utils->encryptData($getAuditId->audit_id)
                         ]);
                     } else {
                         return $this->redirect([
-                            'index'
+                                    'index'
                         ]);
                     }
                 }
@@ -1813,13 +1780,13 @@ class AuditsController extends Controller
     /**
      * @param $parentAuditId
      */
-    public static function saveAuditEndDate($parentAuditId)
-    {
+    public static function saveAuditEndDate($parentAuditId) {
         $maxDate = AuditsSchedules::find()->where(['audit_id' => $parentAuditId, 'is_deleted' => 0])->max('end_date');
         if ($maxDate) {
             Audits::updateAll([
                 'end_date' => $maxDate
-            ], 'audit_id=' . $parentAuditId);
+                    ], 'audit_id=' . $parentAuditId);
         }
     }
+
 }

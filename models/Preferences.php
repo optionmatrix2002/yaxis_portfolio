@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use DateTime;
 
 /**
  * This is the model class for table "{{%preferences}}".
@@ -22,22 +23,19 @@ use Yii;
  * @property User $createdBy
  * @property User $updateBy
  */
-class Preferences extends \yii\db\ActiveRecord
-{
+class Preferences extends \yii\db\ActiveRecord {
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%preferences}}';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [
                 [
@@ -110,8 +108,7 @@ class Preferences extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'preferences_id' => Yii::t('app', 'Preferences ID'),
             'preferences_name' => Yii::t('app', 'Preferences Name'),
@@ -131,10 +128,9 @@ class Preferences extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCreatedBy()
-    {
+    public function getCreatedBy() {
         return $this->hasOne(User::className(), [
-            'user_id' => 'created_by'
+                    'user_id' => 'created_by'
         ]);
     }
 
@@ -142,24 +138,20 @@ class Preferences extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUpdateBy()
-    {
+    public function getUpdateBy() {
         return $this->hasOne(User::className(), [
-            'user_id' => 'update_by'
+                    'user_id' => 'update_by'
         ]);
     }
 
-
-    public static function getSelectAuditorReminder()
-    {
+    public static function getSelectAuditorReminder() {
         return $newValueArry = [
             "1" => "1",
             "2" => "2"
         ];
     }
 
-    public static function getSelectEventReminder()
-    {
+    public static function getSelectEventReminder() {
         return $newValueArry = [
             "1" => "1",
             "2" => "2"
@@ -173,16 +165,15 @@ class Preferences extends \yii\db\ActiveRecord
      *            $name
      * @return mixed|string
      */
-    public static function getPrefValByName($name)
-    {
+    public static function getPrefValByName($name) {
         $model = Preferences::find()->select([
-            'preferences_value',
-            'preferences_type'
-        ])
-            ->where([
-                'preferences_name' => $name
-            ])
-            ->one();
+                    'preferences_value',
+                    'preferences_type'
+                ])
+                ->where([
+                    'preferences_name' => $name
+                ])
+                ->one();
         if ($model->preferences_type == 'multipleselect') {
             $result = json_decode($model->preferences_value);
         } else {
@@ -191,8 +182,39 @@ class Preferences extends \yii\db\ActiveRecord
         return $result;
     }
 
-    public static function getSelectNewValueArry()
-    {
+    /**
+     * Get preference value by name of the preference
+     *
+     * @param
+     *            $name
+     * @return mixed|string
+     */
+    public static function getAuditSlot() {
+        $return = [];
+        $model = Preferences::find()->select([
+                    'preferences_value',
+                    'preferences_type'
+                ])
+                ->where([
+                    'preferences_id' => 11
+                ])
+                ->one();
+        if (!$model) {
+            throw new \Exception('Error in Preference Settings for Hourly Audit Slot');
+        }
+        $times = json_decode($model->preferences_value, true);
+        $fromTime = $times['from'];
+        $toTime = $times['to'];
+        $date1 = new DateTime($fromTime);
+        $date2 = new DateTime($toTime);
+        $interval = $date1->diff($date2);
+        
+        $return['count'] = $interval->h;
+        $return['start_time'] = $fromTime;
+        return $interval->h ? $return : false;
+    }
+
+    public static function getSelectNewValueArry() {
         return $newValueArry = [
             "10" => "10",
             "20" => "20",
@@ -202,8 +224,7 @@ class Preferences extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getSelectRatingSliderArry()
-    {
+    public static function getSelectRatingSliderArry() {
         return $newValueArry = [
             "0" => "0",
             "1" => "1",
@@ -218,4 +239,5 @@ class Preferences extends \yii\db\ActiveRecord
             "10" => "10"
         ];
     }
+
 }

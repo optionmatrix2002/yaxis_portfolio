@@ -53,7 +53,7 @@ class AuditsSchedules extends \yii\db\ActiveRecord
                     'audit_id',
                     'auditor_id',
                     'start_date',
-                    'end_date'
+                    'end_date',
                     //'deligation_user_id',
                     //  'is_deleted'
                 ],
@@ -77,7 +77,7 @@ class AuditsSchedules extends \yii\db\ActiveRecord
                     'start_date',
                     'end_date',
                     'created_at',
-                    'updated_at', 'notification_status'
+                    'updated_at', 'notification_status','start_time'
                 ],
                 'safe'
             ],
