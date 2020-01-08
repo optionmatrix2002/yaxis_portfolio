@@ -401,6 +401,11 @@ class TicketsController extends ActiveController {
             if ($tickets->load(Yii::$app->request->post(),'')) {
                 $tickets->is_incident=1;
                 if (!$tickets->save()) {
+                    $tickets->ticket_name = $tickets->ticket_name . $tickets->ticket_id;
+
+                    Tickets::updateAll([
+                        'ticket_name' => $tickets->ticket_name
+                    ], 'ticket_id=' . $tickets->ticket_id);
                     $result = [
                         'response' => 'Fail',
                         'message' => 'Invalid Params',
