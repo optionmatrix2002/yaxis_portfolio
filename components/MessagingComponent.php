@@ -23,6 +23,7 @@ class MessagingComponent extends \yii\base\Component
      */
     public static function sendTextMessage($mobileNumber, $message)
     {
+         return true;
         $url = yii::$app->params['send_text_message_url'];
 
         $url = str_replace("mbl_num", $mobileNumber, $url);

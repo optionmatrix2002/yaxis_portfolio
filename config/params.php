@@ -7,7 +7,7 @@ return [
     'attachments_save_url' => '/img/answers_attachments/',
 	'guideLinesPath' => '/help/guidelines.pdf',
 	'ticketAttachments_save_url' => '/img/ticket_attachments/',
-	'message_notification_api_key'=>'AAAAlxl72lg:APA91bEDNoNNa6kyRZwbk5RwOd2ARySDd_YZh88JYsYloBladzxL5zIaZ92sBTsdr2aMvAX0J9_oJZ2zws10JgFhis7NaZS9I-7FVkoJD5bB-3SA9_lsHk5Rit59mgPaen_crYIEjnej',
+	'message_notification_api_key'=>'AAAAy8_Qf6M:APA91bGVtgnhQVG-i1-mJ0sSju5e2jGINf7_BJTQFKeFFenBwZpNZmZcwAGs4W2oJlGXR3-va69HP8fKYSzFsISllvq7hku2MW8Hl7xgIfeEAFC_PKTsDo4Rh5_87wVtC2SJnOTW57co',
     'message_send_url'=>'https://fcm.googleapis.com/fcm/send',
     'send_text_message_url'=> 'http://push.vg4mobile.com/newBulkClient.jsp?senderID=CRPADT&msisdn=mbl_num&userid=983&msg=msg_url&pwd=green@resorts'
 ];
