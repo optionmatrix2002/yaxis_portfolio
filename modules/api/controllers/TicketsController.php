@@ -33,10 +33,16 @@ class TicketsController extends ActiveController {
             $userType = Yii::$app->user->identity->user_type;
             if ($assigned_user_id) {
                 $allTickets = [];
-                $results = (new yii\db\Query())->select('t.ticket_id,t.priority_type_id,t.ticket_name,t.status as ticketstatus,t.due_date,acq.q_text as question,t.subject')
+                $results = (new yii\db\Query())->select('s.s_section_name,t.chronicity,t.description,t.ticket_id,t.priority_type_id,t.ticket_name,t.status as ticketstatus,t.due_date,t.created_at,acq.q_text as question,t.subject,c.name as location,h.hotel_name,d.department_name,u.first_name,u.last_name')
                         ->from('{{%tickets}} t')
-                        ->join('LEFT JOIN', "{{%audits_schedules}} as", 'as.audit_schedule_id = t.audit_schedule_id')
+                        ->join('LEFT JOIN', "{{%audits_schedules}} as", '`as`.audit_schedule_id = t.audit_schedule_id')
                         ->join('LEFT JOIN', "{{%audits_checklist_questions}} acq", 'acq.audit_id = t.audit_schedule_id')
+                        ->join('LEFT JOIN', "{{%user}} u", 'u.user_id = t.assigned_user_id')
+                        ->join('LEFT JOIN', "{{%locations}} l", 'l.location_id = t.location_id')
+                        ->join('LEFT JOIN', "{{%cities}} c", 'c.id = l.location_city_id')
+                        ->join('LEFT JOIN', "{{%hotels}} h", 'h.hotel_id = t.hotel_id')
+                        ->join('LEFT JOIN', "{{%departments}} d", 'd.department_id = t.department_id')
+                        ->join('LEFT JOIN', "{{%sections}} s", 's.section_id = t.section_id')
                         ->where([
                             't.created_by' => Yii::$app->user->identity->id
                         ])
@@ -51,9 +57,17 @@ class TicketsController extends ActiveController {
                         'ticket_number' => $result['ticket_name'],
                         'status' => $result['ticketstatus'],
                         'due_date' => $result['due_date'],
+                        'created_at'=> $result['created_at'],
                         'priority' => $result['priority_type_id'],
                         'question' => ($result['question']) ? $result['question'] : '',
-                        'subject' => ($result['subject']) ? $result['subject'] : ''
+                        'subject' => ($result['subject']) ? $result['subject'] : '',
+                        'name' => ($result['first_name']) ? $result['first_name'].' '.$result['last_name'] : '',
+                        'hotel_name' => ($result['hotel_name']) ? $result['hotel_name'] : '',
+                        'department_name' => ($result['department_name']) ? $result['department_name'] : '',
+                        'city_name' => ($result['location']) ? $result['location'] : '',
+                        'chronicity' => ($result['chronicity']) ? $result['chronicity'] : '',
+                        'section_name' => ($result['s_section_name']) ? $result['s_section_name'] : '',
+                        'description' => ($result['description']) ? $result['description'] : ''
                     ];
                 }
 

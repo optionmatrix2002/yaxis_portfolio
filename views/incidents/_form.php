@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use kartik\depdrop\DepDrop;
 use yii\helpers\Url;
 use kartik\select2\Select2;
+use app\models\Sections;
 
 AppAsset::register($this);
 
@@ -176,44 +177,7 @@ $this->registerJs('
                 </div>
                 <div class="col-md-9 col-sm-9 col-lg-9">
                     <div class="input-group col-md-6">
-                        <?php
-
-                        $sections = \app\models\Tickets::getHotelSections($model->hotel_id, $model->department_id);
-
-                        $sections = ArrayHelper::map($sections, 'section_id', function ($element) {
-                            return $element['department']['department_name'] . '-' . $element['section']['s_section_name'];
-                        });
-
-                        $sections = $sections ? $sections : [];
-
-                        if ($model->isNewRecord) {
-                            echo $form->field($model, 'section_id')
-                                ->widget(DepDrop::classname(), [
-                                    'options' => [
-                                        'id' => 'section_id'
-                                    ],
-                                    'data' => $sections,
-                                    'pluginOptions' => [
-                                        'depends' => [
-                                            'department_id',
-                                            'hotel_id'
-                                        ],
-                                        'placeholder' => 'Select Section',
-                                        'url' => Url::to([
-                                            'tickets/section'
-                                        ])
-                                    ]
-                                ])
-                                ->label(false);
-                        } else {
-
-                            echo $form->field($model, 'section_id')
-                                ->dropDownList($sections, [
-                                    'disabled' => 'disabled'
-                                ])
-                                ->label(false);
-                        }
-                        ?>
+                       <?= $form->field($model, 'section_id')->widget(Select2::classname(), ['data' => ArrayHelper::map(Sections::find()->where(['is_deleted' => 0,'is_active' => 1])->all(), 'section_id', 's_section_name'), 'language' => 'en', 'options' => ['placeholder' => 'Select Section'], 'pluginOptions' => ['allowClear' => true]])->label(false); ?>
                     </div>
                 </div>
             </div>
@@ -226,11 +190,9 @@ $this->registerJs('
 
                         <?php
 
-                        $subsections = \app\models\Tickets::getHotelSubSections($model->section_id, $model->department_id, $model->hotel_id);
+                        $subsections = \app\models\SubSections::find()->where(['is_deleted'=>0])->all();
 
-                        $subsections = ArrayHelper::map($subsections, 'sub_section_id', function ($element) {
-                            return $element['section']['s_section_name'] . '-' . $element['subSection']['ss_subsection_name'];
-                        });
+                        $subsections = ArrayHelper::map($subsections, 'sub_section_id', 'ss_subsection_name');
 
                         $subsections = $subsections ? $subsections : [];
 
@@ -240,12 +202,9 @@ $this->registerJs('
                                     'options' => [
                                         'id' => 'sub_section_id'
                                     ],
-                                    'data' => $subsections,
                                     'pluginOptions' => [
                                         'depends' => [
-                                            'section_id',
-                                            'department_id',
-                                            'hotel_id'
+                                            'tickets-section_id'
                                         ],
                                         'placeholder' => 'Select Sub Section',
                                         'url' => Url::to([

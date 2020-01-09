@@ -402,22 +402,18 @@ class TicketsController extends Controller {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_all_params'];
-            $sectionId = $parents['section_id'];
-            $departmentId = $parents['department_id'];
-            $hotelId = $parents['hotel_id'];
-            if ($departmentId && $hotelId && $sectionId) {
+            $sectionId = $parents['tickets-section_id'];
+            if ($sectionId) {
 
                 header('Content-type: application/json');
-                $subsections = Tickets::getHotelSubSections($sectionId, $departmentId, $hotelId);
+                $subsections = \app\models\SubSections::find()->where(['is_deleted'=>0,'ss_section_id'=>$sectionId])->all();
                 $resultArray = [];
                 if (!empty($subsections)) {
                     foreach ($subsections as $subSection) {
                         $list = [];
-                        if (isset($subSection['subSection'])) {
                             $list['id'] = $subSection['sub_section_id'];
-                            $list['name'] = $subSection['section']['s_section_name'] . '-' . $subSection['subSection']['ss_subsection_name'];
+                            $list['name'] = $subSection['ss_subsection_name'];
                             $resultArray[] = $list;
-                        }
                     }
                 }
                 echo Json::encode([
