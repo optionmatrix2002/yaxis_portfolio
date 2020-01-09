@@ -165,7 +165,11 @@ class CronController extends Controller {
 
     public function actionAuditHourly() {
         try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
             \Yii::$app->scheduler->triggerAuditHourlyNotifications();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
