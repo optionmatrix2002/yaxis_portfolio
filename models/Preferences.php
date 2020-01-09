@@ -233,15 +233,10 @@ class Preferences extends \yii\db\ActiveRecord {
             throw new \Exception('Error in Preference Settings for Hourly Audit Slot');
         }
         $times = json_decode($model->preferences_value, true);
-        $fromTime = $times['from'];
-        $toTime = $times['to'];
-        $date1 = new DateTime($fromTime);
-        $date2 = new DateTime($toTime);
-        $interval = $date1->diff($date2);
 
-        $return['count'] = $interval->h;
-        $return['start_time'] = $fromTime;
-        return $interval->h ? $return : false;
+        $return['count'] = $times['to'] - $times['from'];
+        $return['start_time'] = $times['from'];
+        return $return;
     }
 
     public static function getSelectNewValueArry() {

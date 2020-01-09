@@ -316,10 +316,10 @@ class AuditsController extends Controller {
                         'audit_name' => $model->audit_name
                             ], 'audit_id=' . $model->audit_id);
                     for ($i = 1; $i <= $frequencyTimeSlot; $i++) {
-                        $addHour = $i-1;
+                        $addHour = $i - 1;
                         $auditsSchedulesModel->audit_schedule_id = null;
                         $auditsSchedulesModel->isNewRecord = true;
-                        $auditsSchedulesModel->start_time = $startTime ? date('H:i', strtotime($startTime . '+'.$i.' hour')) : null;
+                        $auditsSchedulesModel->start_time = $startTime ? $startTime + $i . ':00' : null;
                         $auditsSchedulesModel->audit_schedule_name = $model->audit_name . "-" . $i;
                         $auditsSchedulesModel->audit_id = $model->audit_id;
                         $auditsSchedulesModel->auditor_id = $model->user_id;
