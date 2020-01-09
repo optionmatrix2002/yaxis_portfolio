@@ -199,4 +199,16 @@ class CronController extends Controller {
         }
     }
 
+    public function actionScheduleWeeklyAudit() {
+        try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
+            \Yii::$app->scheduler->scheduleWeeklyAudit();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
 }

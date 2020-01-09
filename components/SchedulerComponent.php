@@ -20,10 +20,10 @@ use app\models\Departments;
 use app\models\Checklists;
 
 class SchedulerComponent extends Component {
-      const AUDIT_REMINDER_HOURLY = 'Reminder: Audit $_AUDIT_ID will be scheduled after 30 minutes. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
-      const AUDIT_REMINDER_HOURLY_OVERDUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due time. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
-      
-       const AUDIT_REMINDER_MESSAGE_HOURLY = 'Hi $_FULL_NAME
+
+    const AUDIT_REMINDER_HOURLY = 'Reminder: Audit $_AUDIT_ID will be scheduled after 30 minutes. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    const AUDIT_REMINDER_HOURLY_OVERDUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due time. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    const AUDIT_REMINDER_MESSAGE_HOURLY = 'Hi $_FULL_NAME
 
 Reminder: Audit $_AUDIT_ID will be scheduled after 30 minutes.
 
@@ -33,8 +33,7 @@ Checklist : $_CHECKLIST
 
 Best Regards, 
 Y Axis Audit Team.';
-       
-              const AUDIT_REMINDER_MESSAGE_HOURLY_OVERDUE = 'Hi $_FULL_NAME
+    const AUDIT_REMINDER_MESSAGE_HOURLY_OVERDUE = 'Hi $_FULL_NAME
 
 Overdue Reminder: Audit $_AUDIT_ID has breached due time.
 
@@ -44,7 +43,6 @@ Checklist : $_CHECKLIST
 
 Best Regards, 
 Y Axis Audit Team.';
-       
     const AUDIT_ASSIGN = 'Audit $_AUDIT_ID is scheduled. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br> Due Date: $_DUE_DATE.';
     const AUDIT_ASSIGN_MESSAGE = 'Hi $_FULL_NAME,
 Audit $_AUDIT_ID is scheduled  .
@@ -2577,7 +2575,7 @@ Y Axis Audit Team.';
                     $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
                     $notifications['audit_id'] = $eachResult['audit_schedule_name'];
                     $notifications['due_date'] = $eachResult['start_time'];
-                    $notifications['audit_schedule_name']=$eachResult['audit_schedule_name'];
+                    $notifications['audit_schedule_name'] = $eachResult['audit_schedule_name'];
                     $notifications['pushNotificationTrigger'] = 1;
                     Yii::$app->scheduler->triggerNotifications($notifications);
                     Yii::$app->db->createCommand()
@@ -2593,37 +2591,151 @@ Y Axis Audit Team.';
 
     public function scheduleDailyAudit() {
         $auditsSchedulesModel = new AuditsSchedules();
-        $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 2])->asArray()->all(), 'checklist_id');
-        $checklistIds = implode("','", $checklistIds);
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 2])->asArray()->all(), 'checklist_id');
+            $checklistIds = implode("','", $checklistIds);
 
-        $query = new Query();
-        $query = Yii::$app->getDb();
-        $command = $query->createCommand("SELECT a.* FROM tbl_gp_audits a LEFT JOIN tbl_gp_checklists cl ON cl.checklist_id=a.checklist_id WHERE cl.checklist_id IN('$checklistIds')");
+            $query = new Query();
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT a.*,u.first_name,u.last_name FROM tbl_gp_audits a LEFT JOIN tbl_gp_checklists cl ON cl.checklist_id=a.checklist_id LEFT JOIN tbl_gp_user u ON u.user_id=a.created_by WHERE cl.checklist_id IN('$checklistIds')");
 
-        $result = $command->queryAll();
+            $result = $command->queryAll();
+            if ($result) {
+                foreach ($result as $audit) {
+                    $auditsCount = AuditsSchedules::find()->where(['audit_id' => $audit['audit_id']])->count();
+                    $auditsCount += 1;
+                    $auditsSchedulesModel->audit_schedule_id = null;
+                    $auditsSchedulesModel->isNewRecord = true;
+                    $auditsSchedulesModel->start_time = null;
+                    $auditsSchedulesModel->audit_schedule_name = 'AU00' . $audit['audit_id'] . '-' . $auditsCount;
+                    $auditsSchedulesModel->audit_id = $audit['audit_id'];
+                    $auditsSchedulesModel->auditor_id = $audit['user_id'];
+                    $auditsSchedulesModel->start_date = $audit['start_date'];
+                    $auditsSchedulesModel->end_date = $audit['end_date'];
+                    $auditsSchedulesModel->deligation_user_id = '';
+                    $auditsSchedulesModel->deligation_status = 0;
+                    $auditsSchedulesModel->status = 0;
+                    $auditsSchedulesModel->is_deleted = 0;
 
-        if ($result) {
-            foreach ($result as $audit) {
-                $auditsSchedulesModel->audit_schedule_id = null;
-                $auditsSchedulesModel->isNewRecord = true;
-                $auditsSchedulesModel->start_time = null;
-                $auditsSchedulesModel->audit_schedule_name = '';
-                $auditsSchedulesModel->audit_id = $audit['audit_id'];
-                $auditsSchedulesModel->auditor_id = $audit['user_id'];
-                $auditsSchedulesModel->start_date = $audit['start_date'];
-                $auditsSchedulesModel->end_date = $audit['end_date'];
-                $auditsSchedulesModel->deligation_user_id = '';
-                $auditsSchedulesModel->deligation_status = 0;
-                $auditsSchedulesModel->status = 0;
-                $auditsSchedulesModel->is_deleted = 0;
+                    if ($auditsSchedulesModel->save()) {
+                        $auditScheduled = AuditsSchedules::find()
+                                ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
+                                ->andWhere([AuditsSchedules::tableName() . '.audit_id' => $audit['audit_id']])
+                                ->orderBy(['audit_schedule_id' => SORT_ASC])
+                                ->asArray()
+                                ->one();
+
+                        $user = User::findOne($auditScheduled['auditor_id']);
+                        $arrNotifications = [];
+                        $arrNotifications['type'] = 'auditAssigned';
+                        $arrNotifications['toEmail'] = $user->email;
+                        $arrNotifications['mobileNumber'] = $user->phone;
+                        $arrNotifications['deviceToken'] = $user->device_token;
+
+                        $attributes = $auditScheduled;
+                        $attributes['department'] = isset($auditScheduled['audit']['department']['department_name']) ? $auditScheduled['audit']['department']['department_name'] : '';
+                        $attributes['checkList'] = isset($auditScheduled['audit']['checklist']['cl_name']) ? $auditScheduled['audit']['checklist']['cl_name'] : '';
+                        $attributes['hotel'] = isset($auditScheduled['audit']['hotel']['hotel_name']) ? $auditScheduled['audit']['hotel']['hotel_name'] : '';
+
+                        $arrNotifications['data'] = $attributes;
+                        $arrNotifications['userId'] = $user->user_id;
+                        Yii::$app->scheduler->triggerNotifications($arrNotifications);
+
+
+                        $arrData = [];
+                        $arrData['module'] = 'audit';
+                        $arrData['type'] = 'create';
+                        $arrData['message'] = "Audit - <b>" . $audit['audit_name'] . '</b> is created by ' . $audit['first_name'] . ' ' . $audit['last_name'] . '.';
+                        Yii::$app->events->createEvent($arrData);
+                    } else {
+                        print_r($auditsSchedulesModel->errors);
+                        exit;
+                    }
+                }
             }
+            $transaction->commit();
+        } catch (Exception $ex) {
+            $transaction->rollBack();
+            /*  print_r($ex->getMessage());
+              exit; */
         }
+    }
+
+    public function scheduleWeeklyAudit() {
+        $auditsSchedulesModel = new AuditsSchedules();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT `checklist_id` FROM `tbl_gp_checklists` WHERE (`cl_frequency_value`=3) AND (`cl_frequency_duration`=WEEKDAY(NOW())+1)");
+            $checklistIds = ArrayHelper::getColumn($command->queryAll(), 'checklist_id');
+         
+            $checklistIds = implode("','", $checklistIds);
+
+            $query = new Query();
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT a.*,u.first_name,u.last_name FROM tbl_gp_audits a LEFT JOIN tbl_gp_checklists cl ON cl.checklist_id=a.checklist_id LEFT JOIN tbl_gp_user u ON u.user_id=a.created_by WHERE cl.checklist_id IN('$checklistIds')");
+
+            $result = $command->queryAll();
+            if ($result) {
+                foreach ($result as $audit) {
+                    $auditsCount = AuditsSchedules::find()->where(['audit_id' => $audit['audit_id']])->count();
+                    $auditsCount += 1;
+                    $auditsSchedulesModel->audit_schedule_id = null;
+                    $auditsSchedulesModel->isNewRecord = true;
+                    $auditsSchedulesModel->start_time = null;
+                    $auditsSchedulesModel->audit_schedule_name = 'AU00' . $audit['audit_id'] . '-' . $auditsCount;
+                    $auditsSchedulesModel->audit_id = $audit['audit_id'];
+                    $auditsSchedulesModel->auditor_id = $audit['user_id'];
+                    $auditsSchedulesModel->start_date = $audit['start_date'];
+                    $auditsSchedulesModel->end_date = $audit['end_date'];
+                    $auditsSchedulesModel->deligation_user_id = '';
+                    $auditsSchedulesModel->deligation_status = 0;
+                    $auditsSchedulesModel->status = 0;
+                    $auditsSchedulesModel->is_deleted = 0;
+
+                    if ($auditsSchedulesModel->save()) {
+                        $auditScheduled = AuditsSchedules::find()
+                                ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
+                                ->andWhere([AuditsSchedules::tableName() . '.audit_id' => $audit['audit_id']])
+                                ->orderBy(['audit_schedule_id' => SORT_ASC])
+                                ->asArray()
+                                ->one();
+
+                        $user = User::findOne($auditScheduled['auditor_id']);
+                        $arrNotifications = [];
+                        $arrNotifications['type'] = 'auditAssigned';
+                        $arrNotifications['toEmail'] = $user->email;
+                        $arrNotifications['mobileNumber'] = $user->phone;
+                        $arrNotifications['deviceToken'] = $user->device_token;
+
+                        $attributes = $auditScheduled;
+                        $attributes['department'] = isset($auditScheduled['audit']['department']['department_name']) ? $auditScheduled['audit']['department']['department_name'] : '';
+                        $attributes['checkList'] = isset($auditScheduled['audit']['checklist']['cl_name']) ? $auditScheduled['audit']['checklist']['cl_name'] : '';
+                        $attributes['hotel'] = isset($auditScheduled['audit']['hotel']['hotel_name']) ? $auditScheduled['audit']['hotel']['hotel_name'] : '';
+
+                        $arrNotifications['data'] = $attributes;
+                        $arrNotifications['userId'] = $user->user_id;
+                        Yii::$app->scheduler->triggerNotifications($arrNotifications);
 
 
-        print_r($result);
-        exit;
-        echo $checklistIds;
-        exit;
+                        $arrData = [];
+                        $arrData['module'] = 'audit';
+                        $arrData['type'] = 'create';
+                        $arrData['message'] = "Audit - <b>" . $audit['audit_name'] . '</b> is created by ' . $audit['first_name'] . ' ' . $audit['last_name'] . '.';
+                        Yii::$app->events->createEvent($arrData);
+                    } else {
+                        print_r($auditsSchedulesModel->errors);
+                        exit;
+                    }
+                }
+            }
+            $transaction->commit();
+        } catch (Exception $ex) {
+            $transaction->rollBack();
+            print_r($ex->getMessage());
+            exit;
+        }
     }
 
 }
