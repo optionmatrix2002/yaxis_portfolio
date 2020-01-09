@@ -17,6 +17,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use app\models\Answers;
 use app\models\Departments;
+use app\models\Checklists;
 
 class SchedulerComponent extends Component
 {
@@ -2500,6 +2501,21 @@ Green Park Corporate Audit Team.';
         $content .= '</tbody></table>';
 
         return $content;
+    }
+
+    public function triggerAuditHourlyNotifications(){
+        $cDay = date('w');
+        $cDate = date('Y-m-d');
+        $cHour = date('H');
+        $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
+       // $checklistIds = implode("','", $checklistIds);
+       $query = Yii::$app->getDb();
+       $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(NOW()),TIME(sa.start_time)),CONCAT_WS(\" \",sa.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`, `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, `sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`, CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, `sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `child`,`sa`.`deligation_status`, `sa`.`start_date`, `sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0) AND(`sa`.`is_deleted` = 0) AND(TIMESTAMPDIFF(MINUTE,TIME(NOW()),TIME(sa.start_time)) >= 10) AND (`ck`.`cl_frequency_value` = 1) AND (DATE(sa.start_date) <= '".$cDate."') AND (DATE(sa.end_date) >= '".$cDate."') AND `sa`.`start_time` IS NOT NULL");
+
+       $result = $command->queryAll();
+
+        print_r($result);
+        exit;
     }
 }
 

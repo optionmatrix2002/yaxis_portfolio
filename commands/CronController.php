@@ -171,5 +171,13 @@ class CronController extends Controller
             throw new Exception($e->getMessage());
         }
     }
+	
+	public function actionAuditHourly(){
+        try {
+            \Yii::$app->scheduler->triggerAuditHourlyNotifications();
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+	}
 
 }
