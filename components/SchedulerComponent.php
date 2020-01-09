@@ -20,7 +20,31 @@ use app\models\Departments;
 use app\models\Checklists;
 
 class SchedulerComponent extends Component {
+      const AUDIT_REMINDER_HOURLY = 'Reminder: Audit $_AUDIT_ID will be scheduled after 30 minutes. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+      const AUDIT_REMINDER_HOURLY_OVERDUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due time. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+      
+       const AUDIT_REMINDER_MESSAGE_HOURLY = 'Hi $_FULL_NAME
 
+Reminder: Audit $_AUDIT_ID will be scheduled after 30 minutes.
+
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
+Checklist : $_CHECKLIST 
+
+Best Regards, 
+Y Axis Audit Team.';
+       
+              const AUDIT_REMINDER_MESSAGE_HOURLY_OVERDUE = 'Hi $_FULL_NAME
+
+Overdue Reminder: Audit $_AUDIT_ID has breached due time.
+
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
+Checklist : $_CHECKLIST 
+
+Best Regards, 
+Y Axis Audit Team.';
+       
     const AUDIT_ASSIGN = 'Audit $_AUDIT_ID is scheduled. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br> Due Date: $_DUE_DATE.';
     const AUDIT_ASSIGN_MESSAGE = 'Hi $_FULL_NAME,
 Audit $_AUDIT_ID is scheduled  .
@@ -30,7 +54,7 @@ Checklist : $_CHECKLIST
 Due Date: $_DUE_DATE.
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const AUDIT_ASSIGN_NOTIFICATION = 'Hi $_FULL_NAME &Audit $_AUDIT_ID is scheduled. &Office : $_HOTEL &Floor : $_DEPARTMENT &Checklist : $_CHECKLIST &Due Date: $_DUE_DATE.';
     const AUDIT_REMINDER = 'Reminder: Audit $_AUDIT_ID is pending for submission by $_DUE_DATE. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
     const AUDIT_REMINDER_MESSAGE = 'Hi $_FULL_NAME
@@ -42,7 +66,7 @@ Floor : $_DEPARTMENT
 Checklist : $_CHECKLIST 
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const AUDIT_OVER_DUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due date $_DUE_DATE. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
     const AUDIT_OVER_DUE_MESSAGE = 'Hi $_FULL_NAME
 
@@ -53,7 +77,7 @@ Floor : $_DEPARTMENT
 Checklist : $_CHECKLIST 
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const LOW_SCORE_AUDIT = 'Low Score Alert:<br> Audit : $_AUDIT_ID <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT<br>  Checklist : $_CHECKLIST  <br> has scored $_SCORE_PERCENTAGE.';
     const LOW_SCORE_AUDIT_NOTIFICATION = 'Low Score Alert: &Audit $_AUDIT_ID &Office : $_HOTEL &Floor : $_DEPARTMENT &Checklist : $_CHECKLIST has scored $_SCORE_PERCENTAGE.';
     const LOW_SCORE_AUDIT_MESSAGE = 'Hi $_FULL_NAME
@@ -65,7 +89,7 @@ Floor : $_DEPARTMENT
 Checklist $_CHECKLIST  has scored $_SCORE_PERCENTAGE.
 
 Best Regards,
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const AUDIT_SUBMITTED = 'Audit $_AUDIT_ID has been submitted. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br>';
     const AUDIT_SUBMITTED_NOTIFICATION = 'Audit $_AUDIT_ID has been submitted. &Office : $_HOTEL &Floor : $_DEPARTMENT  &Checklist : $_CHECKLIST .';
     const AUDIT_SUBMITTED_MESSAGE = 'Hi $_FULL_NAME
@@ -76,7 +100,7 @@ Floor :  $_DEPARTMENT
 Checklist : $_CHECKLIST 
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_ASSIGN = 'Ticket $_TICKET_ID is assigned to you. <br>Office : $_HOTEL<br>  Floor : $_DEPARTMENT <br>Subject: $_QUESTION<br> Due Date: $_DUE_DATE.';
     const TICKET_ASSIGN_MESSAGE = 'Hi $_FULL_NAME
 
@@ -87,7 +111,7 @@ Subject: $_QUESTION
 Due Date : $_DUE_DATE.
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_ASSIGN_NOTIFICATION = 'Ticket $_TICKET_ID is assigned to you. &Office : $_HOTEL &Floor : $_DEPARTMENT &Subject $_QUESTION &Due Date: $_DUE_DATE.';
     const TICKET_SUBMITTED = 'Ticket $_TICKET_ID has been $_STATUS. <br>Office : $_HOTEL <br> Floor: $_DEPARTMENT <br>Subject : $_QUESTION.';
     const TICKET_SUBMITTED_MESSAGE = 'Hi $_FULL_NAME   
@@ -97,7 +121,7 @@ Floor : $_DEPARTMENT
 Subject: $_QUESTION
 
 Best Regards,
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_SUBMITTED_NOTIFICATION = 'Ticket $_TICKET_ID has been $_STATUS. &Office : $_HOTEL  &Floor : $_DEPARTMENT &Subject : "$_QUESTION".';
     const TICKET_REJECTED = 'Ticket $_TICKET_ID  has been rejected .<br>Office : $_HOTEL  <br>Floor : $_DEPARTMENT <br>Subject : "$_QUESTION".';
     const TICKET_REJECTED_NOTIFICATION = 'Ticket $_TICKET_ID  has been rejected .&Office : $_HOTEL  &Floor : $_DEPARTMENT &Subject : "$_QUESTION".';
@@ -109,7 +133,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT 
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_REMINDER = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_REMINDER_NOTIFICATION = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.&Subject : "$_QUESTION" &Office : $_HOTEL &Floor : $_DEPARTMENT';
     const TICKET_REMINDER_MESSAGE = 'Hi $_FULL_NAME
@@ -121,7 +145,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT
 
 Best Regards,
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_OVER_DUE = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_OVER_DUE_NOTIFICATION = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.&Subject : "$_QUESTION" &Office : $_HOTEL &Floor : $_DEPARTMENT';
     const TICKET_OVER_DUE_MESSAGE = 'Hi $_FULL_NAME
@@ -133,7 +157,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_ESCALATION_ONE = 'Escalation 1: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_ONE_MESSAGE = 'Hi $_FULL_NAME
 
@@ -144,7 +168,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_ESCALATION_TWO = 'Escalation 2: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_TWO_MESSAGE = 'Hi $_FULL_NAME
 
@@ -155,7 +179,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_ESCALATION_THREE = 'Escalation 3: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_THREE_MESSAGE = 'Hi $_FULL_NAME
 
@@ -166,7 +190,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_ESCALATION_FOUR = 'Escalation 4: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_FOUR_MESSAGE = 'Hi $_FULL_NAME
 
@@ -177,7 +201,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const TICKET_ESCALATION_FIVE = 'Escalation 5: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_FIVE_MESSAGE = 'Hi $_FULL_NAME
 
@@ -188,7 +212,7 @@ Office : $_HOTEL
 Floor : $_DEPARTMENT
 
 Best Regards, 
-Green Park Corporate Audit Team.';
+Y Axis Audit Team.';
     const REMAINDER_AUDIT_ID = 1;
     const REMAINDER_OVERDUE_ID = 2;
     const LOW_SCROE_AUDIT_ID = 3;
@@ -1806,9 +1830,29 @@ Green Park Corporate Audit Team.';
                     break;
                 case 'auditHourlyReminder':
 
-                    $content = self::AUDIT_REMINDER;
-                    $messageContent = self::AUDIT_REMINDER_MESSAGE;
-                    $notificationContent = self::AUDIT_REMINDER;
+                    $content = self::AUDIT_REMINDER_HOURLY;
+                    $messageContent = self::AUDIT_REMINDER_MESSAGE_HOURLY;
+                    $notificationContent = self::AUDIT_REMINDER_HOURLY;
+
+                    $userType = 2;
+                    $alertType = 'Audit Assign';
+                    $logId = $data['audit_id'];
+
+                    $checkListName = isset($data['cl_name']) ? $data['cl_name'] : '';
+                    $hotelName = isset($data['hotel_name']) ? $data['hotel_name'] : '';
+                    $date = isset($data['start_date']) ? $data['start_date'] : '';
+                    $date = $date ? date('M Y', strtotime($date)) : '';
+
+                    $subject = 'Audit  ' . $data['audit_id'] . ' remainder - ' . $hotelName . ' ' . $checkListName . ' ' . $date;
+
+                    $content = $this->replaceRemainderShortCode($content, $data, $user);
+                    $messageContent = $this->replaceRemainderShortCode($messageContent, $data, $user);
+                    $notificationContent = $this->replaceRemainderShortCode($notificationContent, $data, $user);
+                    break;
+                case 'auditHourlyReminderOverdue':
+                    $content = self::AUDIT_REMINDER_HOURLY_OVERDUE;
+                    $messageContent = self::AUDIT_REMINDER_MESSAGE_HOURLY_OVERDUE;
+                    $notificationContent = self::AUDIT_REMINDER_HOURLY_OVERDUE;
 
                     $userType = 2;
                     $alertType = 'Audit Assign';
@@ -2119,7 +2163,7 @@ Green Park Corporate Audit Team.';
             $message .= "<tr><td></td></tr>";
             $message .= "<tr><td></td></tr>";
             $message .= "<tr><td>Best Regards,</td></tr>";
-            $message .= "<tr><td>Green Park Corporate Audit Team.</td></tr></table>";
+            $message .= "<tr><td>Y Axis Audit Team.</td></tr></table>";
             $message .= "</body></html>";
             return $message;
         } catch (Exception $e) {
@@ -2452,7 +2496,7 @@ Green Park Corporate Audit Team.';
                     . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
                     . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
                     . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
-                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `child`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `audit_schedule_name`,`sa`.`deligation_status`, `sa`.`start_date`, "
                     . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
                     . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
                     . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
@@ -2477,7 +2521,7 @@ Green Park Corporate Audit Team.';
 
                     $notifications['data'] = $attributes;
                     $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
-                    $notifications['audit_id'] = $eachResult['audit_id'];
+                    $notifications['audit_id'] = $eachResult['audit_schedule_name'];
                     $notifications['due_date'] = $eachResult['start_time'];
                     $notifications['pushNotificationTrigger'] = 1;
                     Yii::$app->scheduler->triggerNotifications($notifications);
@@ -2505,7 +2549,7 @@ Green Park Corporate Audit Team.';
                     . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
                     . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
                     . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
-                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `child`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `audit_schedule_name`,`sa`.`deligation_status`, `sa`.`start_date`, "
                     . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
                     . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
                     . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
@@ -2519,7 +2563,7 @@ Green Park Corporate Audit Team.';
             if ($result) {
                 foreach ($result as $eachResult) {
                     $notifications = [];
-                    $notifications['type'] = 'auditHourlyReminder';
+                    $notifications['type'] = 'auditHourlyReminderOverdue';
                     $notifications['toEmail'] = $eachResult['email'];
                     $notifications['mobileNumber'] = $eachResult['phone'];
                     $notifications['deviceToken'] = $eachResult['device_token'];
@@ -2531,8 +2575,9 @@ Green Park Corporate Audit Team.';
 
                     $notifications['data'] = $attributes;
                     $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
-                    $notifications['audit_id'] = $eachResult['audit_id'];
+                    $notifications['audit_id'] = $eachResult['audit_schedule_name'];
                     $notifications['due_date'] = $eachResult['start_time'];
+                    $notifications['audit_schedule_name']=$eachResult['audit_schedule_name'];
                     $notifications['pushNotificationTrigger'] = 1;
                     Yii::$app->scheduler->triggerNotifications($notifications);
                     Yii::$app->db->createCommand()
