@@ -25,6 +25,59 @@ class TicketsController extends ActiveController {
         return $behaviors;
     }
 
+        public function actionAllIncidentsHistory() {
+        try {
+            $output = [];
+            $assigned_user_id = Yii::$app->request->post('user_id');
+            $is_incident = Yii::$app->request->post('is_incident');
+            $userType = Yii::$app->user->identity->user_type;
+            if ($assigned_user_id) {
+                $allTickets = [];
+                $results = (new yii\db\Query())->select('t.ticket_id,t.priority_type_id,t.ticket_name,t.status as ticketstatus,t.due_date,acq.q_text as question,t.subject')
+                        ->from('{{%tickets}} t')
+                        ->join('LEFT JOIN', "{{%audits_schedules}} as", 'as.audit_schedule_id = t.audit_schedule_id')
+                        ->join('LEFT JOIN', "{{%audits_checklist_questions}} acq", 'acq.audit_id = t.audit_schedule_id')
+                        ->where([
+                            't.created_by' => Yii::$app->user->identity->id
+                        ])
+                        ->andWhere(['t.is_deleted' => 0, 't.is_incident' => 1
+                        ])
+                        ->groupBy(['t.ticket_id'])
+                        ->all();
+
+                foreach ($results as $result) {
+                    $allTickets[] = [
+                        'ticket_id' => $result['ticket_id'],
+                        'ticket_number' => $result['ticket_name'],
+                        'status' => $result['ticketstatus'],
+                        'due_date' => $result['due_date'],
+                        'priority' => $result['priority_type_id'],
+                        'question' => ($result['question']) ? $result['question'] : '',
+                        'subject' => ($result['subject']) ? $result['subject'] : ''
+                    ];
+                }
+
+                $tickets = ($allTickets) ? $allTickets : [];
+                $output = [
+                    '200' => 'Success',
+                    'response' => 'success',
+                    'message' => 'Successfull',
+                    'tickets' => $tickets
+                ];
+            } else {
+                $output = [
+                    '404' => 'Fail',
+                    'response' => 'fail',
+                    'message' => 'No post data'
+                ];
+            }
+            return $output;
+        } catch (\Exception $ex) {
+            throw new HttpException(422, $ex->getMessage());
+        }
+    }
+
+    
     public function actionAllTickets() {
         try {
             $output = [];
