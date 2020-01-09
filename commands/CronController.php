@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -18,14 +19,12 @@ use yii\db\Exception;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class CronController extends Controller
-{
+class CronController extends Controller {
 
     /**
      * Triggers notifications for tickets
      */
-    public function actionTriggerNotificationsForTickets()
-    {
+    public function actionTriggerNotificationsForTickets() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -41,8 +40,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for tickets
      */
-    public function actionTriggerNotificationsForOverDueTickets()
-    {
+    public function actionTriggerNotificationsForOverDueTickets() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -58,8 +56,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for tickets
      */
-    public function actionTriggerEscalationOneForTickets()
-    {
+    public function actionTriggerEscalationOneForTickets() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -75,8 +72,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for tickets
      */
-    public function actionTriggerEscalationTwoForTickets()
-    {
+    public function actionTriggerEscalationTwoForTickets() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -92,8 +88,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for tickets
      */
-    public function actionTriggerEscalationThreeForTickets()
-    {
+    public function actionTriggerEscalationThreeForTickets() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -109,8 +104,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for tickets
      */
-    public function actionTriggerEscalationFourForTickets()
-    {
+    public function actionTriggerEscalationFourForTickets() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -126,8 +120,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for tickets
      */
-    public function actionTriggerEscalationFiveForTickets()
-    {
+    public function actionTriggerEscalationFiveForTickets() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -143,8 +136,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for Audits.
      */
-    public function actionTriggerNotificationsForAudits()
-    {
+    public function actionTriggerNotificationsForAudits() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -159,8 +151,7 @@ class CronController extends Controller
     /**
      * Triggers notifications for Audits.
      */
-    public function actionTriggerAuditSubmittedNotifications()
-    {
+    public function actionTriggerAuditSubmittedNotifications() {
         try {
             set_time_limit(3600);
             ini_set('memory_limit', '1024M');
@@ -171,13 +162,37 @@ class CronController extends Controller
             throw new Exception($e->getMessage());
         }
     }
-	
-	public function actionAuditHourly(){
+
+    public function actionAuditHourly() {
         try {
             \Yii::$app->scheduler->triggerAuditHourlyNotifications();
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
-	}
+    }
+
+    public function actionAuditHourlyOverdue() {
+        try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
+            \Yii::$app->scheduler->triggerAuditHourlyOverdueNotifications();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function actionScheduleDailyAudit() {
+        try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
+            \Yii::$app->scheduler->scheduleDailyAudit();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 
 }

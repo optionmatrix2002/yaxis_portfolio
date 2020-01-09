@@ -19,8 +19,7 @@ use app\models\Answers;
 use app\models\Departments;
 use app\models\Checklists;
 
-class SchedulerComponent extends Component
-{
+class SchedulerComponent extends Component {
 
     const AUDIT_ASSIGN = 'Audit $_AUDIT_ID is scheduled. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br> Due Date: $_DUE_DATE.';
     const AUDIT_ASSIGN_MESSAGE = 'Hi $_FULL_NAME,
@@ -32,12 +31,8 @@ Due Date: $_DUE_DATE.
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
     const AUDIT_ASSIGN_NOTIFICATION = 'Hi $_FULL_NAME &Audit $_AUDIT_ID is scheduled. &Office : $_HOTEL &Floor : $_DEPARTMENT &Checklist : $_CHECKLIST &Due Date: $_DUE_DATE.';
-
-
     const AUDIT_REMINDER = 'Reminder: Audit $_AUDIT_ID is pending for submission by $_DUE_DATE. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
-
     const AUDIT_REMINDER_MESSAGE = 'Hi $_FULL_NAME
 
 Reminder: Audit $_AUDIT_ID is pending for submission by $_DUE_DATE.
@@ -48,10 +43,7 @@ Checklist : $_CHECKLIST
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
-
     const AUDIT_OVER_DUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due date $_DUE_DATE. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
-
     const AUDIT_OVER_DUE_MESSAGE = 'Hi $_FULL_NAME
 
 Overdue Reminder: Audit $_AUDIT_ID has breached due date $_DUE_DATE.
@@ -62,11 +54,8 @@ Checklist : $_CHECKLIST
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
-
     const LOW_SCORE_AUDIT = 'Low Score Alert:<br> Audit : $_AUDIT_ID <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT<br>  Checklist : $_CHECKLIST  <br> has scored $_SCORE_PERCENTAGE.';
     const LOW_SCORE_AUDIT_NOTIFICATION = 'Low Score Alert: &Audit $_AUDIT_ID &Office : $_HOTEL &Floor : $_DEPARTMENT &Checklist : $_CHECKLIST has scored $_SCORE_PERCENTAGE.';
-
     const LOW_SCORE_AUDIT_MESSAGE = 'Hi $_FULL_NAME
 
 Low Score Alert:
@@ -77,11 +66,8 @@ Checklist $_CHECKLIST  has scored $_SCORE_PERCENTAGE.
 
 Best Regards,
 Green Park Corporate Audit Team.';
-
-
     const AUDIT_SUBMITTED = 'Audit $_AUDIT_ID has been submitted. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST <br>';
     const AUDIT_SUBMITTED_NOTIFICATION = 'Audit $_AUDIT_ID has been submitted. &Office : $_HOTEL &Floor : $_DEPARTMENT  &Checklist : $_CHECKLIST .';
-
     const AUDIT_SUBMITTED_MESSAGE = 'Hi $_FULL_NAME
 
 Audit $_AUDIT_ID has been submitted. 
@@ -91,7 +77,6 @@ Checklist : $_CHECKLIST
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
     const TICKET_ASSIGN = 'Ticket $_TICKET_ID is assigned to you. <br>Office : $_HOTEL<br>  Floor : $_DEPARTMENT <br>Subject: $_QUESTION<br> Due Date: $_DUE_DATE.';
     const TICKET_ASSIGN_MESSAGE = 'Hi $_FULL_NAME
 
@@ -103,12 +88,8 @@ Due Date : $_DUE_DATE.
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
-
     const TICKET_ASSIGN_NOTIFICATION = 'Ticket $_TICKET_ID is assigned to you. &Office : $_HOTEL &Floor : $_DEPARTMENT &Subject $_QUESTION &Due Date: $_DUE_DATE.';
-
     const TICKET_SUBMITTED = 'Ticket $_TICKET_ID has been $_STATUS. <br>Office : $_HOTEL <br> Floor: $_DEPARTMENT <br>Subject : $_QUESTION.';
-
     const TICKET_SUBMITTED_MESSAGE = 'Hi $_FULL_NAME   
 Ticket $_TICKET_ID  status has been changed to $_STATUS.
 Office : $_HOTEL
@@ -117,9 +98,7 @@ Subject: $_QUESTION
 
 Best Regards,
 Green Park Corporate Audit Team.';
-
     const TICKET_SUBMITTED_NOTIFICATION = 'Ticket $_TICKET_ID has been $_STATUS. &Office : $_HOTEL  &Floor : $_DEPARTMENT &Subject : "$_QUESTION".';
-
     const TICKET_REJECTED = 'Ticket $_TICKET_ID  has been rejected .<br>Office : $_HOTEL  <br>Floor : $_DEPARTMENT <br>Subject : "$_QUESTION".';
     const TICKET_REJECTED_NOTIFICATION = 'Ticket $_TICKET_ID  has been rejected .&Office : $_HOTEL  &Floor : $_DEPARTMENT &Subject : "$_QUESTION".';
     const TICKET_REJECTED_MESSAGE = 'Hi $_FULL_NAME
@@ -131,11 +110,8 @@ Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
-
     const TICKET_REMINDER = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_REMINDER_NOTIFICATION = 'Reminder: Ticket $_TICKET_ID is pending for resolution by $_DUE_DATE.&Subject : "$_QUESTION" &Office : $_HOTEL &Floor : $_DEPARTMENT';
-
     const TICKET_REMINDER_MESSAGE = 'Hi $_FULL_NAME
 
 Reminder: Ticket $_TICKET_ID  is pending for resolution by $_DUE_DATE.
@@ -146,8 +122,6 @@ Floor : $_DEPARTMENT
 
 Best Regards,
 Green Park Corporate Audit Team.';
-
-
     const TICKET_OVER_DUE = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.<br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_OVER_DUE_NOTIFICATION = 'Overdue: Ticket $_TICKET_ID has breached due date $_DUE_DATE.&Subject : "$_QUESTION" &Office : $_HOTEL &Floor : $_DEPARTMENT';
     const TICKET_OVER_DUE_MESSAGE = 'Hi $_FULL_NAME
@@ -160,9 +134,7 @@ Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
     const TICKET_ESCALATION_ONE = 'Escalation 1: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
-
     const TICKET_ESCALATION_ONE_MESSAGE = 'Hi $_FULL_NAME
 
 Escalation 1: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
@@ -173,8 +145,6 @@ Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
-
     const TICKET_ESCALATION_TWO = 'Escalation 2: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_TWO_MESSAGE = 'Hi $_FULL_NAME
 
@@ -186,10 +156,7 @@ Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
-
     const TICKET_ESCALATION_THREE = 'Escalation 3: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
-
     const TICKET_ESCALATION_THREE_MESSAGE = 'Hi $_FULL_NAME
 
 Escalation 3: Ticket $_TICKET_ID has breached due date $_DUE_DATE.
@@ -200,7 +167,6 @@ Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
     const TICKET_ESCALATION_FOUR = 'Escalation 4: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_FOUR_MESSAGE = 'Hi $_FULL_NAME
 
@@ -212,7 +178,6 @@ Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
     const TICKET_ESCALATION_FIVE = 'Escalation 5: Ticket $_TICKET_ID has breached due date $_DUE_DATE. <br>Subject : "$_QUESTION" <br>Office : $_HOTEL <br>Floor : $_DEPARTMENT';
     const TICKET_ESCALATION_FIVE_MESSAGE = 'Hi $_FULL_NAME
 
@@ -224,29 +189,27 @@ Floor : $_DEPARTMENT
 
 Best Regards, 
 Green Park Corporate Audit Team.';
-
     const REMAINDER_AUDIT_ID = 1;
     const REMAINDER_OVERDUE_ID = 2;
     const LOW_SCROE_AUDIT_ID = 3;
     const AUDIT_SUBMIT_ID = 4;
     const REMAINDER_TICKET_ID = 5;
     const OVERDUE_TICKET_ID = 6;
-
     const TICKET_ESC_ONE = 7;
     const TICKET_ESC_TWO = 8;
     const TICKET_ESC_THREE = 9;
     const TICKET_ESC_FOUR = 10;
     const TICKET_ESC_FIVE = 11;
-
+    const REMINDER_AUDIT_HOURLY = 12;
+    const REMINDER_AUDIT_OVERDUE_HOURLY = 13;
 
     /**
      * Trigger notifications for tickets
      */
-    public function triggerTicketsMail()
-    {
+    public function triggerTicketsMail() {
         try {
 
-            /*****Ticket Remainder****/
+            /*             * ***Ticket Remainder*** */
             $reminderTimes = $this->getNotificationTimes('ticket_reminder');
 
             $remTickets = $this->getRemainderTickets($reminderTimes);
@@ -309,7 +272,6 @@ Green Park Corporate Audit Team.';
                 $logData['notification_type'] = 2;
                 $logData['response_status'] = $mailStatus;
                 $this->logTable($logData);
-
             }
 
             foreach ($newRemTickets as $ticket) {
@@ -318,7 +280,7 @@ Green Park Corporate Audit Team.';
                 $ticket['smsTrigger'] = 1;
                 $ticket['pushNotificationTrigger'] = 1;
 
-                $this->triggerNotifications($ticket, true);// audtiror
+                $this->triggerNotifications($ticket, true); // audtiror
 
                 foreach ($usersList as $user) {
                     $eData[] = array();
@@ -356,9 +318,7 @@ Green Park Corporate Audit Team.';
             $this->consolidateTicketRemainder($usersList, $newRemTickets, $userHotels, $userdepartments);
 
 
-            /*****Ticket Remainder****/
-
-
+            /*             * ***Ticket Remainder*** */
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -368,9 +328,8 @@ Green Park Corporate Audit Team.';
      * @throws Exception
      * @throws \Exception
      */
-    public function ticketOverDues()
-    {
-        /*****Ticket Overdue****/
+    public function ticketOverDues() {
+        /*         * ***Ticket Overdue*** */
         $dueTickets = $this->getOverDueTickets();
         $dueTickets = call_user_func_array('array_merge', $dueTickets);
         $newDueTickets = array_map(function ($x) {
@@ -432,7 +391,6 @@ Green Park Corporate Audit Team.';
             $logData['notification_type'] = 2;
             $logData['response_status'] = $mailStatus;
             $this->logTable($logData);
-
         }
 
 
@@ -442,7 +400,7 @@ Green Park Corporate Audit Team.';
             $ticket['smsTrigger'] = 1;
             $ticket['pushNotificationTrigger'] = 1;
 
-            $this->triggerNotifications($ticket, true);// audtiror
+            $this->triggerNotifications($ticket, true); // audtiror
             foreach ($usersList as $user) {
                 $eData[] = array();
                 $eData['type'] = 'ticketOverDue';
@@ -479,15 +437,14 @@ Green Park Corporate Audit Team.';
 
         $this->consolidateTicketOverdue($usersList, $newDueTickets, $userHotels, $userdepartments);
 
-        /*****Ticket Overdue****/
+        /*         * ***Ticket Overdue*** */
     }
 
     /**
      * @throws Exception
      */
-    public function escalationOneTickets()
-    {
-        /*****Ticket Escalations one****/
+    public function escalationOneTickets() {
+        /*         * ***Ticket Escalations one*** */
 
         $escalationsOneTickets = $this->getEscalationTickets(1, [1, 2, 3]);
         $dueTickets = call_user_func_array('array_merge', $escalationsOneTickets);
@@ -514,7 +471,7 @@ Green Park Corporate Audit Team.';
             $ticket['smsTrigger'] = 1;
             $ticket['pushNotificationTrigger'] = 1;
 
-            $this->triggerNotifications($ticket, true);// audtiror
+            $this->triggerNotifications($ticket, true); // audtiror
 
             foreach ($usersList as $user) {
                 $eData[] = array();
@@ -556,8 +513,7 @@ Green Park Corporate Audit Team.';
      * @param $subject
      * @throws \Exception
      */
-    public function sendEscalationConsolidate($totalTickets, $subject)
-    {
+    public function sendEscalationConsolidate($totalTickets, $subject) {
         $newTickets = ArrayHelper::index($totalTickets, null, 'userId');
 
         foreach ($newTickets as $tickets) {
@@ -609,9 +565,8 @@ Green Park Corporate Audit Team.';
     /**
      * @throws Exception
      */
-    public function escalationTwoTickets()
-    {
-        /*****Ticket Escalations Two****/
+    public function escalationTwoTickets() {
+        /*         * ***Ticket Escalations Two*** */
 
         $escalationsTwoTickets = $this->getEscalationTickets(3, [1, 2]);
         $dueTickets = call_user_func_array('array_merge', $escalationsTwoTickets);
@@ -637,7 +592,7 @@ Green Park Corporate Audit Team.';
             $ticket['smsTrigger'] = 1;
             $ticket['pushNotificationTrigger'] = 1;
 
-            $this->triggerNotifications($ticket, true);// audtiror
+            $this->triggerNotifications($ticket, true); // audtiror
 
             foreach ($usersList as $user) {
                 $eData[] = array();
@@ -671,7 +626,6 @@ Green Park Corporate Audit Team.';
                 if (in_array($ticket['hotel_id'], $hotels) && in_array($ticket['department_id'], $departments)) {
                     $this->triggerNotifications($eData, true);
                 }
-
             }
         }
     }
@@ -679,9 +633,8 @@ Green Park Corporate Audit Team.';
     /**
      * @throws Exception
      */
-    public function escalationThreeTickets()
-    {
-        /*****Ticket Escalations Three****/
+    public function escalationThreeTickets() {
+        /*         * ***Ticket Escalations Three*** */
 
         $escalationsThreeTickets = $this->getEscalationTickets(5, [1, 2]);
         $dueTickets = call_user_func_array('array_merge', $escalationsThreeTickets);
@@ -706,7 +659,7 @@ Green Park Corporate Audit Team.';
             $ticket['smsTrigger'] = 1;
             $ticket['pushNotificationTrigger'] = 1;
 
-            $this->triggerNotifications($ticket, true);// audtiror
+            $this->triggerNotifications($ticket, true); // audtiror
 
             foreach ($usersList as $user) {
                 $eData[] = array();
@@ -739,7 +692,6 @@ Green Park Corporate Audit Team.';
                 if (in_array($ticket['hotel_id'], $hotels) && in_array($ticket['department_id'], $departments)) {
                     $this->triggerNotifications($eData, true);
                 }
-
             }
         }
     }
@@ -747,9 +699,8 @@ Green Park Corporate Audit Team.';
     /**
      * @throws Exception
      */
-    public function escalationFourTickets()
-    {
-        /*****Ticket Escalations Four****/
+    public function escalationFourTickets() {
+        /*         * ***Ticket Escalations Four*** */
 
         $escalationsFourTickets = $this->getEscalationTickets(7, 1);
         $dueTickets = call_user_func_array('array_merge', $escalationsFourTickets);
@@ -776,7 +727,7 @@ Green Park Corporate Audit Team.';
             $ticket['smsTrigger'] = 1;
             $ticket['pushNotificationTrigger'] = 1;
 
-            $this->triggerNotifications($ticket, true);// audtiror
+            $this->triggerNotifications($ticket, true); // audtiror
 
             foreach ($usersList as $user) {
 
@@ -812,16 +763,14 @@ Green Park Corporate Audit Team.';
                     $this->triggerNotifications($eData, true);
                 }
             }
-
         }
     }
 
     /**
      * @throws Exception
      */
-    public function escalationFiveTickets()
-    {
-        /*****Ticket Escalations Five****/
+    public function escalationFiveTickets() {
+        /*         * ***Ticket Escalations Five*** */
         $escalationsFiveTickets = $this->getEscalationTickets(12, 1);
         $dueTickets = call_user_func_array('array_merge', $escalationsFiveTickets);
         $newDueTickets = array_map(function ($x) {
@@ -847,7 +796,7 @@ Green Park Corporate Audit Team.';
             $ticket['smsTrigger'] = 1;
             $ticket['pushNotificationTrigger'] = 1;
 
-            $this->triggerNotifications($ticket, true);// audtiror
+            $this->triggerNotifications($ticket, true); // audtiror
 
             foreach ($usersList as $user) {
 
@@ -882,8 +831,6 @@ Green Park Corporate Audit Team.';
                 }
             }
         }
-
-
     }
 
     /**
@@ -891,8 +838,7 @@ Green Park Corporate Audit Team.';
      * @param $newRemTickets
      * @throws \Exception
      */
-    public function consolidateTicketRemainder($usersList, $newRemTickets, $userHotels, $userdepartments)
-    {
+    public function consolidateTicketRemainder($usersList, $newRemTickets, $userHotels, $userdepartments) {
         if ($newRemTickets) {
 
 
@@ -958,8 +904,7 @@ Green Park Corporate Audit Team.';
      * @param $subject
      * @throws \Exception
      */
-    public function consolidateEscalationTickets($usersList, $newDueTickets, $userHotels, $userdepartments, $subject)
-    {
+    public function consolidateEscalationTickets($usersList, $newDueTickets, $userHotels, $userdepartments, $subject) {
         if ($newDueTickets) {
             foreach ($usersList as $userId => $user) {
 
@@ -1010,7 +955,6 @@ Green Park Corporate Audit Team.';
                         $logData['response_status'] = $mailStatus;
                         $this->logTable($logData);
                     }
-
                 }
             }
         }
@@ -1021,8 +965,7 @@ Green Park Corporate Audit Team.';
      * @param $newDueTickets
      * @throws \Exception
      */
-    public function consolidateTicketOverdue($usersList, $newDueTickets, $userHotels, $userdepartments)
-    {
+    public function consolidateTicketOverdue($usersList, $newDueTickets, $userHotels, $userdepartments) {
         if ($newDueTickets) {
 
 
@@ -1075,18 +1018,15 @@ Green Park Corporate Audit Team.';
                         $logData['response_status'] = $mailStatus;
                         $this->logTable($logData);
                     }
-
                 }
             }
         }
-
     }
 
-    public function triggerAuditsMail()
-    {
+    public function triggerAuditsMail() {
         try {
 
-            /**** overdue dates *******/
+            /*             * ** overdue dates ****** */
             $overdueAudits = $this->getOverdueAudits();
 
             $newOAudits = array_map(function ($x) {
@@ -1106,7 +1046,7 @@ Green Park Corporate Audit Team.';
                     $audit['smsTrigger'] = 1;
                     $audit['pushNotificationTrigger'] = 1;
 
-                    $this->triggerNotifications($audit, true);// audtiror
+                    $this->triggerNotifications($audit, true); // audtiror
 
                     foreach ($usersList as $user) {
                         $eData[] = array();
@@ -1138,7 +1078,7 @@ Green Park Corporate Audit Team.';
                 }
             }
 
-            /**** overdue dates *******/
+            /*             * ** overdue dates ****** */
 
 
             $reminderTimes = $this->getNotificationTimes('audit_reminder');
@@ -1157,7 +1097,7 @@ Green Park Corporate Audit Team.';
                 $audit['smsTrigger'] = 1;
                 $audit['pushNotificationTrigger'] = 1;
 
-                $this->triggerNotifications($audit, true);// audtiror
+                $this->triggerNotifications($audit, true); // audtiror
 
                 foreach ($usersList as $user) {
 
@@ -1190,15 +1130,12 @@ Green Park Corporate Audit Team.';
             }
 
             $this->triggerCurrentDateAuditsNotifications();
-
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-
-    public function getNotificationTimes($name)
-    {
+    public function getNotificationTimes($name) {
         $remainderTimes = Preferences::getPrefValByName($name);
 
         return $remainderTimes;
@@ -1208,25 +1145,22 @@ Green Park Corporate Audit Team.';
      * Get Escalation one tickets list
      * @return array
      */
-    public function getEscalationsOneTickets()
-    {
+    public function getEscalationsOneTickets() {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_tickets.ticket_name as ticket_id',
-            'tbl_gp_tickets.subject as question',
-            'tbl_gp_tickets.due_date as due_date',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_tickets.priority_type_id as priority',
-
-
-        ])
-            ->from('tbl_gp_tickets')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
+                    'tbl_gp_tickets.ticket_name as ticket_id',
+                    'tbl_gp_tickets.subject as question',
+                    'tbl_gp_tickets.due_date as due_date',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_tickets.priority_type_id as priority',
+                ])
+                ->from('tbl_gp_tickets')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
 
         ///$query->andFilterWhere(['=','tbl_gp_audits_schedules.status',0]);
         $due_date = date('Y-m-d ', strtotime(' + 1 day'));
@@ -1243,25 +1177,22 @@ Green Park Corporate Audit Team.';
      * Get Escalation one tickets list
      * @return array
      */
-    public function getEscalationsTwoTickets()
-    {
+    public function getEscalationsTwoTickets() {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_tickets.ticket_name as ticket_id',
-            'tbl_gp_tickets.subject as question',
-            'tbl_gp_tickets.due_date as due_date',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_tickets.priority_type_id as priority',
-
-
-        ])
-            ->from('tbl_gp_tickets')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
+                    'tbl_gp_tickets.ticket_name as ticket_id',
+                    'tbl_gp_tickets.subject as question',
+                    'tbl_gp_tickets.due_date as due_date',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_tickets.priority_type_id as priority',
+                ])
+                ->from('tbl_gp_tickets')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
 
         ///$query->andFilterWhere(['=','tbl_gp_audits_schedules.status',0]);
         $due_date = date('Y-m-d ', strtotime(' + 2 day'));
@@ -1278,25 +1209,22 @@ Green Park Corporate Audit Team.';
      * Get Escalation one tickets list
      * @return array
      */
-    public function getEscalationsThreeTickets()
-    {
+    public function getEscalationsThreeTickets() {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_tickets.ticket_name as ticket_id',
-            'tbl_gp_tickets.subject as question',
-            'tbl_gp_tickets.due_date as due_date',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_tickets.priority_type_id as priority',
-
-
-        ])
-            ->from('tbl_gp_tickets')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
+                    'tbl_gp_tickets.ticket_name as ticket_id',
+                    'tbl_gp_tickets.subject as question',
+                    'tbl_gp_tickets.due_date as due_date',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_tickets.priority_type_id as priority',
+                ])
+                ->from('tbl_gp_tickets')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
 
         ///$query->andFilterWhere(['=','tbl_gp_audits_schedules.status',0]);
         $due_date = date('Y-m-d ', strtotime(' + 3 day'));
@@ -1313,25 +1241,22 @@ Green Park Corporate Audit Team.';
      * Get Escalation one tickets list
      * @return array
      */
-    public function getEscalationsFourTickets()
-    {
+    public function getEscalationsFourTickets() {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_tickets.ticket_name as ticket_id',
-            'tbl_gp_tickets.subject as question',
-            'tbl_gp_tickets.due_date as due_date',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_tickets.priority_type_id as priority',
-
-
-        ])
-            ->from('tbl_gp_tickets')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
+                    'tbl_gp_tickets.ticket_name as ticket_id',
+                    'tbl_gp_tickets.subject as question',
+                    'tbl_gp_tickets.due_date as due_date',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_tickets.priority_type_id as priority',
+                ])
+                ->from('tbl_gp_tickets')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id');
 
         ///$query->andFilterWhere(['=','tbl_gp_audits_schedules.status',0]);
         $due_date = date('Y-m-d ', strtotime(' - 4 day'));
@@ -1348,75 +1273,71 @@ Green Park Corporate Audit Team.';
      * Get Escalation one tickets list
      * @return array
      */
-    public function getEscalationTickets($days, $type)
-    {
+    public function getEscalationTickets($days, $type) {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_tickets.ticket_name as ticket_id',
-            'tbl_gp_tickets.hotel_id',
-            'tbl_gp_tickets.department_id',
-            'tbl_gp_tickets.subject as question',
-            'tbl_gp_tickets.due_date as due_date',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.first_name',
-            'tbl_gp_user.last_name',
+                    'tbl_gp_tickets.ticket_name as ticket_id',
+                    'tbl_gp_tickets.hotel_id',
+                    'tbl_gp_tickets.department_id',
+                    'tbl_gp_tickets.subject as question',
+                    'tbl_gp_tickets.due_date as due_date',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.first_name',
+                    'tbl_gp_user.last_name',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_tickets.priority_type_id as priority',
+                    'tbl_gp_hotels.hotel_name',
+                    'tbl_gp_departments.department_name',
+                ])
+                ->from('tbl_gp_tickets')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id = tbl_gp_tickets.assigned_user_id')
+                ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id = tbl_gp_tickets.hotel_id')
+                ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id = tbl_gp_tickets.department_id')
+                ->join('LEFT JOIN', 'tbl_gp_ticket_process_critical', 'tbl_gp_ticket_process_critical.ticket_id =tbl_gp_tickets.ticket_id')
+                ->join('LEFT JOIN', 'tbl_gp_process_critical_preferences', 'tbl_gp_ticket_process_critical.improve_plan_module_id =tbl_gp_process_critical_preferences.critical_preference_id');
 
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_tickets.priority_type_id as priority',
-            'tbl_gp_hotels.hotel_name',
-            'tbl_gp_departments.department_name',
-        ])
-            ->from('tbl_gp_tickets')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id = tbl_gp_tickets.assigned_user_id')
-            ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id = tbl_gp_tickets.hotel_id')
-            ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id = tbl_gp_tickets.department_id')
-            ->join('LEFT JOIN', 'tbl_gp_ticket_process_critical', 'tbl_gp_ticket_process_critical.ticket_id =tbl_gp_tickets.ticket_id')
-            ->join('LEFT JOIN', 'tbl_gp_process_critical_preferences', 'tbl_gp_ticket_process_critical.improve_plan_module_id =tbl_gp_process_critical_preferences.critical_preference_id');
-            
 
         $due_date = date('Y-m-d ', strtotime(' - ' . $days . ' day'));
         $query->andFilterWhere(['<', 'tbl_gp_tickets.due_date', $due_date]);
         $query->andFilterWhere(['tbl_gp_tickets.priority_type_id' => $type]);
         $query->andFilterWhere(['IN', 'tbl_gp_tickets.status', [0, 1, 4]]);
-        $query->andWhere('tbl_gp_process_critical_preferences.stop_escalations=0 OR tbl_gp_process_critical_preferences.stop_escalations is NULL OR (tbl_gp_process_critical_preferences.stop_escalations=1 AND tbl_gp_ticket_process_critical.stop_notifications_until_date IS NOT NULL AND tbl_gp_ticket_process_critical.stop_notifications_until_date < :today_date ) ',[':today_date'=> date("Y-m-d")]);
+        $query->andWhere('tbl_gp_process_critical_preferences.stop_escalations=0 OR tbl_gp_process_critical_preferences.stop_escalations is NULL OR (tbl_gp_process_critical_preferences.stop_escalations=1 AND tbl_gp_ticket_process_critical.stop_notifications_until_date IS NOT NULL AND tbl_gp_ticket_process_critical.stop_notifications_until_date < :today_date ) ', [':today_date' => date("Y-m-d")]);
         $command = $query->createCommand();
         $data[] = $command->queryAll();
 
         return $data;
     }
 
-
-    public function getRemainderAudits($times)
-    {
+    public function getRemainderAudits($times) {
 
         $data = array();
         // foreach ($times as $time) {
         $query = new Query();
         $query->select([
-            'tbl_gp_audits_schedules.audit_schedule_name',
-            'tbl_gp_audits_schedules.audit_schedule_name as audit_id',
-            'tbl_gp_audits_schedules.auditor_id',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_audits_schedules.audit_schedule_id as audit_schedule_id',
-            'tbl_gp_audits_schedules.end_date as due_date',
-            'tbl_gp_audits_schedules.start_date',
-            'tbl_gp_departments.department_name',
-            'tbl_gp_hotels.hotel_name',
-            'tbl_gp_checklists.cl_name',
-        ])
-            ->from('tbl_gp_audits_schedules')
-            ->join('INNER JOIN', 'tbl_gp_audits', 'tbl_gp_audits.audit_id =tbl_gp_audits_schedules.audit_id')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_audits_schedules.auditor_id')
-            ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_audits.hotel_id')
-            ->join('INNER JOIN', 'tbl_gp_checklists', 'tbl_gp_checklists.checklist_id =tbl_gp_audits.checklist_id')
-            ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_audits.department_id');
+                    'tbl_gp_audits_schedules.audit_schedule_name',
+                    'tbl_gp_audits_schedules.audit_schedule_name as audit_id',
+                    'tbl_gp_audits_schedules.auditor_id',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_audits_schedules.audit_schedule_id as audit_schedule_id',
+                    'tbl_gp_audits_schedules.end_date as due_date',
+                    'tbl_gp_audits_schedules.start_date',
+                    'tbl_gp_departments.department_name',
+                    'tbl_gp_hotels.hotel_name',
+                    'tbl_gp_checklists.cl_name',
+                ])
+                ->from('tbl_gp_audits_schedules')
+                ->join('INNER JOIN', 'tbl_gp_audits', 'tbl_gp_audits.audit_id =tbl_gp_audits_schedules.audit_id')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_audits_schedules.auditor_id')
+                ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_audits.hotel_id')
+                ->join('INNER JOIN', 'tbl_gp_checklists', 'tbl_gp_checklists.checklist_id =tbl_gp_audits.checklist_id')
+                ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_audits.department_id');
 
         ///$query->andFilterWhere(['=','tbl_gp_audits_schedules.status',0]);
         $due_date = date('Y-m-d ', strtotime(' +' . $times . ' day'));
@@ -1435,17 +1356,16 @@ Green Park Corporate Audit Team.';
     /**
      *
      */
-    public function triggerCurrentDateAuditsNotifications()
-    {
+    public function triggerCurrentDateAuditsNotifications() {
         $startDate = date('Y-m-d');
 
         $auditScheduled = AuditsSchedules::find()
-            ->joinWith(['auditor', 'audit.checklist', 'audit.hotel', 'audit.department'])
-            ->andFilterWhere(['=', 'tbl_gp_audits_schedules.start_date', $startDate])
-            ->andFilterWhere(['tbl_gp_audits_schedules.status' => [0]])
-            ->andFilterWhere(['tbl_gp_audits_schedules.is_deleted' => [0]])
-            ->asArray()
-            ->all();
+                ->joinWith(['auditor', 'audit.checklist', 'audit.hotel', 'audit.department'])
+                ->andFilterWhere(['=', 'tbl_gp_audits_schedules.start_date', $startDate])
+                ->andFilterWhere(['tbl_gp_audits_schedules.status' => [0]])
+                ->andFilterWhere(['tbl_gp_audits_schedules.is_deleted' => [0]])
+                ->asArray()
+                ->all();
 
         foreach ($auditScheduled as $audit) {
 
@@ -1465,35 +1385,33 @@ Green Park Corporate Audit Team.';
             $notifications['userId'] = $user['user_id'];
             Yii::$app->scheduler->triggerNotifications($notifications);
         }
-
     }
 
-    public function getOverdueAudits()
-    {
+    public function getOverdueAudits() {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_audits_schedules.audit_schedule_name',
-            'tbl_gp_audits_schedules.audit_schedule_name as audit_id',
-            'tbl_gp_audits_schedules.auditor_id',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_audits_schedules.audit_schedule_id as audit_schedule_id',
-            'tbl_gp_audits_schedules.end_date as due_date',
-            'tbl_gp_audits_schedules.start_date',
-            'tbl_gp_hotels.hotel_name',
-            'tbl_gp_departments.department_name',
-            'tbl_gp_checklists.cl_name',
-        ])
-            ->from('tbl_gp_audits_schedules')
-            ->join('INNER JOIN', 'tbl_gp_audits', 'tbl_gp_audits.audit_id =tbl_gp_audits_schedules.audit_id')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_audits_schedules.auditor_id')
-            ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_audits.hotel_id')
-            ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_audits.department_id')
-            ->join('INNER JOIN', 'tbl_gp_checklists', 'tbl_gp_checklists.checklist_id =tbl_gp_audits.checklist_id');
+                    'tbl_gp_audits_schedules.audit_schedule_name',
+                    'tbl_gp_audits_schedules.audit_schedule_name as audit_id',
+                    'tbl_gp_audits_schedules.auditor_id',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_audits_schedules.audit_schedule_id as audit_schedule_id',
+                    'tbl_gp_audits_schedules.end_date as due_date',
+                    'tbl_gp_audits_schedules.start_date',
+                    'tbl_gp_hotels.hotel_name',
+                    'tbl_gp_departments.department_name',
+                    'tbl_gp_checklists.cl_name',
+                ])
+                ->from('tbl_gp_audits_schedules')
+                ->join('INNER JOIN', 'tbl_gp_audits', 'tbl_gp_audits.audit_id =tbl_gp_audits_schedules.audit_id')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_audits_schedules.auditor_id')
+                ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_audits.hotel_id')
+                ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_audits.department_id')
+                ->join('INNER JOIN', 'tbl_gp_checklists', 'tbl_gp_checklists.checklist_id =tbl_gp_audits.checklist_id');
 
         ///$query->andFilterWhere(['=','tbl_gp_audits_schedules.status',0]);
         $due_date = date('Y-m-d ');
@@ -1507,39 +1425,38 @@ Green Park Corporate Audit Team.';
         return $data;
     }
 
-    public function getOverdueTickets()
-    {
+    public function getOverdueTickets() {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_tickets.ticket_name as ticket_id',
-            'tbl_gp_tickets.hotel_id',
-            'tbl_gp_tickets.department_id',
-            'tbl_gp_tickets.subject as question',
-            'tbl_gp_tickets.due_date as due_date',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
-            'tbl_gp_user.first_name',
-            'tbl_gp_user.last_name',
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_hotels.hotel_name',
-            'tbl_gp_departments.department_name',
-        ])
-            ->from('tbl_gp_tickets')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id')
-            ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_tickets.hotel_id')
-            ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_tickets.department_id')
-            ->join('LEFT JOIN', 'tbl_gp_ticket_process_critical', 'tbl_gp_ticket_process_critical.ticket_id =tbl_gp_tickets.ticket_id')
-            ->join('LEFT JOIN', 'tbl_gp_process_critical_preferences', 'tbl_gp_ticket_process_critical.improve_plan_module_id =tbl_gp_process_critical_preferences.critical_preference_id');
-            
+                    'tbl_gp_tickets.ticket_name as ticket_id',
+                    'tbl_gp_tickets.hotel_id',
+                    'tbl_gp_tickets.department_id',
+                    'tbl_gp_tickets.subject as question',
+                    'tbl_gp_tickets.due_date as due_date',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.first_name',
+                    'tbl_gp_user.last_name',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_hotels.hotel_name',
+                    'tbl_gp_departments.department_name',
+                ])
+                ->from('tbl_gp_tickets')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id')
+                ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_tickets.hotel_id')
+                ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_tickets.department_id')
+                ->join('LEFT JOIN', 'tbl_gp_ticket_process_critical', 'tbl_gp_ticket_process_critical.ticket_id =tbl_gp_tickets.ticket_id')
+                ->join('LEFT JOIN', 'tbl_gp_process_critical_preferences', 'tbl_gp_ticket_process_critical.improve_plan_module_id =tbl_gp_process_critical_preferences.critical_preference_id');
+
         ///$query->andFilterWhere(['=','tbl_gp_audits_schedules.status',0]);
         $due_date = date('Y-m-d ');
         $query->andFilterWhere(['<', 'tbl_gp_tickets.due_date', $due_date]);
         $query->andFilterWhere(['tbl_gp_tickets.status' => [0, 1, 4]]);
-        $query->andWhere('tbl_gp_process_critical_preferences.stop_reminders=0 OR tbl_gp_process_critical_preferences.stop_reminders is NULL OR (tbl_gp_process_critical_preferences.stop_reminders=1 AND tbl_gp_ticket_process_critical.stop_notifications_until_date IS NOT NULL AND tbl_gp_ticket_process_critical.stop_notifications_until_date < :today_date ) ',[':today_date'=> date("Y-m-d")]);
-        
+        $query->andWhere('tbl_gp_process_critical_preferences.stop_reminders=0 OR tbl_gp_process_critical_preferences.stop_reminders is NULL OR (tbl_gp_process_critical_preferences.stop_reminders=1 AND tbl_gp_ticket_process_critical.stop_notifications_until_date IS NOT NULL AND tbl_gp_ticket_process_critical.stop_notifications_until_date < :today_date ) ', [':today_date' => date("Y-m-d")]);
+
         $command = $query->createCommand();
         $data[] = $command->queryAll();
 
@@ -1547,42 +1464,38 @@ Green Park Corporate Audit Team.';
         return $data;
     }
 
-    public function getRemainderTickets($times)
-    {
+    public function getRemainderTickets($times) {
 
         $data = array();
         $query = new Query();
         $query->select([
-            'tbl_gp_tickets.ticket_name as ticket_id',
-            'tbl_gp_tickets.subject as question',
-            'tbl_gp_tickets.due_date as due_date',
-            'tbl_gp_user.email as toEmail',
-            'tbl_gp_user.user_id as userId',
+                    'tbl_gp_tickets.ticket_name as ticket_id',
+                    'tbl_gp_tickets.subject as question',
+                    'tbl_gp_tickets.due_date as due_date',
+                    'tbl_gp_user.email as toEmail',
+                    'tbl_gp_user.user_id as userId',
+                    'tbl_gp_user.first_name',
+                    'tbl_gp_user.last_name',
+                    'tbl_gp_user.phone as mobileNumber',
+                    'tbl_gp_user.device_token as deviceToken',
+                    'tbl_gp_hotels.hotel_name',
+                    'tbl_gp_departments.department_name',
+                    'tbl_gp_tickets.hotel_id',
+                    'tbl_gp_tickets.department_id',
+                ])
+                ->from('tbl_gp_tickets')
+                ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id')
+                ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_tickets.hotel_id')
+                ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_tickets.department_id')
+                ->join('LEFT JOIN', 'tbl_gp_ticket_process_critical', 'tbl_gp_ticket_process_critical.ticket_id =tbl_gp_tickets.ticket_id')
+                ->join('LEFT JOIN', 'tbl_gp_process_critical_preferences', 'tbl_gp_ticket_process_critical.improve_plan_module_id =tbl_gp_process_critical_preferences.critical_preference_id');
 
-            'tbl_gp_user.first_name',
-            'tbl_gp_user.last_name',
-
-            'tbl_gp_user.phone as mobileNumber',
-            'tbl_gp_user.device_token as deviceToken',
-            'tbl_gp_hotels.hotel_name',
-            'tbl_gp_departments.department_name',
-            'tbl_gp_tickets.hotel_id',
-            'tbl_gp_tickets.department_id',
-            
-        ])
-            ->from('tbl_gp_tickets')
-            ->join('INNER JOIN', 'tbl_gp_user', 'tbl_gp_user.user_id =tbl_gp_tickets.assigned_user_id')
-            ->join('INNER JOIN', 'tbl_gp_hotels', 'tbl_gp_hotels.hotel_id =tbl_gp_tickets.hotel_id')
-            ->join('INNER JOIN', 'tbl_gp_departments', 'tbl_gp_departments.department_id =tbl_gp_tickets.department_id')
-            ->join('LEFT JOIN', 'tbl_gp_ticket_process_critical', 'tbl_gp_ticket_process_critical.ticket_id =tbl_gp_tickets.ticket_id')
-            ->join('LEFT JOIN', 'tbl_gp_process_critical_preferences', 'tbl_gp_ticket_process_critical.improve_plan_module_id =tbl_gp_process_critical_preferences.critical_preference_id');
-        
 
         $due_date = date('Y-m-d ', strtotime(' +' . $times . ' day'));
         $query->andFilterWhere(['<=', 'tbl_gp_tickets.due_date', $due_date]);
         $query->andFilterWhere(['>', 'tbl_gp_tickets.due_date', date('Y-m-d ')]);
         $query->andFilterWhere(['tbl_gp_tickets.status' => [0, 1, 4]]);
-        $query->andWhere('tbl_gp_process_critical_preferences.stop_reminders=0 OR tbl_gp_process_critical_preferences.stop_reminders is NULL OR (tbl_gp_process_critical_preferences.stop_reminders=1 AND tbl_gp_ticket_process_critical.stop_notifications_until_date IS NOT NULL AND tbl_gp_ticket_process_critical.stop_notifications_until_date < :today_date ) ',[':today_date'=> date("Y-m-d")]);
+        $query->andWhere('tbl_gp_process_critical_preferences.stop_reminders=0 OR tbl_gp_process_critical_preferences.stop_reminders is NULL OR (tbl_gp_process_critical_preferences.stop_reminders=1 AND tbl_gp_ticket_process_critical.stop_notifications_until_date IS NOT NULL AND tbl_gp_ticket_process_critical.stop_notifications_until_date < :today_date ) ', [':today_date' => date("Y-m-d")]);
         $command = $query->createCommand();
         $data[] = $command->queryAll();
 
@@ -1592,8 +1505,7 @@ Green Park Corporate Audit Team.';
     /**
      * @param $data
      */
-    public function triggerNotifications($data, $background = false)
-    {
+    public function triggerNotifications($data, $background = false) {
         try {
             $type = $data['type'];
             $email = $data['toEmail'];
@@ -1879,7 +1791,42 @@ Green Park Corporate Audit Team.';
                     $notificationContent = $this->replaceEscalationTicketShortCode($notificationContent, $data, $user);
 
                     break;
+                case 'ticketEscalationFive':
+
+                    $content = self::TICKET_ESCALATION_FIVE;
+                    $messageContent = self::TICKET_ESCALATION_FIVE_MESSAGE;
+                    $notificationContent = self::TICKET_ESCALATION_FIVE;
+                    $alertType = 'Ticket';
+                    $logId = $data['ticket_id'];
+                    $subject = 'Ticket  ' . $data['ticket_id'] . ' overdue.';
+                    $content = $this->replaceEscalationTicketShortCode($content, $data, $user);
+                    $messageContent = $this->replaceEscalationTicketShortCode($messageContent, $data, $user);
+                    $notificationContent = $this->replaceEscalationTicketShortCode($notificationContent, $data, $user);
+
+                    break;
+                case 'auditHourlyReminder':
+
+                    $content = self::AUDIT_REMINDER;
+                    $messageContent = self::AUDIT_REMINDER_MESSAGE;
+                    $notificationContent = self::AUDIT_REMINDER;
+
+                    $userType = 2;
+                    $alertType = 'Audit Assign';
+                    $logId = $data['audit_id'];
+
+                    $checkListName = isset($data['cl_name']) ? $data['cl_name'] : '';
+                    $hotelName = isset($data['hotel_name']) ? $data['hotel_name'] : '';
+                    $date = isset($data['start_date']) ? $data['start_date'] : '';
+                    $date = $date ? date('M Y', strtotime($date)) : '';
+
+                    $subject = 'Audit  ' . $data['audit_id'] . ' remainder - ' . $hotelName . ' ' . $checkListName . ' ' . $date;
+
+                    $content = $this->replaceRemainderShortCode($content, $data, $user);
+                    $messageContent = $this->replaceRemainderShortCode($messageContent, $data, $user);
+                    $notificationContent = $this->replaceRemainderShortCode($notificationContent, $data, $user);
+                    break;
             }
+
 
             $user['email'] = $email;
             $user['user_id'] = $data['userId'];
@@ -1907,8 +1854,7 @@ Green Park Corporate Audit Team.';
         }
     }
 
-    public function replaceRemainderShortCode($content, $data, $user = [])
-    {
+    public function replaceRemainderShortCode($content, $data, $user = []) {
 
         $firstName = isset($user['first_name']) ? $user['first_name'] : '';
         $lastName = isset($user['last_name']) ? $user['last_name'] : '';
@@ -1932,9 +1878,7 @@ Green Park Corporate Audit Team.';
         return $content;
     }
 
-
-    public function replaceEscalationTicketShortCode($content, $data, $user = [])
-    {
+    public function replaceEscalationTicketShortCode($content, $data, $user = []) {
 
         $firstName = isset($user['first_name']) ? $user['first_name'] : '';
         $lastName = isset($user['last_name']) ? $user['last_name'] : '';
@@ -1961,8 +1905,7 @@ Green Park Corporate Audit Team.';
      * @param $data
      * @return mixed
      */
-    public function replaceShortCodes($content, $data, $user = [])
-    {
+    public function replaceShortCodes($content, $data, $user = []) {
         // $content = urldecode($content);
         $departmentName = isset($data['department']) ? $data['department'] : '';
         $checkListName = isset($data['checkList']) ? $data['checkList'] : '';
@@ -1993,8 +1936,7 @@ Green Park Corporate Audit Team.';
      * @param $data
      * @return mixed
      */
-    public function replaceTicketShortCodes($content, $data, $user = [])
-    {
+    public function replaceTicketShortCodes($content, $data, $user = []) {
         $departmentName = isset($data['department']) ? $data['department'] : '';
         $hotelName = isset($data['hotel']) ? $data['hotel'] : '';
         $duteDate = isset($data['due_date']) ? $data['due_date'] : '';
@@ -2022,8 +1964,7 @@ Green Park Corporate Audit Team.';
      * @param $message
      * @param $id
      */
-    public function logTable($data)
-    {
+    public function logTable($data) {
 
         $data['created_at'] = date('Y-m-d H:i:s:');
         $data['updated_at'] = date('Y-m-d H:i:s:');
@@ -2035,8 +1976,7 @@ Green Park Corporate Audit Team.';
      * @param $paramsInfo
      * @param string $email
      */
-    public function sendCompletedAuditsToUsers($paramsInfo, $mailContent = '')
-    {
+    public function sendCompletedAuditsToUsers($paramsInfo, $mailContent = '') {
         $usersList = Alertmaster::getListOfAlertTypeUsers(self::AUDIT_SUBMIT_ID);
 
         foreach ($usersList as $user) {
@@ -2074,12 +2014,10 @@ Green Park Corporate Audit Team.';
      * @param $user
      * @param $email
      */
-    public function sendNotifications($user, $contents, $subject, $notificationName, $alertType)
-    {
+    public function sendNotifications($user, $contents, $subject, $notificationName, $alertType) {
 
         $data['notification_name'] = $notificationName;
         $data['user_id'] = $user['user_id'];
-
         if ($contents) {
             if ($user['phone'] && $user['smsTrigger']) {
                 $msgStatus = '';
@@ -2089,7 +2027,6 @@ Green Park Corporate Audit Team.';
                 $data['notification_type'] = 1;
                 $data['response_status'] = $msgStatus;
                 $this->logTable($data);
-
             }
             if ($user['email'] && $user['emailTrigger']) {
                 $params['recipientMail'] = $user['email'];
@@ -2123,8 +2060,7 @@ Green Park Corporate Audit Team.';
      * @param $paramsInfo
      * @param $email
      */
-    public function sendLowScoreAuditsToUsers($paramsInfo, $mailContent = '')
-    {
+    public function sendLowScoreAuditsToUsers($paramsInfo, $mailContent = '') {
         $usersList = Alertmaster::getListOfAlertTypeUsers(self::LOW_SCROE_AUDIT_ID);
 
         foreach ($usersList as $user) {
@@ -2165,8 +2101,7 @@ Green Park Corporate Audit Team.';
      * @return mixed
      * @throws \Exception
      */
-    public function buildMailContent($user, $content)
-    {
+    public function buildMailContent($user, $content) {
         $name = $user['first_name'] . ' ' . $user['last_name'];
         try {
             $message = '';
@@ -2195,22 +2130,21 @@ Green Park Corporate Audit Team.';
     /**
      *
      */
-    public function triggerAuditSubmittedNotifications()
-    {
+    public function triggerAuditSubmittedNotifications() {
         try {
             $auditSchedules = AuditsSchedules::find()
-                ->joinWith(['auditor', 'audit.checklist', 'audit.hotel', 'audit.department'])
-                ->andWhere(['notification_status' => 0, AuditsSchedules::tableName() . '.status' => 3])
-				->andWhere(['or',
-					   ['>=', AuditsSchedules::tableName() . '.created_at', '2019-11-25 17:56:06'],
-					   ['>=', AuditsSchedules::tableName() . '.updated_at', '2019-11-25 17:56:06']
-					])
-                ->asArray()
-                ->all();
+                    ->joinWith(['auditor', 'audit.checklist', 'audit.hotel', 'audit.department'])
+                    ->andWhere(['notification_status' => 0, AuditsSchedules::tableName() . '.status' => 3])
+                    ->andWhere(['or',
+                        ['>=', AuditsSchedules::tableName() . '.created_at', '2019-11-25 17:56:06'],
+                        ['>=', AuditsSchedules::tableName() . '.updated_at', '2019-11-25 17:56:06']
+                    ])
+                    ->asArray()
+                    ->all();
             $auditIds = [];
-            
+
             foreach ($auditSchedules as $auditScheduled) {
-                
+
                 $user = $auditScheduled['auditor'];
                 $notifications = [];
                 $notifications['type'] = 'auditSubmitted';
@@ -2228,7 +2162,7 @@ Green Park Corporate Audit Team.';
                 Yii::$app->scheduler->triggerNotifications($notifications);
                 $settingsScore = Preferences::getPrefValByName('low_scoring_audits');
                 $auditScore = AuditsSchedules::getAuditScore($auditScheduled['audit_schedule_id']);
-                
+
                 if ($auditScore <= $settingsScore) {
                     $notifications['type'] = 'lowScoreAudit';
                     $notifications['data']['auditScore'] = $auditScore;
@@ -2238,49 +2172,46 @@ Green Park Corporate Audit Team.';
 
 
                 $auditIds[] = $auditScheduled['audit_schedule_id'];
-                
-               
-                /***
+
+
+                /*                 * *
                  * get list of tickets for sending consolidate email
                  *  
                  */
-				 
-				 /*
-				 Select * from tbl_gp_tickets 
-                        INNER JOIN tbl_gp_answers ans on ans.answer_id = tbl_gp_tickets.answer_id 
-                        INNER JOIN tbl_gp_audits_checklist_questions qus on qus.audits_checklist_questions_id = ans.question_id 
-                        WHERE (tbl_gp_tickets.chronicity = 1 OR qus.process_critical=1) 
-                        AND tbl_gp_tickets.audit_schedule_id = '.$auditScheduled['audit_schedule_id']
-				 */
+
+                /*
+                  Select * from tbl_gp_tickets
+                  INNER JOIN tbl_gp_answers ans on ans.answer_id = tbl_gp_tickets.answer_id
+                  INNER JOIN tbl_gp_audits_checklist_questions qus on qus.audits_checklist_questions_id = ans.question_id
+                  WHERE (tbl_gp_tickets.chronicity = 1 OR qus.process_critical=1)
+                  AND tbl_gp_tickets.audit_schedule_id = '.$auditScheduled['audit_schedule_id']
+                 */
                 $sql = 'Select * from tbl_gp_tickets 
                         INNER JOIN tbl_gp_answers ans on ans.answer_id = tbl_gp_tickets.answer_id 
                         INNER JOIN tbl_gp_audits_checklist_questions qus on qus.audits_checklist_questions_id = ans.question_id 
                         WHERE (tbl_gp_tickets.chronicity = 1 OR qus.process_critical=1) 
-                        AND tbl_gp_tickets.audit_schedule_id = '.$auditScheduled['audit_schedule_id'];
-                 $email_tickets = \Yii::$app->db->createCommand($sql)->queryAll();
-                
+                        AND tbl_gp_tickets.audit_schedule_id = ' . $auditScheduled['audit_schedule_id'];
+                $email_tickets = \Yii::$app->db->createCommand($sql)->queryAll();
 
-                              
-                $tickets_data=[];
-                
-                foreach ($email_tickets as $email_ticket){
+
+
+                $tickets_data = [];
+
+                foreach ($email_tickets as $email_ticket) {
                     $ticket_data = [];
-                    $ticket_data['ticketnumber']=$email_ticket['ticket_name'];
-                    $ticket_data['subject']=$email_ticket['subject'];
-                    $ticket_data['observation']=$email_ticket['description'];
-                    $tickets_data[]=$ticket_data;
+                    $ticket_data['ticketnumber'] = $email_ticket['ticket_name'];
+                    $ticket_data['subject'] = $email_ticket['subject'];
+                    $ticket_data['observation'] = $email_ticket['description'];
+                    $tickets_data[] = $ticket_data;
                 }
-               
-                if(!empty($email_tickets[0]['department_id'])){
+
+                if (!empty($email_tickets[0]['department_id'])) {
                     $user_id = UserDepartments::getDepartmentHead($email_tickets[0]['hotel_id'], $email_tickets[0]['department_id']);
-                    $deptHotelModel = \app\models\HotelDepartments::findOne(['department_id'=>$email_tickets[0]['department_id'],'hotel_id'=>$email_tickets[0]['hotel_id'],'is_deleted'=>0]);
-                    if($deptHotelModel && $deptHotelModel->configured_emails){
-                         EmailsComponent::sendConsolidateNonComplaintToDepartment(explode(',', $deptHotelModel->configured_emails), $tickets_data, $user_id);
+                    $deptHotelModel = \app\models\HotelDepartments::findOne(['department_id' => $email_tickets[0]['department_id'], 'hotel_id' => $email_tickets[0]['hotel_id'], 'is_deleted' => 0]);
+                    if ($deptHotelModel && $deptHotelModel->configured_emails) {
+                        EmailsComponent::sendConsolidateNonComplaintToDepartment(explode(',', $deptHotelModel->configured_emails), $tickets_data, $user_id);
                     }
                 }
-                
-                
-                
             }
 
             $ticketsList = Tickets::find()->joinWith(['assignedUser', 'department', 'hotel'])->where(['audit_schedule_id' => $auditIds, 'status' => 1])->asArray()->all();
@@ -2324,22 +2255,21 @@ Green Park Corporate Audit Team.';
                 $logData['notification_type'] = 2;
                 $logData['response_status'] = $mailStatus;
                 $this->logTable($logData);
-
             }
             foreach ($ticketsList as $ticket) {
                 Tickets::sendNotification($ticket, 'ticketAssigned', false);
             }
-			
+
             AuditsSchedules::updateAll([
                 'notification_status' => 1,
-            ], [
+                    ], [
                 'audit_schedule_id' => $auditIds,
             ]);
 
             echo 'Messaging Done';
         } catch (Exception $e) {
             $data['notification_name'] = 'Audit Submitted';
-		    $data['user_id'] = $user['user_id'];
+            $data['user_id'] = $user['user_id'];
             $data['notification_message'] = $e->getMessage();
             $data['notification_type'] = 1;
             $data['response_status'] = '';
@@ -2352,8 +2282,7 @@ Green Park Corporate Audit Team.';
      * @param $ticket
      * @param $type
      */
-    public function validateNotificationSettings($user, $model, $type)
-    {
+    public function validateNotificationSettings($user, $model, $type) {
         $response = User::getUserAssingemnts($user['user_id']);
         $userHotels = $response['userHotels'];
         $userDepartments = $response['userdepartments'];
@@ -2386,8 +2315,7 @@ Green Park Corporate Audit Team.';
     /**
      * @param $auditName
      */
-    public function addAuditDetailedInformation($auditName)
-    {
+    public function addAuditDetailedInformation($auditName) {
         $content = "<br>";
         $content .= '<b>Audit Report</b> : <br>';
 
@@ -2429,13 +2357,17 @@ Green Park Corporate Audit Team.';
             $scoreCount = count($scores);
             foreach ($scores as $score) {
                 if ($score >= 80) {
+                    
                 } elseif ($score <= 79 && $score >= 61) {
+                    
                 } else {
+                    
                 }
                 $content .= '<td  >' . $score . '</td>';
                 if ($innerLoopC > 1) {
                     $varience = $scores[1] - $scores[0];
                     if ($varience < 0) {
+                        
                     }
                     $content .= '<td  >' . $varience . '</td>';
                     if ($scores[0] != 0) {
@@ -2465,20 +2397,23 @@ Green Park Corporate Audit Team.';
         $finalScore = [];
         foreach ($auditChildIds as $childId) {
             $finalScore[] = \app\models\AuditsSchedules::getAuditScore($childId);
-
         }
         $scoreCount = count($finalScore);
         $finalScore = array_reverse($finalScore);
         foreach ($finalScore as $score) {
             $scores = $finalScore;
             if ($score >= 80) {
+                
             } elseif ($score <= 79 && $score >= 61) {
+                
             } else {
+                
             }
             $content .= '<td  >' . $score . '</td>';
             if ($innerLoopC > 1) {
                 $varience = $scores[1] - $scores[0];
                 if ($varience && $varience < 0) {
+                    
                 }
                 $content .= '<td  >' . $varience . '</td>';
                 if ($scores[0] != 0) {
@@ -2487,6 +2422,7 @@ Green Park Corporate Audit Team.';
                     $perVar = $scores[1];
                 }
                 if ($perVar && $perVar < 0) {
+                    
                 }
                 $content .= '<td  >' . round($perVar, 2) . '%</td>';
             }
@@ -2503,20 +2439,148 @@ Green Park Corporate Audit Team.';
         return $content;
     }
 
-    public function triggerAuditHourlyNotifications(){
-        $cDay = date('w');
-        $cDate = date('Y-m-d');
-        $cHour = date('H');
-        $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
-       // $checklistIds = implode("','", $checklistIds);
-       $query = Yii::$app->getDb();
-       $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(NOW()),TIME(sa.start_time)),CONCAT_WS(\" \",sa.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`, `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, `sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`, CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, `sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `child`,`sa`.`deligation_status`, `sa`.`start_date`, `sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0) AND(`sa`.`is_deleted` = 0) AND(TIMESTAMPDIFF(MINUTE,TIME(NOW()),TIME(sa.start_time)) >= 10) AND (`ck`.`cl_frequency_value` = 1) AND (DATE(sa.start_date) <= '".$cDate."') AND (DATE(sa.end_date) >= '".$cDate."') AND `sa`.`start_time` IS NOT NULL");
+    public function triggerAuditHourlyNotifications() {
+        try {
+            $cDay = date('w');
+            $cDate = date('Y-m-d');
+            $cHour = date('H');
+            //  $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
+            // $checklistIds = implode("','", $checklistIds);
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(NOW()),TIME(sa.start_time)) as timediff,"
+                    . "CONCAT_WS(\" \",`sa`.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`,`sa`.`start_time`,`u`.`email` AS email,`u`.`user_id` AS user_id,`u`.`phone` AS phone,`u`.`device_token` AS device_token,"
+                    . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
+                    . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
+                    . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `child`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
+                    . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
+                    . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
+                    . "LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id "
+                    . "LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0)"
+                    . " AND(`sa`.`is_deleted` = 0) AND(TIMESTAMPDIFF(MINUTE,TIME(NOW()),TIME(sa.start_time)) <= 30) AND (`ck`.`cl_frequency_value` = 1) "
+                    . "AND (DATE(sa.start_date) <= '" . $cDate . "') AND (DATE(sa.end_date) >= '" . $cDate . "') AND `sa`.`start_time` IS NOT NULL AND `sa`.`is_notified_early`=0");
 
-       $result = $command->queryAll();
+            $result = $command->queryAll();
+            if ($result) {
+                foreach ($result as $eachResult) {
+                    $notifications = [];
+                    $notifications['type'] = 'auditHourlyReminder';
+                    $notifications['toEmail'] = $eachResult['email'];
+                    $notifications['mobileNumber'] = $eachResult['phone'];
+                    $notifications['deviceToken'] = $eachResult['device_token'];
+                    $attributes = [];
+
+                    $notifications['department_name'] = isset($eachResult['department_name']) ? $eachResult['department_name'] : '';
+                    $notifications['cl_name'] = isset($eachResult['audit_name']) ? $eachResult['audit_name'] : '';
+                    $notifications['hotel_name'] = isset($eachResult['hotel_name']) ? $eachResult['hotel_name'] : '';
+
+                    $notifications['data'] = $attributes;
+                    $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
+                    $notifications['audit_id'] = $eachResult['audit_id'];
+                    $notifications['due_date'] = $eachResult['start_time'];
+                    $notifications['pushNotificationTrigger'] = 1;
+                    Yii::$app->scheduler->triggerNotifications($notifications);
+                    Yii::$app->db->createCommand()
+                            ->update(AuditsSchedules::tableName(), ['is_notified_early' => 1], 'audit_schedule_id = ' . $eachResult['audit_id'])
+                            ->execute();
+                }
+            }
+        } catch (Exception $ex) {
+            /* print_r($ex->getMessage());
+              exit; */
+        }
+    }
+
+    public function triggerAuditHourlyOverdueNotifications() {
+        try {
+            $cDay = date('w');
+            $cDate = date('Y-m-d');
+            $cHour = date('H');
+            //  $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
+            // $checklistIds = implode("','", $checklistIds);
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(sa.start_time),TIME(NOW())) as timediff,"
+                    . "CONCAT_WS(\" \",`sa`.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`,`sa`.`start_time`,`u`.`email` AS email,`u`.`user_id` AS user_id,`u`.`phone` AS phone,`u`.`device_token` AS device_token,"
+                    . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
+                    . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
+                    . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `child`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
+                    . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
+                    . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
+                    . "LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id "
+                    . "LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0)"
+                    . " AND(`sa`.`is_deleted` = 0) AND(TIMESTAMPDIFF(MINUTE,TIME(sa.start_time),TIME(NOW())) <= 30) AND (`ck`.`cl_frequency_value` = 1) "
+                    . "AND (DATE(sa.start_date) <= '" . $cDate . "') AND (DATE(sa.end_date) >= '" . $cDate . "') AND `sa`.`start_time` IS NOT NULL AND `sa`.`is_notified_overdue`=0");
+
+            $result = $command->queryAll();
+
+            if ($result) {
+                foreach ($result as $eachResult) {
+                    $notifications = [];
+                    $notifications['type'] = 'auditHourlyReminder';
+                    $notifications['toEmail'] = $eachResult['email'];
+                    $notifications['mobileNumber'] = $eachResult['phone'];
+                    $notifications['deviceToken'] = $eachResult['device_token'];
+                    $attributes = [];
+
+                    $notifications['department_name'] = isset($eachResult['department_name']) ? $eachResult['department_name'] : '';
+                    $notifications['cl_name'] = isset($eachResult['audit_name']) ? $eachResult['audit_name'] : '';
+                    $notifications['hotel_name'] = isset($eachResult['hotel_name']) ? $eachResult['hotel_name'] : '';
+
+                    $notifications['data'] = $attributes;
+                    $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
+                    $notifications['audit_id'] = $eachResult['audit_id'];
+                    $notifications['due_date'] = $eachResult['start_time'];
+                    $notifications['pushNotificationTrigger'] = 1;
+                    Yii::$app->scheduler->triggerNotifications($notifications);
+                    Yii::$app->db->createCommand()
+                            ->update(AuditsSchedules::tableName(), ['is_notified_overdue' => 1], 'audit_schedule_id = ' . $eachResult['audit_id'])
+                            ->execute();
+                }
+            }
+        } catch (Exception $ex) {
+            /* print_r($ex->getMessage());
+              exit; */
+        }
+    }
+
+    public function scheduleDailyAudit() {
+        $auditsSchedulesModel = new AuditsSchedules();
+        $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 2])->asArray()->all(), 'checklist_id');
+        $checklistIds = implode("','", $checklistIds);
+
+        $query = new Query();
+        $query = Yii::$app->getDb();
+        $command = $query->createCommand("SELECT a.* FROM tbl_gp_audits a LEFT JOIN tbl_gp_checklists cl ON cl.checklist_id=a.checklist_id WHERE cl.checklist_id IN('$checklistIds')");
+
+        $result = $command->queryAll();
+
+        if ($result) {
+            foreach ($result as $audit) {
+                $auditsSchedulesModel->audit_schedule_id = null;
+                $auditsSchedulesModel->isNewRecord = true;
+                $auditsSchedulesModel->start_time = null;
+                $auditsSchedulesModel->audit_schedule_name = '';
+                $auditsSchedulesModel->audit_id = $audit['audit_id'];
+                $auditsSchedulesModel->auditor_id = $audit['user_id'];
+                $auditsSchedulesModel->start_date = $audit['start_date'];
+                $auditsSchedulesModel->end_date = $audit['end_date'];
+                $auditsSchedulesModel->deligation_user_id = '';
+                $auditsSchedulesModel->deligation_status = 0;
+                $auditsSchedulesModel->status = 0;
+                $auditsSchedulesModel->is_deleted = 0;
+            }
+        }
+
 
         print_r($result);
         exit;
+        echo $checklistIds;
+        exit;
     }
+
 }
 
 ?>
