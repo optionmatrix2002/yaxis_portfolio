@@ -4,26 +4,18 @@ $('.eventreminder').select2({
 });
 
 $(document).ready(function () {
-    $('#startDate').datetimepicker({
-        // useCurrent : false,
-        format: 'hh a',
-        //minDate : moment()
+    $('#startDate').on('change', function () {
+        $('#endDate').val('');
     });
-    $('#endDate').datetimepicker({
-        // useCurrent : false,
-        format: 'hh a',
-        //minDate : moment()
+    $('#endDate').on('change', function () {
+        var endDate = $('#endDate').val();
+        var startDate = $('#startDate').val();
+        if(endDate < startDate){
+             $('#endDate').val('');
+            alert("To time should not be more than From time");
+            return false;
+        }
     });
-    
-    $('#startDate').datetimepicker().on('dp.change', function (e) {
-
-            var incrementDay = moment(new Date(e.date));
-            console.log(e.date);
-            $('#endDate').data('DateTimePicker').minDate(incrementDay);
-            /*incrementDay.add(1, 'days');
-            $('#endDate').data('DateTimePicker').minDate(incrementDay);
-            $('#endDate').val('');*/
-        });
 });
 $(document).on('click', '.update_preference_btn', function () {
 
@@ -49,8 +41,7 @@ $(document).on('click', '.update_preference_btn', function () {
     if (emailValue != '') {
         if (filter.test(emailValue)) {
             $("#updatepopup").modal("show");
-        }
-        else {
+        } else {
             toastr.error("Enter valid Email Id")
         }
 
@@ -58,8 +49,7 @@ $(document).on('click', '.update_preference_btn', function () {
     if (typeof mobileNumber != 'undefined' && mobileNumber != '') {
         if ($('#preference_three').val().length < 10) {
             toastr.error("Enter valid Mobile Number")
-        }
-        else {
+        } else {
             $("#updatepopup").modal("show");
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\controllers;
 
 use Yii;
@@ -15,17 +16,14 @@ use app\models\EmailTemplates;
 /**
  * PreferencesController implements the CRUD actions for Preferences model.
  */
-class PreferencesController extends Controller
-{
+class PreferencesController extends Controller {
 
     public $layout = 'dashboard_layout';
 
     /**
      * @inheritdoc
      */
-
-    public function behaviors()
-    {
+    public function behaviors() {
         $behaviors['access'] = [
             'class' => AccessControl::className(),
             'ruleConfig' => [
@@ -60,36 +58,34 @@ class PreferencesController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
-        
+    public function actionIndex() {
+
         $dataProvider = new ActiveDataProvider([
             'query' => Preferences::find()
         ]);
 
-        $query=ProcessCriticalPreferences::find();
-        
+        $query = ProcessCriticalPreferences::find();
+
         $rcadataProvider = new ActiveDataProvider([
             'query' => $query
         ]);
-                
+
         $rcadataProvider->setSort([
-            'attributes'=>[
-                'module_option','module_id'
+            'attributes' => [
+                'module_option', 'module_id'
             ]
-        ]);   
-        
-       $emailtemplate= EmailTemplates::findOne(['template_id'=>1]);
-       
-      
-        
+        ]);
+
+        $emailtemplate = EmailTemplates::findOne(['template_id' => 1]);
+
+
+
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'rcadataProvider'=>$rcadataProvider,
-            'emailtemplate'=>$emailtemplate
+                    'dataProvider' => $dataProvider,
+                    'rcadataProvider' => $rcadataProvider,
+                    'emailtemplate' => $emailtemplate
         ]);
     }
-    
 
     /**
      * Displays a single Preferences model.
@@ -97,35 +93,33 @@ class PreferencesController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id)
+                    'model' => $this->findModel($id)
         ]);
     }
-    
-    public function actionSaveEmailTemplate($id){
-       
-            $model =EmailTemplates::findOne(['template_id'=>Yii::$app->utils->decryptData($id)]);
-            
-            if(\Yii::$app->request->isPost){
-                $output = [];
-                //print_r(Yii::$app->utils->decryptData($id)); die();
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    
-                    $output = [
-                        'success' => 'Updated Successfully'
-                    ];
-                    
-                    //return $this->redirect(['view', 'id' => $model->critical_preference_id]);
-                }else{
-                    $output = [
-                        'error' => $model->getErrorSummary(true)
-                    ];
-                }
-                return json_encode($output);
+
+    public function actionSaveEmailTemplate($id) {
+
+        $model = EmailTemplates::findOne(['template_id' => Yii::$app->utils->decryptData($id)]);
+
+        if (\Yii::$app->request->isPost) {
+            $output = [];
+            //print_r(Yii::$app->utils->decryptData($id)); die();
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+                $output = [
+                    'success' => 'Updated Successfully'
+                ];
+
+                //return $this->redirect(['view', 'id' => $model->critical_preference_id]);
+            } else {
+                $output = [
+                    'error' => $model->getErrorSummary(true)
+                ];
             }
-        
+            return json_encode($output);
+        }
     }
 
     /**
@@ -134,18 +128,17 @@ class PreferencesController extends Controller
      *
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Preferences();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect([
-                'view',
-                'id' => $model->preferences_id
+                        'view',
+                        'id' => $model->preferences_id
             ]);
         } else {
             return $this->render('create', [
-                'model' => $model
+                        'model' => $model
             ]);
         }
     }
@@ -213,8 +206,7 @@ class PreferencesController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate()
-    {
+    public function actionUpdate() {
         $post = yii::$app->request->post();
         $prferences_id = Yii::$app->utils->decryptData($post['update_prferences_id']);
         $preferencenewvalue_onedata = $post['preferencenewvalue_one'];
@@ -287,10 +279,16 @@ class PreferencesController extends Controller
                     break;
                 case 11:
                     $type = "Hourly Audit Slot";
-                    $model->preferences_value = json_encode(['from'=>$preferencenewvalue_from,'to'=>$preferencenewvalue_to]);
+                    $model->preferences_value = json_encode(['from' => $preferencenewvalue_from, 'to' => $preferencenewvalue_to]);
                     break;
             }
 
+            if ($type == "Hourly Audit Slot" && (!$preferencenewvalue_from || !$preferencenewvalue_to)) {
+                Yii::$app->session->setFlash('error', "Please select From and To");
+                return $this->redirect([
+                            'index'
+                ]);
+            }
             //echo '<pre>';print_r($model);die;
 
             if ($model->save()) {
@@ -302,7 +300,7 @@ class PreferencesController extends Controller
             }
         }
         return $this->redirect([
-            'index'
+                    'index'
         ]);
     }
 
@@ -313,12 +311,11 @@ class PreferencesController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect([
-            'index'
+                    'index'
         ]);
     }
 
@@ -330,8 +327,7 @@ class PreferencesController extends Controller
      * @return Preferences the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Preferences::findOne($id)) !== null) {
             return $model;
         } else {
@@ -339,10 +335,8 @@ class PreferencesController extends Controller
         }
     }
 
-    public function actionUpdatepreferences()
-    {
+    public function actionUpdatepreferences() {
         $post = yii::$app->request->post();
     }
-    
-    
+
 }

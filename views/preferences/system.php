@@ -70,11 +70,14 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                             } else if ($model->preferences_id == 7) {
 
                                 return "Audit Score " . $model->preferences_value;
-                            }  else if ($model->preferences_id == 11) {
-                                $fromtos=$model->preferences_value ? json_decode($model->preferences_value, true) : ['from'=>'','to'=>''];
-                               // print_r($fromtos);exit;
-                                return "From: ".$fromtos['from'].", To: ".$fromtos['to'];
-                            }else {
+                            } else if ($model->preferences_id == 11) {
+                                $data = Preferences::getSelectTimeSlotsFrom();
+                                $fromtos = $model->preferences_value ? json_decode($model->preferences_value, true) : ['from' => '', 'to' => ''];
+                                $str = "From: " . ($data[$fromtos['from']] ? $data[$fromtos['from']] : '') . ", To: " . ($data[$fromtos['to']] ? $data[$fromtos['to']] : '');
+                                //echo $data[$fromtos['from']] ? $data[$fromtos['from']] : '';exit;
+                                // print_r($fromtos);exit;
+                                return $str;
+                            } else {
                                 return $model->preferences_value;
                             }
                         }
@@ -120,9 +123,9 @@ if (Yii::$app->authManager->checkPermissionAccess('preferences/update')) {
                                     return Html::textInput('text', '', ['type' => 'text', 'class' => 'form-control preference_type ', 'id' => 'preferencene_ten', 'placeholder' => 'Days(1-99)', 'min' => 1, 'max' => 99]);
                                     break;
                                 case 11:
-                                    return '<div class="col-md-6" style="padding-left:0px;">'.Html::textInput('text', '', ['type' => 'text', 'class' => 'form-control datetimepicker preference_type ', 'id' => 'startDate', 'placeholder' => 'From']).     
-            '</div><div class="col-md-6" style="padding-right:0px;">'.Html::textInput('text', '', ['type' => 'text', 'class' => 'form-control datetimepicker preference_type ', 'id' => 'endDate', 'placeholder' => 'To']).     
-            '</div>';
+                                    return '<div class="col-md-6" style="padding-left:0px;">' . Html::activeDropDownList($model, 'preferences_value', Preferences::getSelectTimeSlotsFrom(), ['class' => 'form-control   preference_type', 'prompt' => 'From', 'id' => 'startDate']) .
+                                            '</div><div class="col-md-6" style="padding-right:0px;">' . Html::activeDropDownList($model, 'preferences_value', Preferences::getSelectTimeSlotsFrom(), ['class' => 'form-control   preference_type', 'prompt' => 'To', 'id' => 'endDate']) .
+                                            '</div>';
                             }
                         }
                     ],
