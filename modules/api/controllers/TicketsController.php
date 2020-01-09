@@ -25,7 +25,7 @@ class TicketsController extends ActiveController {
         return $behaviors;
     }
 
-        public function actionAllIncidentsHistory() {
+    public function actionAllIncidentsHistory() {
         try {
             $output = [];
             $assigned_user_id = Yii::$app->request->post('user_id');
@@ -57,11 +57,11 @@ class TicketsController extends ActiveController {
                         'ticket_number' => $result['ticket_name'],
                         'status' => $result['ticketstatus'],
                         'due_date' => $result['due_date'],
-                        'created_at'=> $result['created_at'],
+                        'created_at' => $result['created_at'],
                         'priority' => $result['priority_type_id'],
                         'question' => ($result['question']) ? $result['question'] : '',
                         'subject' => ($result['subject']) ? $result['subject'] : '',
-                        'name' => ($result['first_name']) ? $result['first_name'].' '.$result['last_name'] : '',
+                        'name' => ($result['first_name']) ? $result['first_name'] . ' ' . $result['last_name'] : '',
                         'hotel_name' => ($result['hotel_name']) ? $result['hotel_name'] : '',
                         'department_name' => ($result['department_name']) ? $result['department_name'] : '',
                         'city_name' => ($result['location']) ? $result['location'] : '',
@@ -91,7 +91,6 @@ class TicketsController extends ActiveController {
         }
     }
 
-    
     public function actionAllTickets() {
         try {
             $output = [];
@@ -464,15 +463,10 @@ class TicketsController extends ActiveController {
         try {
             $result = [];
             $tickets = new Tickets();
-          
-            if ($tickets->load(Yii::$app->request->post(),'')) {
-                $tickets->is_incident=1;
-                if (!$tickets->save()) {
-                    $tickets->ticket_name = $tickets->ticket_name . $tickets->ticket_id;
 
-                    Tickets::updateAll([
-                        'ticket_name' => $tickets->ticket_name
-                    ], 'ticket_id=' . $tickets->ticket_id);
+            if ($tickets->load(Yii::$app->request->post(), '')) {
+                $tickets->is_incident = 1;
+                if (!$tickets->save()) {
                     $result = [
                         'response' => 'Fail',
                         'message' => 'Invalid Params',
@@ -481,6 +475,11 @@ class TicketsController extends ActiveController {
                     return $result;
                 }
 
+                $tickets->ticket_name = $tickets->ticket_name . $tickets->ticket_id;
+
+                Tickets::updateAll([
+                    'ticket_name' => $tickets->ticket_name
+                        ], 'ticket_id=' . $tickets->ticket_id);
                 $result = [
                     '200' => 'Success',
                     'response' => 'Success',
@@ -495,5 +494,5 @@ class TicketsController extends ActiveController {
             // throw new HttpException(422, $ex->getMessage());
         }
     }
-    
+
 }
