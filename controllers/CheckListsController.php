@@ -188,11 +188,11 @@ class CheckListsController extends Controller
                     'id' => $id
                 ]);
             }
-        } else {
+        } 
             return $this->render('update', [
                 'model' => $model
             ]);
-        }
+        
     }
 
     /**
