@@ -93,7 +93,7 @@ $(".dropdown-toggle").dropdown();
                                 'header' => 'Location',
                                 'headerOptions' => ['class' => 'theadcolor'],
                                 'value' => function ($model) {
-                                    return $model->audit->location->location_city;
+                                    return $model->audit->location->locationCity;
                                 }
                             ],
                             [
