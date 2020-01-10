@@ -155,6 +155,7 @@ class TicketsController extends ActiveController {
         try {
             $output = [];
             $ticket_id = Yii::$app->request->post('ticket_id');
+            $is_incident = Yii::$app->request->post('is_incident');
             if ($ticket_id) {
                 $result = (new yii\db\Query())->select('t.ticket_id,t.ticket_name,qpt.priority_name,t.status as ticketstatus,CONCAT_WS(" ", u.`first_name`, u.`last_name`) as assignedto,t.due_date,as.audit_schedule_id,as.audit_schedule_id,cl.cl_name,as.updated_at as start_date,CONCAT_WS(" ", ua.`first_name`, ua.`last_name`) as auditor,c.name as location_name,h.hotel_name,d.department_name,cl.cl_audit_type,s.s_section_name,t.sub_section_id,ss.ss_subsection_name,as.audit_schedule_name,t.description as observations,t.subject,a.options_values,a.answer_value,que.q_response_type,que.options')
                         ->from('{{%tickets}} t')
@@ -174,7 +175,7 @@ class TicketsController extends ActiveController {
                         ->join("LEFT JOIN", '{{%sub_sections}} ss', 'ss.sub_section_id = t.sub_section_id')
                         ->where([
                             't.ticket_id' => $ticket_id,
-                            't.is_incident' => 0,
+                            't.is_incident' => $is_incident,
                             't.is_deleted' => 0,
                             'u.is_deleted' => 0,
                             's.is_deleted' => 0
