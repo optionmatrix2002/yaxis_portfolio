@@ -87,15 +87,15 @@ $(".dropdown-toggle").dropdown();
                                     return '<a  data-pjax="0" target="_blank" href="' . yii::$app->urlManager->createUrl('audits/reports?id=' . Yii::$app->utils->encryptData($model->audit_schedule_id)) . '" title="View Scheduled Audit">' . $model->audit_schedule_name . '</a>';
                                 }
                             ],
-                            [
-                                'attribute' => 'audit.location_id',
-                                'format' => 'raw',
-                                'header' => 'Location',
-                                'headerOptions' => ['class' => 'theadcolor'],
-                                'value' => function ($model) {
-                                    return $model->audit->location->locationCity;
-                                }
-                            ],
+                                [
+                                    'attribute' => 'audit.location_id',
+                                    'format' => 'raw',
+                                    'header' => 'Location',
+                                    'headerOptions' => ['class' => 'theadcolor'],
+                                    'value' => function ($model) {
+                                        return $model->audit->location->locationCity->name;
+                                    }
+                                ],
                             [
                                 'attribute' => 'audit.hotel_id',
                                 'format' => 'raw',
