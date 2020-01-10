@@ -59,9 +59,9 @@ if (Yii::$app->authManager->checkPermissionAccess('audits/delete')) {
 
 <h2> Scheduled Audits </h2>
 
-<div class="schedule-audit pull-right">
+<!--<div class="schedule-audit pull-right">
     <button class="btn btn-success create-child-audit"><i class="fa fa-plus"></i>&nbsp;Schedule Audit</button>
-</div>
+</div>-->
 
 <div class="row">
     <div class="tab-content">

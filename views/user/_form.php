@@ -293,7 +293,7 @@ $("#settings-users").addClass("active");
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="col-sm-6 input-group">
                     <?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-success']) ?>
-                    <?= Html::a('Cancel', ['/user'], ['class' => 'btn btn-default']); ?>
+                    <?= Html::a('Cancel', ['/user'], ['class' => 'btn btn-default mg-left-10']); ?>
                 </div>
             </div>
         </div>
