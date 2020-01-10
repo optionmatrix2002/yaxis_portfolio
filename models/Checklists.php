@@ -93,7 +93,10 @@ class Checklists extends \yii\db\ActiveRecord
                 'targetAttribute' => [
                     'cl_department_id' => 'department_id'
                 ]
-            ]
+            ],
+            ['cl_frequency_duration', 'required','message' => 'Either email or phone is required.', 'when' => function ($model) {
+                     return $model->cl_frequency_value == 3;
+            }, 'enableClientValidation' => false]
             // [['cl_frequency_duration'], 'exist', 'skipOnError' => true, 'targetClass' => Interval::className(), 'targetAttribute' => ['cl_frequency_duration' => 'interval_id']],
         ];
     }

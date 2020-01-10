@@ -130,6 +130,7 @@ class CheckListsController extends Controller
         $modelAuditMethods = AuditMethods::find()->asArray()->all();
       //  print_r(Yii::$app->request->post());exit;
         if ($model->load(Yii::$app->request->post())) {
+            $model->cl_frequency_duration = $model->cl_frequency_value == 3 ?  $model->cl_frequency_duration : null;
             if ($model->save()) {
                 $data = array();
                 $data['module'] = 'checklist';
