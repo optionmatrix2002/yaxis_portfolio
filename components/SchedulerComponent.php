@@ -2865,8 +2865,8 @@ Y Axis Audit Team.';
             $transaction->commit();
         } catch (Exception $ex) {
             $transaction->rollBack();
-            print_r($ex->getMessage());
-            exit;
+           /* print_r($ex->getMessage());
+            exit;*/
         }
     }
     
