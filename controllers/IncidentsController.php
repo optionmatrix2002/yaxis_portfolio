@@ -251,7 +251,7 @@ class IncidentsController extends Controller {
                                     'incidents'
                 ]));
             } else {
-                throw new \Exception('Error saving Incidents');
+                Yii::$app->session->setFlash('error', 'Error saving Incidents');
             }
         }
 
