@@ -20,7 +20,59 @@ use app\models\Departments;
 use app\models\Checklists;
 
 class SchedulerComponent extends Component {
+    
+    const AUDIT_REMINDER_DAILY = 'Reminder: Audit $_AUDIT_ID is scheduled. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    
+     const AUDIT_REMINDER_MESSAGE_DAILY = 'Hi $_FULL_NAME
 
+Reminder: Audit $_AUDIT_ID is scheduled.
+
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
+Checklist : $_CHECKLIST 
+
+Best Regards, 
+Y Axis Audit Team.';
+     
+     const AUDIT_REMINDER_DAILY_OVERDUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due time. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    
+     const AUDIT_REMINDER_OVERDUE_MESSAGE_DAILY = 'Hi $_FULL_NAME
+
+Overdue Reminder: Audit $_AUDIT_ID has breached due time.
+
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
+Checklist : $_CHECKLIST 
+
+Best Regards, 
+Y Axis Audit Team.';
+     
+    const AUDIT_REMINDER_WEEKLY = 'Reminder: Audit $_AUDIT_ID is scheduled in this week. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    
+     const AUDIT_REMINDER_MESSAGE_WEEKLY = 'Hi $_FULL_NAME
+
+Reminder: Audit $_AUDIT_ID is scheduled in this week.
+
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
+Checklist : $_CHECKLIST 
+
+Best Regards, 
+Y Axis Audit Team.';
+     
+     const AUDIT_REMINDER_WEEKLY_OVERDUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due time. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
+    
+     const AUDIT_REMINDER_OVERDUE_MESSAGE__WEEKLY = 'Hi $_FULL_NAME
+
+Overdue Reminder: Audit $_AUDIT_ID has breached due time.
+
+Office : $_HOTEL 
+Floor : $_DEPARTMENT 
+Checklist : $_CHECKLIST 
+
+Best Regards, 
+Y Axis Audit Team.';
+     
     const AUDIT_REMINDER_HOURLY = 'Reminder: Audit $_AUDIT_ID will be scheduled after 30 minutes. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
     const AUDIT_REMINDER_HOURLY_OVERDUE = 'Overdue Reminder: Audit $_AUDIT_ID has breached due time. <br>Office : $_HOTEL <br> Floor : $_DEPARTMENT <br> Checklist : $_CHECKLIST';
     const AUDIT_REMINDER_MESSAGE_HOURLY = 'Hi $_FULL_NAME
@@ -1867,6 +1919,86 @@ Y Axis Audit Team.';
                     $messageContent = $this->replaceRemainderShortCode($messageContent, $data, $user);
                     $notificationContent = $this->replaceRemainderShortCode($notificationContent, $data, $user);
                     break;
+                case 'auditDailyReminder':
+                    $content = self::AUDIT_REMINDER_DAILY;
+                    $messageContent = self::AUDIT_REMINDER_MESSAGE_DAILY;
+                    $notificationContent = self::AUDIT_REMINDER_DAILY;
+
+                    $userType = 2;
+                    $alertType = 'Audit Assign';
+                    $logId = $data['audit_id'];
+
+                    $checkListName = isset($data['cl_name']) ? $data['cl_name'] : '';
+                    $hotelName = isset($data['hotel_name']) ? $data['hotel_name'] : '';
+                    $date = isset($data['start_date']) ? $data['start_date'] : '';
+                    $date = $date ? date('M Y', strtotime($date)) : '';
+
+                    $subject = 'Audit  ' . $data['audit_id'] . ' remainder - ' . $hotelName . ' ' . $checkListName . ' ' . $date;
+
+                    $content = $this->replaceRemainderShortCode($content, $data, $user);
+                    $messageContent = $this->replaceRemainderShortCode($messageContent, $data, $user);
+                    $notificationContent = $this->replaceRemainderShortCode($notificationContent, $data, $user);
+                    break;
+                case 'auditDailyReminderOverdue':
+                    $content = self::AUDIT_REMINDER_DAILY_OVERDUE;
+                    $messageContent = self::AUDIT_REMINDER_OVERDUE_MESSAGE_DAILY;
+                    $notificationContent = self::AUDIT_REMINDER_DAILY_OVERDUE;
+
+                    $userType = 2;
+                    $alertType = 'Audit Assign';
+                    $logId = $data['audit_id'];
+
+                    $checkListName = isset($data['cl_name']) ? $data['cl_name'] : '';
+                    $hotelName = isset($data['hotel_name']) ? $data['hotel_name'] : '';
+                    $date = isset($data['start_date']) ? $data['start_date'] : '';
+                    $date = $date ? date('M Y', strtotime($date)) : '';
+
+                    $subject = 'Audit  ' . $data['audit_id'] . ' remainder - ' . $hotelName . ' ' . $checkListName . ' ' . $date;
+
+                    $content = $this->replaceRemainderShortCode($content, $data, $user);
+                    $messageContent = $this->replaceRemainderShortCode($messageContent, $data, $user);
+                    $notificationContent = $this->replaceRemainderShortCode($notificationContent, $data, $user);
+                    break;
+                case 'auditWeeklyReminder':
+                    $content = self::AUDIT_REMINDER_WEEKLY;
+                    $messageContent = self::AUDIT_REMINDER_MESSAGE_WEEKLY;
+                    $notificationContent = self::AUDIT_REMINDER_WEEKLY;
+
+                    $userType = 2;
+                    $alertType = 'Audit Assign';
+                    $logId = $data['audit_id'];
+
+                    $checkListName = isset($data['cl_name']) ? $data['cl_name'] : '';
+                    $hotelName = isset($data['hotel_name']) ? $data['hotel_name'] : '';
+                    $date = isset($data['start_date']) ? $data['start_date'] : '';
+                    $date = $date ? date('M Y', strtotime($date)) : '';
+
+                    $subject = 'Audit  ' . $data['audit_id'] . ' remainder - ' . $hotelName . ' ' . $checkListName . ' ' . $date;
+
+                    $content = $this->replaceRemainderShortCode($content, $data, $user);
+                    $messageContent = $this->replaceRemainderShortCode($messageContent, $data, $user);
+                    $notificationContent = $this->replaceRemainderShortCode($notificationContent, $data, $user);
+                    break;
+                case 'auditWeeklyReminderOverdue':
+                    $content = self::AUDIT_REMINDER_WEEKLY_OVERDUE;
+                    $messageContent = self::AUDIT_REMINDER_OVERDUE_MESSAGE__WEEKLY;
+                    $notificationContent = self::AUDIT_REMINDER_WEEKLY_OVERDUE;
+
+                    $userType = 2;
+                    $alertType = 'Audit Assign';
+                    $logId = $data['audit_id'];
+
+                    $checkListName = isset($data['cl_name']) ? $data['cl_name'] : '';
+                    $hotelName = isset($data['hotel_name']) ? $data['hotel_name'] : '';
+                    $date = isset($data['start_date']) ? $data['start_date'] : '';
+                    $date = $date ? date('M Y', strtotime($date)) : '';
+
+                    $subject = 'Audit  ' . $data['audit_id'] . ' remainder - ' . $hotelName . ' ' . $checkListName . ' ' . $date;
+
+                    $content = $this->replaceRemainderShortCode($content, $data, $user);
+                    $messageContent = $this->replaceRemainderShortCode($messageContent, $data, $user);
+                    $notificationContent = $this->replaceRemainderShortCode($notificationContent, $data, $user);
+                    break;
             }
 
 
@@ -2737,7 +2869,214 @@ Y Axis Audit Team.';
             exit;
         }
     }
+    
+    public function triggerAuditReminderDaily(){
+         try {
+            $cDay = date('w');
+            $cDate = date('Y-m-d');
+            $cHour = date('H');
+            //  $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
+            // $checklistIds = implode("','", $checklistIds);
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(sa.start_time),TIME(NOW())) as timediff,"
+                    . "CONCAT_WS(\" \",`sa`.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`,`sa`.`start_time`,`u`.`email` AS email,`u`.`user_id` AS user_id,`u`.`phone` AS phone,`u`.`device_token` AS device_token,"
+                    . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
+                    . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
+                    . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `audit_schedule_name`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
+                    . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
+                    . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
+                    . "LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id "
+                    . "LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0)"
+                    . " AND(`sa`.`is_deleted` = 0) AND (`ck`.`cl_frequency_value`=2) AND (DATE(`sa`.`created_at`))=CURRENT_DATE "
+                    . "AND (DATE(sa.start_date) <= '" . $cDate . "') AND (DATE(sa.end_date) >= '" . $cDate . "') AND `sa`.`start_time` IS NULL");
 
+            $result = $command->queryAll();
+          
+            if ($result) {
+                foreach ($result as $eachResult) {
+                    $notifications = [];
+                    $notifications['type'] = 'auditDailyReminder';
+                    $notifications['toEmail'] = $eachResult['email'];
+                    $notifications['mobileNumber'] = $eachResult['phone'];
+                    $notifications['deviceToken'] = $eachResult['device_token'];
+                    $attributes = [];
+
+                    $notifications['department_name'] = isset($eachResult['department_name']) ? $eachResult['department_name'] : '';
+                    $notifications['cl_name'] = isset($eachResult['audit_name']) ? $eachResult['audit_name'] : '';
+                    $notifications['hotel_name'] = isset($eachResult['hotel_name']) ? $eachResult['hotel_name'] : '';
+
+                    $notifications['data'] = $attributes;
+                    $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
+                    $notifications['audit_id'] = $eachResult['audit_schedule_name'];
+                    $notifications['due_date'] = $eachResult['start_time'];
+                    $notifications['audit_schedule_name'] = $eachResult['audit_schedule_name'];
+                    $notifications['pushNotificationTrigger'] = 1;
+                    Yii::$app->scheduler->triggerNotifications($notifications);
+                }
+            }
+        } catch (Exception $ex) {
+            /* print_r($ex->getMessage());
+              exit; */
+        }
+    }
+
+     public function triggerAuditReminderDailyOverdue(){
+         try {
+            $cDay = date('w');
+            $cDate = date('Y-m-d');
+            $cHour = date('H');
+            //  $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
+            // $checklistIds = implode("','", $checklistIds);
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(sa.start_time),TIME(NOW())) as timediff,"
+                    . "CONCAT_WS(\" \",`sa`.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`,`sa`.`start_time`,`u`.`email` AS email,`u`.`user_id` AS user_id,`u`.`phone` AS phone,`u`.`device_token` AS device_token,"
+                    . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
+                    . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
+                    . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `audit_schedule_name`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
+                    . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
+                    . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
+                    . "LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id "
+                    . "LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0)"
+                    . " AND(`sa`.`is_deleted` = 0) AND (`ck`.`cl_frequency_value`=2) AND (DATE(`sa`.`created_at`))=CURRENT_DATE "
+                    . "AND (DATE(sa.start_date) <= '" . $cDate . "') AND (DATE(sa.end_date) >= '" . $cDate . "') AND `sa`.`start_time` IS NULL");
+
+            $result = $command->queryAll();
+          
+            if ($result) {
+                foreach ($result as $eachResult) {
+                    $notifications = [];
+                    $notifications['type'] = 'auditDailyReminderOverdue';
+                    $notifications['toEmail'] = $eachResult['email'];
+                    $notifications['mobileNumber'] = $eachResult['phone'];
+                    $notifications['deviceToken'] = $eachResult['device_token'];
+                    $attributes = [];
+
+                    $notifications['department_name'] = isset($eachResult['department_name']) ? $eachResult['department_name'] : '';
+                    $notifications['cl_name'] = isset($eachResult['audit_name']) ? $eachResult['audit_name'] : '';
+                    $notifications['hotel_name'] = isset($eachResult['hotel_name']) ? $eachResult['hotel_name'] : '';
+
+                    $notifications['data'] = $attributes;
+                    $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
+                    $notifications['audit_id'] = $eachResult['audit_schedule_name'];
+                    $notifications['due_date'] = $eachResult['start_time'];
+                    $notifications['audit_schedule_name'] = $eachResult['audit_schedule_name'];
+                    $notifications['pushNotificationTrigger'] = 1;
+                    Yii::$app->scheduler->triggerNotifications($notifications);
+                }
+            }
+        } catch (Exception $ex) {
+           /*  print_r($ex->getMessage());
+              exit; */
+        }
+    }
+    
+    public function triggerAuditReminderWeekly(){
+         try {
+            $cDay = date('w');
+            $cDate = date('Y-m-d');
+            $cHour = date('H');
+            //  $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
+            // $checklistIds = implode("','", $checklistIds);
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(sa.start_time),TIME(NOW())) as timediff,"
+                    . "CONCAT_WS(\" \",`sa`.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`,`sa`.`start_time`,`u`.`email` AS email,`u`.`user_id` AS user_id,`u`.`phone` AS phone,`u`.`device_token` AS device_token,"
+                    . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
+                    . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
+                    . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `audit_schedule_name`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
+                    . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
+                    . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
+                    . "LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id "
+                    . "LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0)"
+                    . " AND(`sa`.`is_deleted` = 0) AND (`ck`.`cl_frequency_value`=3) "
+                    . "AND (DATE(sa.start_date) <= DATE_ADD(CURDATE(), INTERVAL 5 DAY)) AND (DATE(sa.end_date) >= DATE_ADD(CURDATE(), INTERVAL 5 DAY)) AND `sa`.`start_time` IS NULL");
+
+            $result = $command->queryAll();
+   
+            if ($result) {
+                foreach ($result as $eachResult) {
+                    $notifications = [];
+                    $notifications['type'] = 'auditWeeklyReminder';
+                    $notifications['toEmail'] = $eachResult['email'];
+                    $notifications['mobileNumber'] = $eachResult['phone'];
+                    $notifications['deviceToken'] = $eachResult['device_token'];
+                    $attributes = [];
+
+                    $notifications['department_name'] = isset($eachResult['department_name']) ? $eachResult['department_name'] : '';
+                    $notifications['cl_name'] = isset($eachResult['audit_name']) ? $eachResult['audit_name'] : '';
+                    $notifications['hotel_name'] = isset($eachResult['hotel_name']) ? $eachResult['hotel_name'] : '';
+
+                    $notifications['data'] = $attributes;
+                    $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
+                    $notifications['audit_id'] = $eachResult['audit_schedule_name'];
+                    $notifications['due_date'] = $eachResult['start_time'];
+                    $notifications['audit_schedule_name'] = $eachResult['audit_schedule_name'];
+                    $notifications['pushNotificationTrigger'] = 1;
+                    Yii::$app->scheduler->triggerNotifications($notifications);
+                }
+            }
+        } catch (Exception $ex) {
+            /* print_r($ex->getMessage());
+              exit; */
+        }
+    }
+    
+    public function triggerAuditReminderWeeklyOverdue(){
+         try {
+            $cDay = date('w');
+            $cDate = date('Y-m-d');
+            $cHour = date('H');
+            //  $checklistIds = ArrayHelper::getColumn(Checklists::find()->select(['checklist_id'])->where(['cl_frequency_value' => 1])->asArray()->all(), 'checklist_id');
+            // $checklistIds = implode("','", $checklistIds);
+            $query = Yii::$app->getDb();
+            $command = $query->createCommand("SELECT TIMESTAMPDIFF(MINUTE,TIME(sa.start_time),TIME(NOW())) as timediff,"
+                    . "CONCAT_WS(\" \",`sa`.deligation_user_id,`sa`.`auditor_id`, `u`.`first_name`, `u`.`last_name`) AS `name`,`sa`.`start_time`,`u`.`email` AS email,`u`.`user_id` AS user_id,`u`.`phone` AS phone,`u`.`device_token` AS device_token,"
+                    . " `sa`.`deligation_user_id`,`c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, "
+                    . "`sa`.`updated_at` AS `audit_submitted_date`, `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`,"
+                    . " CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`, `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, "
+                    . "`sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `audit_schedule_name`,`sa`.`deligation_status`, `sa`.`start_date`, "
+                    . "`sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id  "
+                    . "LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id "
+                    . "LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id "
+                    . "LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id "
+                    . "LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE (sa.status IN('0','1','2')) AND(`a`.`is_deleted` = 0)"
+                    . " AND(`sa`.`is_deleted` = 0) AND (`ck`.`cl_frequency_value`=3) "
+                    . "AND ((CURDATE()-INTERVAL 5 DAY) <= DATE(sa.created_at)) AND (CURDATE() >=  DATE(sa.created_at)) AND `sa`.`start_time` IS NULL");
+
+            $result = $command->queryAll();
+       
+            if ($result) {
+                foreach ($result as $eachResult) {
+                    $notifications = [];
+                    $notifications['type'] = 'auditWeeklyReminderOverdue';
+                    $notifications['toEmail'] = $eachResult['email'];
+                    $notifications['mobileNumber'] = $eachResult['phone'];
+                    $notifications['deviceToken'] = $eachResult['device_token'];
+                    $attributes = [];
+
+                    $notifications['department_name'] = isset($eachResult['department_name']) ? $eachResult['department_name'] : '';
+                    $notifications['cl_name'] = isset($eachResult['audit_name']) ? $eachResult['audit_name'] : '';
+                    $notifications['hotel_name'] = isset($eachResult['hotel_name']) ? $eachResult['hotel_name'] : '';
+
+                    $notifications['data'] = $attributes;
+                    $notifications['userId'] = $eachResult['user_id'] ? $eachResult['user_id'] : $eachResult['deligation_user_id'];
+                    $notifications['audit_id'] = $eachResult['audit_schedule_name'];
+                    $notifications['due_date'] = $eachResult['start_time'];
+                    $notifications['audit_schedule_name'] = $eachResult['audit_schedule_name'];
+                    $notifications['pushNotificationTrigger'] = 1;
+                    Yii::$app->scheduler->triggerNotifications($notifications);
+                }
+            }
+        } catch (Exception $ex) {
+            /* print_r($ex->getMessage());
+              exit; */
+        }
+    }
 }
 
 ?>

@@ -210,5 +210,53 @@ class CronController extends Controller {
             throw new Exception($e->getMessage());
         }
     }
+    
+    public function actionAuditReminderDaily() {
+        try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
+            \Yii::$app->scheduler->triggerAuditReminderDaily();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+    
+    public function actionAuditReminderDailyOverdue() {
+        try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
+            \Yii::$app->scheduler->triggerAuditReminderDailyOverdue();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 
+        
+    public function actionAuditReminderWeekly() {
+        try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
+            \Yii::$app->scheduler->triggerAuditReminderWeekly();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+    
+    public function actionAuditReminderWeeklyOverdue() {
+        try {
+            set_time_limit(3600);
+            ini_set('memory_limit', '1024M');
+            \Yii::$app->scheduler->triggerAuditReminderWeeklyOverdue();
+            set_time_limit(30);
+            ini_set('memory_limit', '128M');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 }
