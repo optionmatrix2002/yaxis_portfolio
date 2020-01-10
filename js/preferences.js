@@ -10,9 +10,9 @@ $(document).ready(function () {
     $('#endDate').on('change', function () {
         var endDate = $('#endDate').val();
         var startDate = $('#startDate').val();
-        if(endDate < startDate){
+        if(parseInt(endDate) < parseInt(startDate)){
              $('#endDate').val('');
-            alert("To time should not be more than From time");
+            alert("To time should  be greater than From time");
             return false;
         }
     });

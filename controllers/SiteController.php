@@ -439,7 +439,7 @@ body {
             'cssFile' => '@web/css/default.css',
             'cssInline' => $inlineCss,
             'methods' => [
-                'SetHeader' => ['Green Park Corporate Audit Team.'],
+                'SetHeader' => ['Y Axis Corporate Audit Team.'],
                 'SetFooter' => ['{PAGENO}'],
             ],
             'content' => $content
@@ -564,7 +564,7 @@ body {
     {
         if (!yii::$app->user->isGuest) {
             $this->layout = 'dashboard_layout';
-            $this->view->title = "Green Park Corporate Audit Application";
+            $this->view->title = "Y Axis Corporate Audit Application";
             return $this->render('welcome');
         }
         return $this->redirect(yii::$app->urlManager->createUrl('/'));

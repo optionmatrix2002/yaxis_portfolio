@@ -77,7 +77,7 @@ class EmailsComponent extends Component
             $message .= "<tr><td></td></tr>";
             $message .= "<tr><td></td></tr>";
             $message .= "<tr><td>Best Regards,</td></tr>";
-            $message .= "<tr><td>Green Park Corporate Audit Team.</td></tr></table>";
+            $message .= "<tr><td>Y Axis Corporate Audit Team.</td></tr></table>";
             $message .= "</body></html>";
 
             $gridMailArry = [
@@ -112,7 +112,7 @@ class EmailsComponent extends Component
             $message .= "<tr><td></td></tr>";
             $message .= "<tr><td></td></tr>";
             $message .= "<tr><td>Best Regards,</td></tr>";
-            $message .= "<tr><td>Green Park Corporate Audit Team.</td></tr></table>";
+            $message .= "<tr><td>Y Axis Corporate Audit Team.</td></tr></table>";
             $message .= "</body></html>";
 
             $gridMailArry = [

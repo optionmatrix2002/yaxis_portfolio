@@ -116,7 +116,7 @@ $("#MenuAudits").addClass("active");
         </div>
         <div class="col-sm-12 margintop10">
             <div class="col-sm-3 col-lg-3 col-md-3">
-                <label class="required-label">Department :</label>
+                <label class="required-label">Floor :</label>
             </div>
             <div class="col-sm-9 col-lg-9 col-md-9">
                 <div class="input-group col-sm-6">

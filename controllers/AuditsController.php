@@ -1501,7 +1501,7 @@ class AuditsController extends Controller {
             'orientation' => Pdf::ORIENT_PORTRAIT,
             'cssInline' => $inlineCss,
             'methods' => [
-                'SetHeader' => ['Green Park Corporate Audit Team.'],
+                'SetHeader' => ['Y Axis Corporate Audit Team.'],
                 'SetFooter' => ['{PAGENO}'],
             ],
             'content' => $content
@@ -1613,7 +1613,7 @@ class AuditsController extends Controller {
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
                 'methods' => [
-                    'SetHeader' => ['Green Park Corporate Audit Team.'],
+                    'SetHeader' => ['Y Axis Corporate Audit Team.'],
                     'SetFooter' => ['{PAGENO}'],
                 ],
                 'filename' => $file,

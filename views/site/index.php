@@ -57,7 +57,7 @@ $("#MenuDashboard").addClass("active");
                                                                               aria-hidden="true"></i>&nbsp;Ticket
                         Distribution</a></li>
                 <li><a class="tabs" data-toggle="tab" href="#trends"><i class="fa fa-line-chart"
-                                                                        aria-hidden="true"></i>&nbsp;Hotel
+                                                                        aria-hidden="true"></i>&nbsp;Office
                         Trends</a></li>
                 <li><a class="tabs" data-toggle="tab" href="#trends2"><i class="fa fa-line-chart"
                                                                          aria-hidden="true"></i>&nbsp;Floor

@@ -75,7 +75,7 @@ $this->registerJs('
 
             ?>
             <?= Html::dropDownList('department_hotel_id', null, $dimensionTypes, array(
-                'class' => 'form-control', 'prompt' => 'Hotel', 'id' => 'department_hotel_id', 'options' => array(isset($_GET['department_hotel_id']) ? $_GET['department_hotel_id'] : '' => array('selected' => true)))) ?>
+                'class' => 'form-control', 'prompt' => 'Office', 'id' => 'department_hotel_id', 'options' => array(isset($_GET['department_hotel_id']) ? $_GET['department_hotel_id'] : '' => array('selected' => true)))) ?>
         </div>
         <div class="col-lg-3 col-sm-3 col-md-3  ">
             <input name="departmentStartDate" id="departmentStartDate" class="form-control hasDatepicker"

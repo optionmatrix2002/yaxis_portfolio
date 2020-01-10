@@ -33,6 +33,8 @@ class User extends ActiveRecord implements IdentityInterface
     public $departmentId;
 
     public $hoteld;
+    
+    public $locationId;
 
     public $hotelsList = [];
 

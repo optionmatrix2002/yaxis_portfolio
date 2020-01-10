@@ -88,6 +88,15 @@ $(".dropdown-toggle").dropdown();
                                 }
                             ],
                             [
+                                'attribute' => 'audit.location_id',
+                                'format' => 'raw',
+                                'header' => 'Location',
+                                'headerOptions' => ['class' => 'theadcolor'],
+                                'value' => function ($model) {
+                                    return $model->audit->location->location_city;
+                                }
+                            ],
+                            [
                                 'attribute' => 'audit.hotel_id',
                                 'format' => 'raw',
                                 'header' => 'Office',

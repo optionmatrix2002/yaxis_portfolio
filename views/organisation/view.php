@@ -226,7 +226,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Y Axis" readonly />
                             </div>
                         </div>
                     </div>
@@ -313,7 +313,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Y Axis" readonly />
                             </div>
                         </div>
                     </div>
@@ -401,7 +401,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Y Axis" readonly />
                             </div>
                         </div>
                     </div>
@@ -503,7 +503,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park"/>
+                                <input type="text" class="form-control" placeholder="Office Name" value="Y Axis"/>
                             </div>
                         </div>
                     </div>
@@ -565,7 +565,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Y Axis" readonly />
                             </div>
                         </div>
                     </div>
@@ -649,7 +649,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Y Axis" readonly />
                             </div>
                         </div>
                     </div>
@@ -743,7 +743,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js'), ['d
                         </div>
                         <div class="col-sm-12 ">
                             <div class="col-sm-10 ">
-                                <input type="text" class="form-control" placeholder="Office Name" value="Green Park" readonly />
+                                <input type="text" class="form-control" placeholder="Office Name" value="Y Axis" readonly />
                             </div>
                         </div>
                     </div>
