@@ -149,8 +149,8 @@ $this->registerJs('
        
 
         <div class="col-lg-3 col-md-3 col-sm-3 pull-right text-right margin-top-5">
-            <?= Html::submitButton('Go', ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Clear', Yii::$app->urlManager->createUrl(['/audits']), ['class' => 'btn btn-default']) ?>
+            <?= Html::a('Go', Yii::$app->urlManager->createUrl(['/audits/tasks']), ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Clear', Yii::$app->urlManager->createUrl(['/audits/tasks']), ['class' => 'btn btn-default']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>
