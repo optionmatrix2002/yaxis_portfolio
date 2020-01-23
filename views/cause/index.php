@@ -1,6 +1,6 @@
 <?php
 //Step1
- $db = mysqli_connect('localhost','root','','greenpark')
+ $db = mysqli_connect('optinmatrixdb.cggxvyo4407g.us-west-2.rds.amazonaws.com','optionmatrix2002','Frameworks2018!!!','yAxis')
  or die('Error connecting to MySQL server.');
  $hotel_id=null;
  if(isset($_POST['task_rec1'])=="GO")
