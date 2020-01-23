@@ -52,7 +52,7 @@ $("#settings-preferences").addClass("active");
                 <li class="active"><a class="tabs" data-toggle="tab" href="#system"><i class="fa fa-th-list"
                                                                                            aria-hidden="true"></i>&nbsp;System Preferences</a>
                 </li>
-                <li><a class="tabs" data-toggle="tab" href="#rca"><i class="fa fa-th-list" aria-hidden="true"></i>&nbsp;RCA Preferences</a></li>
+                <li><a class="tabs" data-toggle="tab" href="#rcas"><i class="fa fa-th-list" aria-hidden="true"></i>&nbsp;RCA Preferences</a></li>
               <li><a class="tabs" data-toggle="tab" href="#emailtemplate"><i class="fa fa-th-list" aria-hidden="true"></i>&nbsp;Email Template</a></li>
             </ul>
             <div class="tab-content">
@@ -61,7 +61,7 @@ $("#settings-preferences").addClass("active");
                         'dataProvider' => $dataProvider
                     ]); ?>
                 </div>
-                <div id="rca" class="tab-pane fade">
+                <div id="rcas" class="tab-pane fade">
                    <?= $this->render('rca-preference', [
                        'dataProvider' => $rcadataProvider
                     ]); ?>
