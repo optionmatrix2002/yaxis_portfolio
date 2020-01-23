@@ -1,7 +1,4 @@
-<?php
-
-
-?>
+<?php ?>
 <div class="col-sm-12 bg-white" id="footer">
     <p style="margin-top: 10px; margin-left: 0px; text-align: center; color: #FFF;">&#169; <?php echo date('Y'); ?> -
         Option Matrix InfoTech Pvt Ltd &#174; All Rights Reserved</p>
@@ -10,7 +7,7 @@
     <div class="modal-dialog">
 
         <!-- Modal content-->
-        <div class="modal-content" style="height:220px">
+        <div class="modal-content" style="height:253px">
             <div class="modal-header" style="margin: 0; line-height: 1.42857143; padding: 10px;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title help-modal-title" style="font-weight: bolder; margin-left: 0px !important;">
@@ -21,56 +18,38 @@
                     Click on Module Help for a guided tour of the application. Upload the application guidelines
                     document here which can be viewed from the Corporate Audit mobile application.
                 </div>
-            </div>
-            <div class="modal-footer" style="margin: 0; line-height: 1.42857143; padding: 10px;">
-
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="col-md-2 pull-left">
-                        <button class="btn btn-primary" id="mhelp">Module Help</button>
-                    </div>
-                    <div class="col-md-3 pull-left">
-                        <label> Guidelines Document</label>
-                    </div>
-
-
-                    <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'id' => 'uploadForm'], 'action' => yii::$app->urlManager->createUrl('site/helpdocupload')]) ?>
-                    <?php if (Yii::$app->user->identity->user_type == 1) { ?>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div class="upload-btn-wrapper">
+                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-bottom: 13px;">
+                    <button class="btn btn-primary" id="mhelp" style="float:right;">Module Help</button>
+                </div>
+                <?php $form = \yii\widgets\ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'id' => 'uploadForm'], 'action' => yii::$app->urlManager->createUrl('site/helpdocupload')]) ?>
+                <table>
+                    <tr>
+                        <td style="font-weight: 600;
+                            padding-right: 20px;
+                            padding-left: 11px;">Guidelines Document</td>
+                        <td style="padding-right: 10px;"><div class="upload-btn-wrapper" style="margin-top: 5px;">
                                 <button class="btn upload-button">Upload a file</button>
                                 <input type="file" id="file_upload_help" name="file_upload_help" aria-invalid="false"/>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-2 col-md-2 col-sm-2">
-                            <div class="form-group">
+                            </div></td>
+                        <td style="padding-right: 10px;"><div >
                                 <?= \yii\helpers\Html::submitButton('Save', ['class' => 'btn btn-success', 'id' => 'help_upload_submit']) ?>
-                            </div>
-                        </div>
-                    <?php } ?>
-                    <?php //if (file_exists(Yii::getAlias('@webroot') . Yii::$app->params['guideLinesPath'])) { ?>
-                    <div class="col-lg-2 col-md-2 col-sm-2" style="padding-left: 2px;">
-
-                        <a class="btn btn-success"
-                           title="Download <?= Yii::getAlias('@web') . Yii::$app->params['guideLinesPath'] ?>"
-                           href="<?= Yii::getAlias('@web') . Yii::$app->params['guideLinesPath'] ?>"
-                           download>
-                            <i class="fa fa-arrow-circle-o-down" title="Download"> </i>
-                            Download
+                            </div></td>
+                        <td style="padding-right: 10px;"><a class="btn btn-success"
+                                                            title="Download <?= Yii::getAlias('@web') . Yii::$app->params['guideLinesPath'] ?>"
+                                                            href="<?= Yii::getAlias('@web') . Yii::$app->params['guideLinesPath'] ?>"
+                                                            download>
+                                <i class="fa fa-arrow-circle-o-down" title="Download"> </i>
+                                Download
 
 
-                        </a>
+                            </a></td>
+                    </tr>
+                </table>
+                <div class="status-row" style="margin-left: 13px;">&nbsp;</div>
+                <span id="result"></span>
+                <?php \yii\widgets\ActiveForm::end(); ?>
 
-                    </div>
-                    <?php //} ?>
-                    <div class="status-row" style="margin-right: 151px;">&nbsp;</div>
-                    <?php \yii\widgets\ActiveForm::end(); ?>
-                    <span id="result"></span>
-
-                </div>
             </div>
-
 
         </div>
         <!-- Modal -->
@@ -131,7 +110,6 @@
         </div>
 
         <?php
-
         $sub_url = yii::$app->urlManager->createUrl('site/helpdocupload');
         $this->registerJs("
 
@@ -163,6 +141,4 @@ $('#helpModal').on('hide.bs.modal', function (e) {
     }));
 });
 ");
-
-
         ?>

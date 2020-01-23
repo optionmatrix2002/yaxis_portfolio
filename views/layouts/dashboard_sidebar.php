@@ -44,8 +44,18 @@
                         <span class="selected"></span>
                     </a>
                 </li>
-            <?php }
-            if (Yii::$app->authManager->checkPermissionAccess('tickets')) { ?>
+            <?php } ?>
+                
+                <li id="tasks" class="nav-bids <?php if ($item == "tasks") {
+                    echo "active"; ?>  <?php } ?>">
+                    <a href="<?= yii::$app->urlManager->createUrl('audits/tasks'); ?>" class="nav-link">
+                        <div class="floatleft clsprojects clsbackground"><i class="fa fa-tasks"></i>
+                        </div>
+                        <span class="title">Tasks</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+            <?php if (Yii::$app->authManager->checkPermissionAccess('tickets')) { ?>
                 <li id="tickets" class="nav-bids <?php if ($item == "tickets") {
                     echo "active"; ?>  <?php } ?>">
                     <a href="<?= yii::$app->urlManager->createUrl('tickets'); ?>" class="nav-link">
@@ -64,8 +74,17 @@
                         <span class="title">Incidents</span>
                         <span class="selected"></span>
                     </a>
-                </li>
-
+                </li>  
+<?php if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
+                            <li class="" id="rca" class="nav-bids <?php if ($item == "cause") {
+                    echo "active"; ?>  <?php } ?>">
+                                <a href="<?= yii::$app->urlManager->createUrl('views/cause/'); ?>" class="nav-link">
+                                     <div class="floatleft clsprojects clsbackground"><i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                        <span class="title">RCA Report</span>
+                                </a>
+                            </li>
+                        <?php } ?>
             <?php if (Yii::$app->authManager->checkPermissionAccess('user') || Yii::$app->authManager->checkPermissionAccess('roles') || Yii::$app->authManager->checkPermissionAccess('organisation') || Yii::$app->authManager->checkPermissionAccess('preferences') || Yii::$app->authManager->checkPermissionAccess('eventmaster') || Yii::$app->authManager->checkPermissionAccess('errorlogs')) { ?>
                 <li id="MenuSystemAdmin" class="nav-bids <?php if ($item == "System Admin") {
                     echo "active"; ?>  <?php } ?>">
@@ -156,7 +175,7 @@
                             <li class="" id="settings-sections">
                                 <a href="<?= yii::$app->urlManager->createUrl('sections'); ?>" class="">
                                     <i class="fa fa-home"></i>
-                                    Manage Section
+                                    Manage Sections
                                 </a>
                             </li>
                         <?php }
@@ -164,19 +183,12 @@
                             <li class="" id="settings-sub-sections">
                                 <a href="<?= yii::$app->urlManager->createUrl('sub-sections'); ?>" class="">
                                     <i class="fa fa-users"></i>
-                                    Manage Subsection
+                                    Manage Subsections
                                 </a>
                             </li>
                         <?php } ?>
 						
-						<?php if (Yii::$app->authManager->checkPermissionAccess('departments')) { ?>
-                            <li class="" id="settings-sub-sections">
-                                <a href="<?= yii::$app->urlManager->createUrl('views/cause/'); ?>" class="">
-                                    <i class="fa fa-users"></i>
-                                    RCA Report
-                                </a>
-                            </li>
-                        <?php } ?>
+						
                     </ul>
                 </li>
             <?php } ?>

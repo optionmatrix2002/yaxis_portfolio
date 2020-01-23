@@ -24,7 +24,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/dashboard.js'), [
 
 ?>
 <div class="container-fluid">
-	<h2>Y Axis Corporate Audit Application</h2>
+	<h2>Y Axis Audit Application</h2>
 </div>
 <div class="wa-notification wa-notification-alt">
 	<span class="wa-iconBoxed"> <span class="wa-icon wa-icon-notification"></span>

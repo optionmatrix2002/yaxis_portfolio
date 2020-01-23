@@ -38,14 +38,29 @@ $(document).ready(function () {
                 title: 'Audits',
                 content: "Audits can be scheduled, assigned to auditors, view live-questionnaire and audit status, download and email reports, perform section-wise comparisons with previous audits.",
                 backdrop: true
+            },{
+                element: '#tasks',
+                title: 'Tasks',
+                content: "Tasks can be scheduled, assigned to staff auditors, view live questionnaire and audit status, download and email reports, perform section wise comparisons with previous audits.",
+                backdrop: true
             },
             {
                 element: '#tickets',
                 title: 'Tickets',
                 content: "Non compliances and chronic issues raised from the audits can be tracked here. New tasks can be created and assigned as tickets. Add new comments and attachments to tickets.",
                 backdrop: true
-            }
-            ,
+            },{
+                element: '#incidents',
+                title: 'Incidents',
+                content: "Incidents that has been raised by the auditors can be tracked here. New Incidents can be created and assigned. Add new comments and attachments to incidents.",
+                backdrop: true
+            },
+            {
+                element: '#rca',
+                title: 'RCA Report',
+                content: "Root Cause Analysis of tickets that has been assigned to HOD for various offices can be tracked here.",
+                backdrop: true
+            },
             {
                 element: '#MenuSystemAdmin',
                 title: 'System Admin',

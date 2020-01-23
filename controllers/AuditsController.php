@@ -107,6 +107,44 @@ class AuditsController extends Controller {
     }
 
     /**
+     *
+     * @return mixed
+     */
+    public function actionTasks() {
+        $searchModel = new AuditsSearch();
+        $auditScheduleModel = new AuditsSchedules();
+
+        // echo "<pre>"; print_r(Yii::$app->request->queryParams); die();
+
+        $dataProviderAudits = $searchModel->searchAudits(Yii::$app->request->queryParams);
+        $dataProviderAuditsSchedules = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams, [3, 4]);
+        $dataProviderAuditsSchedulesChilds = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams, [0, 1, 2]);
+
+        return $this->render('tasks', [
+                    'searchModel' => $searchModel,
+                    'dataProviderAudits' => $dataProviderAudits,
+                    'dataProviderAuditsSchedules' => $dataProviderAuditsSchedules,
+                    'dataProviderAuditsSchedulesChilds' => $dataProviderAuditsSchedulesChilds,
+                    'auditScheduleModel' => $auditScheduleModel
+        ]);
+    }
+
+    /**
+     *
+     * @return mixed
+     */
+    public function actionCreateTask() {
+        $model = new Audits();
+        $auditLocationsModel = new Locations();
+        $auditsSchedulesModel = new AuditsSchedules();
+        return $this->render('createTask', [
+                    'model' => $model,
+                    'auditLocationsModel' => $auditLocationsModel,
+                    'auditsSchedulesModel' => $auditsSchedulesModel
+        ]);
+    }
+
+    /**
      * Lists all Audits models.
      *
      * @return mixed
@@ -1501,7 +1539,7 @@ class AuditsController extends Controller {
             'orientation' => Pdf::ORIENT_PORTRAIT,
             'cssInline' => $inlineCss,
             'methods' => [
-                'SetHeader' => ['Y Axis Corporate Audit Team.'],
+                'SetHeader' => ['Y Axis Audit Team.'],
                 'SetFooter' => ['{PAGENO}'],
             ],
             'content' => $content
@@ -1613,7 +1651,7 @@ class AuditsController extends Controller {
             $pdf = new Pdf([
                 'mode' => Pdf::MODE_CORE, // leaner size using standard fonts
                 'methods' => [
-                    'SetHeader' => ['Y Axis Corporate Audit Team.'],
+                    'SetHeader' => ['Y Axis Audit Team.'],
                     'SetFooter' => ['{PAGENO}'],
                 ],
                 'filename' => $file,

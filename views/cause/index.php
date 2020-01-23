@@ -26,7 +26,14 @@ mysqli_query($db, $query) or die('Error querying database.');
 //Step3
 $result = mysqli_query($db, $query);
 
+$query1 = "SELECT hotel_id,hotel_name 
+FROM tbl_gp_hotels WHERE hotel_status=1 AND is_deleted=0";
 
+
+mysqli_query($db, $query1) or die('Error querying database.');
+
+//Step3
+$offices = mysqli_query($db, $query1);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,16 +78,9 @@ table {
 													<div class="controls">
 													<select  class="form-control" name="hotel_id">
 													<option value=""> --- Select Office Name -- </option>
-													<option value="81"> GreenPark Hotel- GPH</option>
-													<option value="85"> Marigold Hotel </option>
-													<option value="86">GreenPark Hotel- GPC</option>
-													<option value="87"> GreenPark Hotel- GPV </option>
-													<option value="88"> AVASA Hotel </option>
-													<option value="89"> ISB </option>
-													<option value="90"> GPHSAH11 </option>
-													<option value="92"> GPHS-Amazon HYD-16 </option>
-													<option value="93"> GPHS-Amazon HYD-11 </option>
-													
+                                                                                                        <?php while ($row = mysqli_fetch_array($offices)) { ?>
+                                                                                                        <option value="<?= $row['hotel_id']?>"><?= $row['hotel_name']?></option>
+                                                                                                        <?php } ?>
 													</select>													
 													</div>
 												</div>

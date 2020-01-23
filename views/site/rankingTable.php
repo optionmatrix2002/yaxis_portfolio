@@ -40,7 +40,7 @@ use yii\widgets\Pjax;
                             [
                                 'attribute' => 'hotel_name',
                                 'format' => 'raw',
-                                'header' => 'Hotel',
+                                'header' => 'Office',
                                 'headerOptions' => ['class' => 'theadcolor']
                             ],
                             /* [

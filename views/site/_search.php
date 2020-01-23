@@ -19,6 +19,36 @@ $this->registerJs('
    format: \'DD-MM-YYYY\',
   });
 
+$(\'#auditssearch-hotel_id\').on("change",function(){
+$.post( "' . Yii::$app->urlManager->createUrl('site/departments?quickView=1&id=') . '"+$(this).val(), function( data ) {
+                  $( "select#auditssearch-department_id" ).html( data );
+                });
+});
+
+function getFloors(){
+var officeId = $(\'#auditssearch-hotel_id\').val();
+ $.post( "' . Yii::$app->urlManager->createUrl('site/departments?quickView=1&id=') . '"+officeId, function( data ) {
+                  $( "select#auditssearch-department_id" ).html(data);
+                    getAudits();
+                });
+}
+$(\'#auditssearch-department_id\').on("change",function(){
+
+                $.post( "' . Yii::$app->urlManager->createUrl('site/audits?id=' . '"+$(this).val()+"' . '&hotel_id=') . '"+$("#auditssearch-hotel_id").val(), function( data ) {
+                  $( "select#auditssearch-audit_id" ).html( data );
+                });
+ });
+ 
+function getAudits(){
+var officeId = $(\'#auditssearch-hotel_id\').val();
+var depId = $(\'#auditssearch-department_id\').val();
+                $.post( "' . Yii::$app->urlManager->createUrl('site/audits?id=' . '"+depId+"' . '&hotel_id=') . '"+officeId, function( data ) {
+                  $( "select#auditssearch-audit_id" ).html( data );
+                    submitQuickViewForm();
+                });
+}
+getFloors();
+
  });
 ');
 
@@ -54,16 +84,10 @@ $this->registerJs('
 
                 }
                 $hotels = $query->all();
-
+                $model->hotel_id= isset($hotels[0]['hotel_id']) ? $hotels[0]['hotel_id'] : 0;
                 echo $form->field($model, 'hotel_id')
                     ->dropDownList(ArrayHelper::map($hotels, 'hotel_id', 'hotel_name'), [
                         'prompt' => 'Office',
-                        'onchange' => '
-                $.post( "' . Yii::$app->urlManager->createUrl('site/departments?id=') . '"+$(this).val(), function( data ) {
-                  $( "select#auditssearch-department_id" ).html( data );
-                });
-                
-            '
                     ], [
                         'class',
                         'form-control'
@@ -94,11 +118,7 @@ $this->registerJs('
                 <?php
                 echo $form->field($model, 'department_id')
                     ->dropDownList([], [
-                        'prompt' => 'Floor',
                         'onchange' => '
-                $.post( "' . Yii::$app->urlManager->createUrl('site/audits?id=' . '"+$(this).val()+"' . '&hotel_id=') . '"+$("#auditssearch-hotel_id").val(), function( data ) {
-                  $( "select#auditssearch-audit_id" ).html( data );
-                });
                 
             '], [
                         'class',
@@ -144,6 +164,37 @@ $this->registerJs('
 
 <?php
 $this->registerJs("
+
+function submitQuickViewForm(){
+ var form = $('#form-fetch-audits');
+         var auditId = $('#auditssearch-audit_id').val();
+        
+        var formData = form.serialize();
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: formData,
+            success: function (data) {
+                if(data.count > 0){
+                    $('.download-report').addClass('btn');
+                    $('.quickview-content').html(data.content);
+                     $('.default-text-h4').text('');
+                }else{
+                    $('.download-report').removeClass('btn');
+                    $('.quickview-content').html('');
+                    $('.default-text-h4').html(data.content);
+                }
+                $('.download-report').attr('href', $('.download-report').attr('href').replace(/((\?|&)id\=)[0-9]*/, '$1' + auditId));
+              
+            },
+            error: function () {
+                $('.download-report').removeClass('btn');
+                $('.compare-header').html('There are no audits scheduled to display');
+            }
+        });
+        return false;
+}
+
     $('#form-fetch-audits').on('beforeSubmit', function(e) {
         var form = $(this);
          var auditId = $('#auditssearch-audit_id').val();

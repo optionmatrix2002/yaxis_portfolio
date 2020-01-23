@@ -265,7 +265,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionDepartments($id = null)
+    public function actionDepartments($quickView =null,$id = null)
     {
         $postsQuery = Departments::find()->select([
             'tbl_gp_departments.department_id',
@@ -286,7 +286,9 @@ class SiteController extends Controller
         $posts = $postsQuery->all();
 
         if (!empty($posts)) {
+            if(!$quickView){
             echo "<option value=''>Floor</option>";
+            }
             foreach ($posts as $post) {
                 echo "<option value='" . $post->department_id . "'>" . $post->department_name . "</option>";
             }
@@ -439,7 +441,7 @@ body {
             'cssFile' => '@web/css/default.css',
             'cssInline' => $inlineCss,
             'methods' => [
-                'SetHeader' => ['Y Axis Corporate Audit Team.'],
+                'SetHeader' => ['Y Axis Audit Team.'],
                 'SetFooter' => ['{PAGENO}'],
             ],
             'content' => $content
@@ -564,7 +566,7 @@ body {
     {
         if (!yii::$app->user->isGuest) {
             $this->layout = 'dashboard_layout';
-            $this->view->title = "Y Axis Corporate Audit Application";
+            $this->view->title = "Y Axis Audit Application";
             return $this->render('welcome');
         }
         return $this->redirect(yii::$app->urlManager->createUrl('/'));
