@@ -61,6 +61,15 @@ $(".dropdown-toggle").dropdown();
                             class="fa fa-plus"></i>&nbsp;Schedule Task</a>
                 </li>
             <?php } ?>
+            
+            <li class="pull-right">
+            <a href="javascript:void(0)" class="btn btn-success"><i
+                            class="fa fa-download icon-white"></i>&nbsp;Completed Tasks</a>
+            </li>
+            <li class="pull-right">
+            <a href="javascript:void(0)" class="btn btn-success"><i
+                            class="fa fa-download icon-white"></i>&nbsp;Scheduled Tasks</a>
+            </li>
         </ul>
     </div>
 </div>

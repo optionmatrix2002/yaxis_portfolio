@@ -61,6 +61,14 @@ $(".dropdown-toggle").dropdown();
                             class="fa fa-plus"></i>&nbsp;Schedule Audit</a>
                 </li>
             <?php } ?>
+            <li class="pull-right">
+            <a href="javascript:void(0)" class="btn btn-success"><i
+                            class="fa fa-download icon-white"></i>&nbsp;Completed Audits</a>
+            </li>
+            <li class="pull-right">
+            <a href="javascript:void(0)" class="btn btn-success"><i
+                            class="fa fa-download icon-white"></i>&nbsp;Scheduled Audits</a>
+            </li>
         </ul>
     </div>
 </div>

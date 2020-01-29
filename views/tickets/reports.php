@@ -710,7 +710,7 @@ $("#tickets").addClass("active");
                                 <label>: </label>
                             </div>
                             <div class="col-sm-9 nopadding">
-                                <label><?php echo $model->locations->location_description; ?> </label>
+                                <label><?= $model->locations->locationCity->name ?> </label>
                             </div>
                         </div>
 
