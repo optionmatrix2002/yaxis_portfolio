@@ -110,6 +110,35 @@ use yii\bootstrap\Html;
                             <div class="panel-heading accordianheading">
                                 <h4 class="panel-title togtab">
                                     <a class="accordion-toggle" data-toggle="collapse"
+                                       data-parent="#accordion" href="#prmTasks"> <i
+                                                class="glyphicon glyphicon-calendar"></i> &nbsp;Tasks Permissions<i
+                                                class="fa fa-chevron-down pull-right"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="prmTasks" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <?php foreach (yii::$app->authManager->getChildren('manageTasks') as $permission) { ?>
+                                        <div class="col-md-1 aligncheckbox martop5px">
+                                            <?php
+                                            if (in_array($permission->name, $rolePermissions)) {
+                                                echo Html::checkbox('Permissions[' . $permission->name . ']', true);
+                                            } else {
+                                                echo Html::checkbox('Permissions[' . $permission->name . ']', false);
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="col-md-11 no-padding">
+                                            <label class="martop5px"><?= $permission->description; ?></label>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading accordianheading">
+                                <h4 class="panel-title togtab">
+                                    <a class="accordion-toggle" data-toggle="collapse"
                                        data-parent="#accordion" href="#prmSprints"> <i
                                                 class="fa fa-ticket"></i> &nbsp;Tickets<i
                                                 class="fa fa-chevron-down pull-right"></i>
@@ -119,6 +148,64 @@ use yii\bootstrap\Html;
                             <div id="prmSprints" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <?php foreach (yii::$app->authManager->getChildren('manageTickets') as $permission) { ?>
+                                        <div class="col-md-1 aligncheckbox martop5px">
+                                            <?php
+                                            if (in_array($permission->name, $rolePermissions)) {
+                                                echo Html::checkbox('Permissions[' . $permission->name . ']', true);
+                                            } else {
+                                                echo Html::checkbox('Permissions[' . $permission->name . ']', false);
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="col-md-11 no-padding">
+                                            <label class="martop5px"><?= $permission->description; ?></label>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading accordianheading">
+                                <h4 class="panel-title togtab">
+                                    <a class="accordion-toggle" data-toggle="collapse"
+                                       data-parent="#accordion" href="#prmIncidents"> <i
+                                                class="fa fa-ticket"></i> &nbsp;Incidents<i
+                                                class="fa fa-chevron-down pull-right"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="prmIncidents" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <?php foreach (yii::$app->authManager->getChildren('manageIncidents') as $permission) { ?>
+                                        <div class="col-md-1 aligncheckbox martop5px">
+                                            <?php
+                                            if (in_array($permission->name, $rolePermissions)) {
+                                                echo Html::checkbox('Permissions[' . $permission->name . ']', true);
+                                            } else {
+                                                echo Html::checkbox('Permissions[' . $permission->name . ']', false);
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="col-md-11 no-padding">
+                                            <label class="martop5px"><?= $permission->description; ?></label>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading accordianheading">
+                                <h4 class="panel-title togtab">
+                                    <a class="accordion-toggle" data-toggle="collapse"
+                                       data-parent="#accordion" href="#prmRCAReport"> <i
+                                                class="fa fa-ticket"></i> &nbsp;RCA Report<i
+                                                class="fa fa-chevron-down pull-right"></i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="prmRCAReport" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <?php foreach (yii::$app->authManager->getChildren('manageRcaReport') as $permission) { ?>
                                         <div class="col-md-1 aligncheckbox martop5px">
                                             <?php
                                             if (in_array($permission->name, $rolePermissions)) {
