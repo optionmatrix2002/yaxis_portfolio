@@ -5,6 +5,8 @@ return [
     'unique_hashing_secret_iv'=>'GreenPark2017',
     'phone_number_format'=>"999 999 9999",
     'attachments_save_url' => '/img/answers_attachments/',
+    'profile_pictures_save_url' => '/img/users_profile_pictures/',
+    'thumbnail_save_url' => '/img/questions_thumbnail/',
 	'guideLinesPath' => '/help/guidelines.pdf',
 	'ticketAttachments_save_url' => '/img/ticket_attachments/',
 	'message_notification_api_key'=>'AAAAy8_Qf6M:APA91bGVtgnhQVG-i1-mJ0sSju5e2jGINf7_BJTQFKeFFenBwZpNZmZcwAGs4W2oJlGXR3-va69HP8fKYSzFsISllvq7hku2MW8Hl7xgIfeEAFC_PKTsDo4Rh5_87wVtC2SJnOTW57co',

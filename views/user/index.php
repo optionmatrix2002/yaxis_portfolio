@@ -94,10 +94,53 @@ $("#settings-users").addClass("active");
                         'format' => 'raw',
                         'filter' => false,
                         'headerOptions' => ['class' => 'theadcolor'],
+                        
                         'value' => function ($model) {
+                            if($model->email == ''){
+                                return '-';
+                            }
                             return $model->email;
                         }
                     ],
+                    [
+                        'attribute' => 'username',
+                        'header' => 'User name',
+                        'format' => 'raw',
+                        'filter' => false,
+                        'headerOptions' => ['class' => 'theadcolor'],
+                        
+                        'value' => function ($model) {
+                            if( $model->taskdoer_username == '')
+                            {
+                                return '-';
+                            }
+                            return $model->taskdoer_username;
+                        }
+                    ],
+                    [
+                        'attribute' => 'password',
+                        'header' => 'Password',
+                        'format' => 'raw',
+                        'filter' => false,
+                        'headerOptions' => ['class' => 'theadcolor'],
+                        'value' => function ($model) {
+                            if( $model->taskdoer_username != '')
+                            {
+                                return $model->taskdoer_password;
+                            }
+                           return '-';
+                        }
+                    ],
+                    
+                    [
+                        'attribute' => 'City',
+                        'header' => 'Location',
+                        'format' => 'raw',
+                        'headerOptions' => ['class' => 'theadcolor'],
+                        'value' => function ($model) {
+                            return $model->getUserLocationsData();
+                        }
+                        ],
                     [
                         'attribute' => 'hoteld',
                         'header' => 'Office',
@@ -107,7 +150,7 @@ $("#settings-users").addClass("active");
                             return $model->getUserHotelsData();
                         }
                     ],
-
+                       
                     /* [
                          'attribute' => 'departmentId',
                          'header' => 'Floor',

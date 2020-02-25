@@ -1,7 +1,7 @@
 <?php
 
 namespace app\controllers;
-
+use yii\web\UploadedFile;
 use app\models\Events;
 use app\models\Preferences;
 use Yii;
@@ -128,6 +128,8 @@ class CheckListsController extends Controller
         $valid = false;
         $model = new Checklists();
         $modelAuditMethods = AuditMethods::find()->asArray()->all();
+       
+    
       //  print_r(Yii::$app->request->post());exit;
         if ($model->load(Yii::$app->request->post())) {
             $model->cl_frequency_duration = $model->cl_frequency_value == 3 ?  $model->cl_frequency_duration : null;
@@ -264,7 +266,10 @@ class CheckListsController extends Controller
     }
 
     public function actionAddQuestionnaire($id)
-    {
+    { 
+        $model = new Questions();
+        $sectionsModel = new Sections();
+        $subSectionsModel = new SubSections();
         $checklist_id = Yii::$app->utils->decryptData($id);
         $checklistModel = $this->findModel($checklist_id);
 
@@ -279,16 +284,18 @@ class CheckListsController extends Controller
         }
 
         $modelQuestionnaire = $this->getCheckListBasedQuestions($checklist_id, $checklistModel);
-        $model = new Questions();
-        $sectionsModel = new Sections();
-        $subSectionsModel = new SubSections();
+      
         if ($model && $model->load(Yii::$app->request->post())) {
+          
             $transaction = Yii::$app->db->beginTransaction();
+          
             try {
+            
+                $uploadedFile = UploadedFile::getInstanceByName('Questions[thumbnail]');
                 if ($checklistModel->cl_audit_span == 2) {
-                    $this->saveAcrossSectionQuestions($model, Yii::$app->request->post(), $checklist_id);
+                    $this->saveAcrossSectionQuestions($model, Yii::$app->request->post(), $checklist_id,$uploadedFile);
                 } else {
-                    $this->saveSpecificSectionQuestions($model, Yii::$app->request->post(), $checklist_id);
+                    $this->saveSpecificSectionQuestions($model, Yii::$app->request->post(), $checklist_id,$uploadedFile);
                 }
 
                 $transaction->commit();
@@ -479,10 +486,10 @@ class CheckListsController extends Controller
      * @param unknown $checklist_id
      * @throws \Exception
      */
-    protected function saveSpecificSectionQuestions($model, $post, $checklist_id)
+    protected function saveSpecificSectionQuestions($model, $post, $checklist_id,$thumbnail)
     {
         $checkedValue = $post['Questions']['checkedvalue'];
-
+      
         try {
 
             if ($checkedValue == "0") {
@@ -508,6 +515,7 @@ class CheckListsController extends Controller
                 }
 
                 $rows = [
+                    'thumbnail',
                     'q_text',
                     'q_checklist_id',
                     'q_section',
@@ -515,6 +523,7 @@ class CheckListsController extends Controller
                     'q_sub_section_is_dynamic',
                     'q_access_type',
                     'q_priority_type',
+                    'process_critical',
                     'q_response_type',
                     'options',
                     'is_deleted'
@@ -540,6 +549,16 @@ class CheckListsController extends Controller
             $model->q_sub_section = $model->q_sub_section_is_dynamic ? null : $model->q_sub_section;
             $model->q_response_type = 2;
             $model->q_sub_section_is_dynamic = $checkedValue;
+          
+            if ($thumbnail) {
+                $ext = pathinfo($thumbnail->name, PATHINFO_EXTENSION);
+                $file_name =  'Question_thumbnail_'.date('Y-m-d-H-i-s').date('Y-m-d-H-i-s').'.'.$ext;
+                $complete_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $file_name;
+                $path = $file_name;
+                if ($thumbnail->saveAs($complete_path)) {
+                    $model->thumbnail=$path;
+                }
+            }
 
             $model->save();
         } catch (\Exception $e) {
@@ -552,7 +571,7 @@ class CheckListsController extends Controller
      * @param unknown $model
      * @param unknown $postInformation
      */
-    protected function saveAcrossSectionQuestions($model, $postInformation, $checklist_id)
+    protected function saveAcrossSectionQuestions($model, $postInformation, $checklist_id,$thumbnail)
     {
         $checkedValue = $postInformation['Questions']['checkedvalue'];
 
@@ -567,12 +586,12 @@ class CheckListsController extends Controller
             ->all();
 
         if ($checkedValue == "0") {
-
             $inputSubsectionData = $inputSubsectionData ? $inputSubsectionData : [];
             $deletedSubSections = [];
 
             if ($questionSubsectionData) {
-
+                        
+                
                 $existingSubsections = array_filter(array_unique(ArrayHelper::getColumn($questionSubsectionData, 'q_sub_section')));
 
                 $existingSubsections = $existingSubsections ? $existingSubsections : [];
@@ -587,20 +606,19 @@ class CheckListsController extends Controller
 
                 if ($existingSubsections) {
 
-                    $this->createNewQuestions($existingSubsections, $postInformation);
+                    $this->createNewQuestions($existingSubsections, $postInformation,$thumbnail);
                 }
                 if (!empty($newlyAddedSubSections)) {
-                    $this->addSubSectionsToCheckList($model, $checklist_id, $subsection, $newlyAddedSubSections, $questionSubsectionData, $postInformation);
+                    $this->addSubSectionsToCheckList($model, $checklist_id, $subsection, $newlyAddedSubSections, $questionSubsectionData, $postInformation,$thumbnail);
                 }
                 if ($deletedSubSections) {
                     $this->deleteRemovedSubSection($checklist_id, $model, $deletedSubSections);
                 }
 
             } else {
-                $this->createNewQuestions($inputSubsectionData, $postInformation);
+                $this->createNewQuestions($inputSubsectionData, $postInformation,$thumbnail);
             }
         } else {
-
             $questions = ArrayHelper::index($questionSubsectionData, 'q_text');
 
             Questions::updateAll([
@@ -623,6 +641,7 @@ class CheckListsController extends Controller
             }
 
             $rows = [
+                'thumbnail',
                 'q_text',
                 'q_checklist_id',
                 'q_section',
@@ -630,10 +649,12 @@ class CheckListsController extends Controller
                 'q_sub_section_is_dynamic',
                 'q_access_type',
                 'q_priority_type',
+                'process_critical',
                 'q_response_type',
                 'options',
                 'is_deleted'
             ];
+    
             if ($records) {
                 Yii::$app->db->createCommand()
                     ->batchInsert('{{%questions}}', $rows, $records)
@@ -651,6 +672,16 @@ class CheckListsController extends Controller
                 $model->q_sub_section = '';
                 $model->q_sub_section_is_dynamic = $checkedValue;
                 $model->q_response_type=2;
+               
+                if ($thumbnail) {
+                    $ext = pathinfo($thumbnail->name, PATHINFO_EXTENSION);
+                    $file_name =  'Question_thumbnail_'.date('Y-m-d-H-i-s').date('Y-m-d-H-i-s').'.'.$ext;
+                    $complete_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $file_name;
+                    $path = $file_name;
+                    if ($thumbnail->saveAs($complete_path)) {
+                        $model->thumbnail=$path;
+                    }
+                }
 
                 $model->save();
             }
@@ -662,7 +693,7 @@ class CheckListsController extends Controller
      * @param unknown $existingSubsections
      * @param unknown $postInformation
      */
-    protected function createNewQuestions($existingSubsections, $postInformation)
+    protected function createNewQuestions($existingSubsections, $postInformation,$thumbnail)
     {
         $model = new Questions();
 
@@ -679,6 +710,16 @@ class CheckListsController extends Controller
                 $model->q_sub_section = $subSectionsData;
                 $model->q_response_type=2;
                 $subsection = $subSectionsData;
+                if ($thumbnail) {
+                    $ext = pathinfo($thumbnail->name, PATHINFO_EXTENSION);
+                    $file_name =  'Question_thumbnail_'.date('Y-m-d-H-i-s').date('Y-m-d-H-i-s').'.'.$ext;
+                    $complete_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $file_name;
+                    $path = $file_name;
+                    if ($thumbnail->saveAs($complete_path)) {
+                        $model->thumbnail=$path;
+                    }
+                }
+                
                 $model->save();
             }
         }
@@ -703,7 +744,7 @@ class CheckListsController extends Controller
      * @param unknown $subsection
      * @param unknown $newlyAddedSubSections
      */
-    protected function addSubSectionsToCheckList($model, $checklist_id, $subsection, $newlyAddedSubSections, $questionSubsectionData, $postInformation)
+    protected function addSubSectionsToCheckList($model, $checklist_id, $subsection, $newlyAddedSubSections, $questionSubsectionData, $postInformation,$thumbnail)
     {
         $arrCheckListQuestions = [];
 
@@ -720,7 +761,7 @@ class CheckListsController extends Controller
         } else {
 
             // creating post question to sub sections
-            $this->createNewQuestions($newlyAddedSubSections, $postInformation);
+            $this->createNewQuestions($newlyAddedSubSections, $postInformation,$thumbnail);
         }
 
         if ($arrCheckListQuestions) {
@@ -773,6 +814,7 @@ class CheckListsController extends Controller
                 $records[] = $record;
             }
             $rows = [
+                'thumbnail',
                 'q_text',
                 'q_checklist_id',
                 'q_section',
@@ -888,6 +930,7 @@ class CheckListsController extends Controller
         ]);
     }
 
+
     public function actionUpdateStatus()
     {
         if (!empty(Yii::$app->request->post('status'))) {
@@ -939,6 +982,7 @@ class CheckListsController extends Controller
             'is_deleted' => 0
         ])->One();
 
+        $old_thumbnail = $model->thumbnail;
         $is_dynamic = $model->q_sub_section_is_dynamic;
         // $q_sub_section = $model->q_sub_section;
         $q_section = $model->q_section;
@@ -966,17 +1010,37 @@ class CheckListsController extends Controller
             try {
 
                 $model->q_sub_section_is_dynamic = $is_dynamic;
-                // $model->q_sub_section = $q_sub_section;
+                $model->thumbnail=$old_thumbnail;
                 $model->q_section = $q_section;
 
                 if ($checklistModel->cl_audit_span == 2) {
-
-                    $this->updateAcrossSectionQuestions($model, Yii::$app->request->post(), $checklist_id, $questionText);
+                    $this->updateAcrossSectionQuestions($model, Yii::$app->request->post(), $checklist_id,$questionText);
                 } else {
-
                     $this->updateSpecificSectionQuestions($model, Yii::$app->request->post(), $checklist_id);
                 }
-
+                $uploadedFile = UploadedFile::getInstanceByName('Questions[thumbnail]');
+                if ($uploadedFile) {
+                    $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
+                 
+                    $file_name =  preg_replace('/\\.[^.\\s]{3,4}$/', '', $uploadedFile->name).date('Y-m-d-H-i-s').'.'.$ext;
+                   
+                    $complete_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $file_name;
+                    
+                    $old_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $old_thumbnail;
+                  
+                    $path = $file_name;
+                
+                    if ($uploadedFile->saveAs($complete_path)) {
+                        if(file_exists($old_path))
+                        {  
+                            unlink($old_path);
+                           
+                        }
+                        $model->thumbnail=$path;
+                        
+                    }
+                }
+                $model->save();
                 $transaction->commit();
 
                 Yii::$app->session->setflash('success', "Question updated successfully");
@@ -1017,6 +1081,26 @@ class CheckListsController extends Controller
         }
     }
 
+    public function actionLoadImageThumbnail()
+    {    
+        $post = yii::$app->request->post();
+        $old_path= \Yii::$app->getUrlManager()->getBaseUrl() . Yii::$app->params['thumbnail_save_url'];
+        
+        if ($post && $post['question_token']) {
+            $question_id = Yii::$app->utils->decryptData($post['question_token']);
+     $question = Questions::find()->where(['question_id' => $question_id])->one();
+         if($question){
+            $file_name =$question->thumbnail;
+            $path= $old_path.$file_name;
+          
+
+         }
+            return $this->renderAjax('imagethumb', [
+                    'thumbnail_path' => $path
+            ]);
+        }
+
+    }
     /**
      *
      * @param unknown $model
@@ -1045,7 +1129,7 @@ class CheckListsController extends Controller
 
                 $subsection = '';
                 if ($existingSubsections) {
-                    $this->updateQuestions($model, $existingSubsections, $postInformation, $questionText);
+                    $this->updateQuestions($model, $existingSubsections, $postInformation,$questionText);
                 }
                 // For Update adding new subsections
                 $newSubsections = array_diff($newPostedSubsection, $existingSubsections);
@@ -1088,7 +1172,7 @@ class CheckListsController extends Controller
                         ]);
                     }
                 }
-
+                
                 if ($RemoveUpdatedSubsections) {
                     $this->deleteRemovedSubSection($checklist_id, $model, $RemoveUpdatedSubsections);
                 }
@@ -1129,7 +1213,7 @@ class CheckListsController extends Controller
             ])->One();
 
             if ($model && $model->load($postInformation)) {
-
+                
                 $options = array_filter($postInformation['options']);
                 $model->q_access_type = Json::encode($model->q_access_type);
                 $model->q_sub_section = $subSectionsData;

@@ -20,6 +20,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\Controller;
 use app\models\Audits;
+use app\models\Cabins;
 use app\models\Checklists;
 use app\models\HotelDepartments;
 use app\models\HotelDepartmentSections;
@@ -127,6 +128,23 @@ class OrganisationController extends Controller {
         }
     }
 
+    public function actionLoadDeleteCabin($cabin_id, $hotelId, $departmentId) {
+        $cabinsModel = Cabins::findOne([
+                    'cabin_id' => yii::$app->utils->decryptSetUp($cabin_id),
+                    'hotel_id' => yii::$app->utils->decryptSetUp($hotelId),
+                    'is_deleted' => 0
+                        // 'department_id' => yii::$app->utils->decryptSetUp($departmentId)
+        ]);
+        if ($cabinsModel) {
+            return $this->renderAjax('delete_node', [
+                        'node_id' => $cabin_id,
+                        'node_type' => 'cabin',
+                        'hotelId' => $hotelId,
+                        'departmentId' => $departmentId
+            ]);
+        }
+    }
+
     public function actionLoadDeleteSubsection($subsection_id, $hotel_id = "") {
         $subsectionModel = SubSections::findOne(yii::$app->utils->decryptSetUp($subsection_id));
         if ($subsectionModel) {
@@ -156,6 +174,10 @@ class OrganisationController extends Controller {
                     case "section":
                         $output = $this->deleteSection($post['node_id'], $post['hotelId'], $post['departmentId']);
                         break;
+                        case "cabin":
+                            $output = $this->deleteCabin($post['node_id'], $post['hotelId']);
+                            break;
+                            
                     case "subsection":
                         $output = $this->deleteSubsection($post['node_id'], $post['hotelId']);
                         break;
@@ -337,6 +359,120 @@ class OrganisationController extends Controller {
 
         return $output;
     }
+
+    private function deleteCabin($cabin_id, $hotelId) {
+        $output = [];
+        $cabinId = yii::$app->utils->decryptSetUp($cabin_id);
+        $cabins = Cabins::findOne([
+                    'cabin_id' => yii::$app->utils->decryptSetUp($cabin_id),
+                    'hotel_id' => yii::$app->utils->decryptSetUp($hotelId),
+                    'is_deleted' => 0
+        ]);
+
+        if ($cabins) {
+            $transaction = yii::$app->db->beginTransaction();
+            try {
+
+                $cabins = Cabins::find()->where([
+                    'cabin_id' => $cabinId,
+                    'hotel_id' => yii::$app->utils->decryptSetUp($hotelId),
+                    'is_deleted' => '0'
+                ])
+                ->count();
+        if ($cabins > 0) {
+            $modelCabinUpdate = Cabins::updateAll([
+                        'is_deleted' => 1,
+                        'updated_by' => \Yii::$app->user->getId()
+                            ], 'cabin_id=' . $cabinId . ' AND hotel_id = ' . yii::$app->utils->decryptSetUp($hotelId));
+            if ($modelCabinUpdate) {
+                $transaction->commit();
+                $output = [
+                    'success' => 'cabin Deleted Successfully',
+                    'node' => Yii::$app->utils->encryptSetUp($cabins->cabin_id, 'cabin')
+                ];
+            }
+        } else {
+            $transaction->rollBack();
+            $output = [
+                'error' => 'Error in deleting'
+            ];
+        }
+              //  $getHotelDepartment = Cabins::getHotelAndDepartmentDependCabin($cabinId, yii::$app->utils->decryptSetUp($hotelId));
+               
+              //  $getHotelDepartment = Cabins::getHotelAndDepartmentDependCabin($cabinId, yii::$app->utils->decryptSetUp($hotelId));
+                // For getAuditCount depends department and hotel Id
+              
+
+                 /*   $tickets = Tickets::find()->where([
+                                'cabin_id' => $cabinId,
+                                'hotel_id' => yii::$app->utils->decryptSetUp($hotelId),
+                                'is_deleted' => 0
+                            ])
+                            ->andWhere([
+                                'status' => [
+                                    0,
+                                    1,
+                                    2
+                                ]
+                            ])
+                            ->count();
+
+                    if (!$tickets) {
+
+                        $cabins = Cabins::find()->where([
+                                    'cabin_id' => $cabinId,
+                                    'hotel_id' => yii::$app->utils->decryptSetUp($hotelId),
+                                    'is_deleted' => '0'
+                                ])
+                                ->count();
+                        if ($cabins == 0) {
+                            $modelCabinUpdate = Cabins::updateAll([
+                                        'is_deleted' => 1,
+                                        'updated_by' => \Yii::$app->user->getId()
+                                            ], 'cabin_id=' . $cabinId . ' AND hotel_id = ' . yii::$app->utils->decryptSetUp($hotelId));
+                            if ($modelCabinUpdate) {
+                                $transaction->commit();
+                                $output = [
+                                    'success' => 'cabin Deleted Successfully',
+                                    'node' => Yii::$app->utils->encryptSetUp($cabins->id, 'cabin')
+                                ];
+                            }
+                        } else {
+                            $transaction->rollBack();
+                            $output = [
+                                'error' => 'cabin cannot be deleted as cabin are assigned to it.'
+                            ];
+                        }
+                    } else {
+                        $transaction->rollBack();
+                        $output = [
+                            'error' => 'cabin cannot be deleted as it contains tickets.'
+                        ];
+                    }*/
+                
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                $output = [
+                    'error' => $e->getMessage()
+                ];
+            } catch (StaleObjectException $e) {
+                $transaction->rollBack();
+                $output = [
+                    'error' => $e->getMessage()
+                ];
+            }
+        } else {
+
+            $output = [
+                'error' => 'cabin not found'
+            ];
+        }
+
+        return $output;
+    }
+
+
+
 
     private function deleteDepartment($departmentId, $hotel_id) {
         $hotelId = yii::$app->utils->decryptSetUp($hotel_id);
@@ -626,6 +762,7 @@ class OrganisationController extends Controller {
         ]);
     }
 
+    
     public function actionLoadNewSection($department_id = "", $hotelId = "") {
         if ($department_id && $hotelId) {
 
@@ -650,6 +787,58 @@ class OrganisationController extends Controller {
                     "name" => 'Server error'
         ]);
     }
+
+    
+    public function actionLoadNewCabin($department_id = "", $hotelId = "") {
+        if ($department_id && $hotelId) {
+
+            $hotelDepartmentModel = HotelDepartments::find()->where([
+                        'id' => Yii::$app->utils->decryptSetUp($department_id),
+                        'hotel_id' => Yii::$app->utils->decryptSetUp($hotelId),
+                        'is_deleted' => 0
+                    ])
+                    ->one();
+            if ($hotelDepartmentModel) {
+                $departmentCabinsModel = new Cabins();
+                return $this->renderAjax('new_cabin', [
+                            'hotelDepartmentModel' => $hotelDepartmentModel,
+                            'cabinsModel' => $departmentCabinsModel,
+                ]);
+            }
+        }
+        return $this->renderAjax('//site/error', [
+                    'message' => "Invalid request or no Floor",
+                    "name" => 'Server error'
+        ]);
+    }
+
+    public function actionLoadEditCabin($cabin_id = "", $hotelId = '') {
+        if ($cabin_id) {
+            $cabinsModel = Cabins::findOne(yii::$app->utils->decryptSetUp($cabin_id));
+            if ($cabinsModel) {
+                $departmentsModel = Departments::findOne($cabinsModel->department_id);
+                $hotelDepartmentModel = HotelDepartments::findOne([
+                            'department_id' => $cabinsModel->department_id,
+                            'hotel_id' => yii::$app->utils->decryptSetUp($hotelId),
+                            'is_deleted' => 0
+                ]);
+
+                if ($departmentsModel) {
+                    return $this->renderAjax('new_cabin', [
+                                'hotelDepartmentModel' => $hotelDepartmentModel,
+                                'departmentsModel' => $departmentsModel,
+                                'cabinsModel' => $cabinsModel
+                    ]);
+                }
+            }
+        }
+        return $this->renderAjax('//site/error', [
+                    'message' => "Invalid request or no Floor",
+                    "name" => 'Server error'
+        ]);
+    }
+
+
 
     public function actionLoadEditSection($section_id = "", $hotelId = '') {
         if ($section_id) {
@@ -1564,6 +1753,225 @@ class OrganisationController extends Controller {
         return Json::encode($output);
     }
 
+
+    public function actionCreateNewCabin() {
+        $post = Yii::$app->request->post();
+        $output = [];
+        $departmentId = Yii::$app->utils->decryptSetUp($post['encrypted_department_id']);
+        $hotelId = Yii::$app->utils->decryptSetUp($post['encrypted_hotel_id']);
+        if (isset($post['encrypted_department_id'])) {
+
+            $cabinsModel = new Cabins();
+            $cabinsModel->hotel_id = $hotelId;
+            $cabinsModel->department_id = $departmentId;
+            if ($cabinsModel->load($post)) {
+                if ($cabinsModel->save()) {
+                    $cabinsId = $cabinsModel->cabin_id;
+                } else {
+                    $error = [];
+                    foreach ($cabinsModel->errors as $field => $value) {
+                        $error[$field] = implode(',', $value);
+                    }
+                    $output['error'] = $error;
+                    return Json::encode($output);
+                }
+            }
+            if ($departmentId && $hotelId) {
+                if ($cabinsId) {
+                    try {
+                        $cabinsModel->department_id = $departmentId;
+                        $cabinsModel->hotel_id = $hotelId;
+                      //  $isNewRecord = $cabinsModel->isNewRecord;
+
+                            $encryptedCabinsid = Yii::$app->utils->encryptSetUp($cabinsModel->cabin_id, 'cabin');
+                            $encryptedHotelId = Yii::$app->utils->encryptSetUp($hotelId, 'hotel');
+
+                                $output = [
+                                    'success' => "Cabins Added Successfully",
+                                    "parent_node" => yii::$app->utils->encryptSetUp($cabinsModel->department_id, 'department'),
+                                    'node' => [
+                                        'id' => $encryptedCabinsid,
+                                        'hotelId' => $encryptedHotelId,
+                                        "text" => $cabinsModel->cabin_name,
+                                        "type" => "Cabin",
+                                        'action_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-new-cabin',
+                                            'cabin_id' => $encryptedCabinsid,
+                                            'hotelId' => $encryptedHotelId
+                                        ]),
+                                        'delete_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-delete-cabin',
+                                            'cabin_id' => $encryptedCabinsid,
+                                            'hotelId' => $encryptedHotelId,
+                                            'departmentId' => $post['encrypted_department_id']
+                                        ]),
+                                        'edit_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-edit-cabin',
+                                            'cabin_id' => $encryptedCabinsid,
+                                            'hotelId' => $encryptedHotelId,
+                                        ]),
+                                        'clone_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-clone-cabin',
+                                            'cabin_id' => $encryptedCabinsid
+                                        ]),
+                                        "state" => [
+                                            "opened" => false, // is the node open
+                                            "disabled" => false, // is the node disabled
+                                            "selected" => false // is the node selected
+                                        ],
+                                        'children' => false
+                                    ]
+                                ];
+                    } catch (Exception $e) {
+                        $output = [
+                            'error' => "Failed to save Cabin Details"
+                        ];
+                    }
+                }
+            } else {
+                $output = [
+                    'error' => "Invalid Floor"
+                ];
+            }
+        } else {
+            $output = [
+                'error' => "Floor must not be empty"
+            ];
+        }
+        return Json::encode($output);
+    }
+
+    public function actionCreateNewSubSection() {
+        $post = Yii::$app->request->post();
+        $output = [];
+        $departmentId = Yii::$app->utils->decryptSetUp($post['encrypted_department_id']);
+        $hotelId = Yii::$app->utils->decryptSetUp($post['encrypted_hotel_id']);
+        $cabinId = Yii::$app->utils->decryptSetUp($post['encrypted_cabin_id']);
+
+        if (isset($post['encrypted_department_id'])) {
+
+            $sectionModel = new Sections();
+            $sectionModel->s_department_id = $departmentId;
+            if ($sectionModel->load($post)) {
+                if ($sectionModel->save()) {
+                    $sectionId = $sectionModel->section_id;
+                    $post['HotelDepartmentSections']['hotel_id'] = $hotelId;
+                    $post['HotelDepartmentSections']['department_id'] = $departmentId;
+                    $post['HotelDepartmentSections']['section_id'] = $sectionId;
+                    $post['HotelDepartmentSections']['cabin_id'] = $cabinId;
+                } else {
+                    $error = [];
+                    foreach ($sectionModel->errors as $field => $value) {
+                        $error[$field] = implode(',', $value);
+                    }
+                    $output['error'] = $error;
+                    return Json::encode($output);
+                }
+            }
+            if ($departmentId && $hotelId) {
+                if ($sectionId) {
+                    $sectionModel = HotelDepartmentSections::find()->where([
+                                'hotel_id' => $hotelId,
+                                'department_id' => $departmentId,
+                                'section_id' => $sectionId,
+                                'is_deleted' => 0,
+                                'cabin_id' =>$cabinId
+                            ])->one();
+                }
+                if (!$sectionModel) {
+                    $sectionModel = new HotelDepartmentSections();
+                }
+                $sectionModel->hotel_id = $hotelId;
+                $sectionModel->department_id = $departmentId;
+                $sectionModel->section_id = $sectionId;
+                $sectionModel->cabin_id = $cabinId;
+                if ($sectionModel->load($post)) {
+                    try {
+                        $sectionModel->cabin_id = $cabinId;
+                        $sectionModel->department_id = $departmentId;
+                        $sectionModel->hotel_id = $hotelId;
+                        $isNewRecord = $sectionModel->isNewRecord;
+                        if ($sectionModel->save()) {
+                            $encryptedSectionid = Yii::$app->utils->encryptSetUp($sectionModel->cabin_id, 'cabin');
+                            $encryptedSectionid = Yii::$app->utils->encryptSetUp($sectionModel->section_id, 'section');
+                            $encryptedSectionRelId = Yii::$app->utils->encryptSetUp($sectionModel->id, 'section');
+                            $encryptedHotelId = Yii::$app->utils->encryptSetUp($hotelId, 'hotel');
+
+                            if ($isNewRecord) {
+                                $output = [
+                                    'success' => "Sub Section Added Successfully",
+                                    "parent_node" => yii::$app->utils->encryptSetUp($sectionModel->section_id, 'section'),
+                                    'node' => [
+                                        'id' => $encryptedSectionRelId,
+                                        'hotelId' => $encryptedHotelId,
+                                        "text" => $sectionModel->section->s_section_name,
+                                        "type" => "section",
+                                        'action_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-new-subsection',
+                                            'section_id' => $encryptedSectionRelId,
+                                            'hotelId' => $encryptedHotelId
+                                        ]),
+                                        'delete_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-delete-section',
+                                            'section_id' => $encryptedSectionid,
+                                            'hotelId' => $encryptedHotelId,
+                                            'departmentId' => $post['encrypted_department_id']
+                                        ]),
+                                        'edit_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-edit-section',
+                                            'section_id' => $encryptedSectionid,
+                                            'hotelId' => $encryptedHotelId,
+                                        ]),
+                                        'clone_url' => Yii::$app->urlManager->createUrl([
+                                            'organisation/load-clone-section',
+                                            'section_id' => $encryptedSectionid
+                                        ]),
+                                        "state" => [
+                                            "opened" => false, // is the node open
+                                            "disabled" => false, // is the node disabled
+                                            "selected" => false // is the node selected
+                                        ],
+                                        'children' => false
+                                    ]
+                                ];
+                            } else {
+                                $output = [
+                                    'success' => "Section Updated Successfully",
+                                    'node' => [
+                                        'id' => $encryptedSectionid,
+                                        "text" => $sectionModel->section->s_section_name
+                                    ]
+                                ];
+                            }
+                        } else {
+                            $output = [
+                                'error' => $sectionModel->errors
+                            ];
+                        }
+                    } catch (Exception $e) {
+                        $output = [
+                            'error' => "Failed to save Section Details"
+                        ];
+                    }
+                }
+            } else {
+                $output = [
+                    'error' => "Invalid Floor"
+                ];
+            }
+        } else {
+            $output = [
+                'error' => "Floor must not be empty"
+            ];
+        }
+        return Json::encode($output);
+    }
+
+
+
+
+
+
     public function actionManageDepartment($department_id = '') {
         $post = yii::$app->request->post();
         $output = [];
@@ -1697,6 +2105,70 @@ class OrganisationController extends Controller {
         return json_encode($output);
     }
 
+
+
+    public function actionManageCabin($cabin_id = '') {
+        $post = yii::$app->request->post();
+        $output = [];
+        $cabinsModel = null;
+        if (isset($post['encrypted_department_id'])) {
+            $departmentModel = Departments::findOne(yii::$app->utils->decryptSetUp($post['encrypted_department_id']));
+            if ($departmentModel) {
+                if ($cabin_id) {
+                    $cabinsModel = Cabins::findOne(Yii::$app->utils->decryptSetUp($cabin_id));
+                }
+                if ($cabinsModel->load($post)) {
+                    $transaction = yii::$app->db->beginTransaction();
+                    try {
+                       // $isNewRecord = $cabinsModel->isNewRecord;
+                        if ($cabinsModel->save()) {
+                            $idsList = Cabins::find()->where([
+                                        'cabin_id' => Yii::$app->utils->decryptSetUp($cabin_id),
+                                        'is_deleted' => 0
+                                    ])
+                                    ->asArray()
+                                    ->all();
+                            $idsList = ArrayHelper::getColumn($idsList, 'cabin_id');
+                            $array = [];
+                            foreach ($idsList as $id) {
+                                $node = [];
+                                $node['node']['id'] = yii::$app->utils->encryptSetUp($id, 'cabin');
+                                $node['node']['text'] = $cabinsModel->cabin_name;
+                                $array[] = $node;
+                            }
+                            $output = [
+                                'success' => "cabin Updated Successfully",
+                                'nodes' => $array
+                            ];
+
+                            $transaction->commit();
+                        } else {
+                            $transaction->rollBack();
+                            $output = [
+                                'error' => $cabinsModel->errors
+                            ];
+                        }
+                    } catch (Exception $e) {
+                        $transaction->rollBack();
+                        $output = [
+                            'error' => "Failed to save Section Details"
+                        ];
+                    }
+                }
+            } else {
+                $output = [
+                    'error' => "Invalid Floor"
+                ];
+            }
+        } else {
+            $output = [
+                'error' => "Floor must not be empty"
+            ];
+        }
+
+        return json_encode($output);
+    }
+
     public function actionManageSubsection($subsection_id = '') {
         $post = yii::$app->request->post();
         $output = [];
@@ -1792,6 +2264,9 @@ class OrganisationController extends Controller {
                     case "hotel":
                         $output = $this->fetchDepartmentsHierarchy($get['id']); // Getting deparment for the Hotel
                         break;
+                    case "department":
+                        $output = $this->fetchCabinsHierarchy($get['id'], $get['hotelId']); // Getting deparment for the Hotel
+                        break;
                    /* case "department":
                         $output = $this->fetchSectionsHierarchy($get['id'], $get['hotelId']); // Getting deparment for the Hotel
                         break;
@@ -1804,6 +2279,63 @@ class OrganisationController extends Controller {
             }
         }
         return $output;
+    }
+
+    private function fetchCabinsHierarchy($encryptedDepartmentId, $hotelId) {
+        $cabinsHierarchy = [];
+        $hotelId = Yii::$app->utils->decryptSetUp($hotelId);
+        $departmentId = Yii::$app->utils->decryptSetUp($encryptedDepartmentId);
+        $hotelDeparts = HotelDepartments::findOne($departmentId);
+        $cabins = Cabins::find()->where([
+                    'hotel_id' => $hotelId,
+                    'is_deleted' => 0,
+                    'department_id' => $hotelDeparts->department_id
+                ])->all();
+        // $deps = yii::$app->utils->encryptSetUp($hotelDeparts->department_id);
+        if ($cabins) {
+            foreach ($cabins as $cabin) {
+                $encryptedCabinId = yii::$app->utils->encryptSetUp($cabin->cabin_id, "cabin");
+                $encryptedHotelId = yii::$app->utils->encryptSetUp($hotelId, "hotel");
+                $cabinsHierarchy[] = [
+                    "id" => $encryptedCabinId,
+                    "type" => "cabin",
+                    'hotelId' => $encryptedHotelId,
+                    "text" => $cabin->cabin_name,
+                    'action_url' => yii::$app->urlManager->createUrl([
+                        'organisation/load-new-cabin',
+                        'cabin_id' => $encryptedCabinId,
+                        'hotelId' => $encryptedHotelId
+                    ]),
+                    'delete_url' => yii::$app->urlManager->createUrl([
+                        'organisation/load-delete-cabin',
+                        'cabin_id' => $encryptedCabinId,
+                        'hotelId' => $encryptedHotelId,
+                        'departmentId' => $encryptedDepartmentId
+                    ]),
+                    'edit_url' => yii::$app->urlManager->createUrl([
+                        'organisation/load-edit-cabin',
+                        'cabin_id' => $encryptedCabinId,
+                        'hotelId' => $encryptedHotelId,
+                    ]),
+                    'clone_url' => yii::$app->urlManager->createUrl([
+                        'organisation/load-clone-cabin',
+                        'cabin_id' => $encryptedCabinId
+                    ]),
+                    "state" => [
+                        "opened" => false, // is the node open
+                        "disabled" => false, // is the node disabled
+                        "selected" => false // is the node selected
+                    ],
+                    // 'children' => SubSections::find()->where(['ss_section_id' => $section->section_id])->exists()
+                   /* 'children' => HotelDepartmentSubSections::find()->where([
+                        'section_id' => $section->section_id,
+                        'department_id' => $hotelDeparts->department_id,
+                        'hotel_id' => $hotelId
+                    ])->exists()*/
+                ];
+            }
+        }
+        return $cabinsHierarchy;
     }
 
     private function fetchSubsectionsHierarchy($encryptedSectionId, $hotelId) {
@@ -1933,7 +2465,7 @@ class OrganisationController extends Controller {
                         'hotel_id' => $encryptedHotelId
                     ]),
                     'action_url' => yii::$app->urlManager->createUrl([
-                        'organisation/load-new-section',
+                        'organisation/load-new-cabin',
                         'department_id' => $encryptedDepartmentRelId,
                         'hotelId' => $encryptedHotelId
                     ]),
@@ -1957,10 +2489,10 @@ class OrganisationController extends Controller {
                         "selected" => false // is the node selected
                     ],
                     // 'children' => Sections::find()->where(['s_department_id' => $department->department_id])->exists()
-                  /*  'children' => HotelDepartmentSections::find()->where([
+                    'children' => Cabins::find()->where([
                         'hotel_id' => $hotelId,
                         'department_id' => $department->department_id
-                    ])->exists()*/
+                    ])->exists()
                 ];
             }
         }

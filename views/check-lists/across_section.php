@@ -3,7 +3,15 @@
 use yii\helpers\Html;
 use yii\helpers\Json;
 
+
+?>
+ 
+ <div id="imagethumb" class="modal fade" role="dialog"></div>
+<?php 
+
 if ($modelQuestionnaire) {
+    
+    echo Html::hiddenInput('name', yii::$app->urlManager->createUrl('check-lists/load-image-thumbnail'), array('id' => 'image_thumb_url'));
     foreach ($modelQuestionnaire as $subSections) {
         ?>
         <div class="col-sm-12 nopadding" style="margin-bottom: 10px;">
@@ -82,9 +90,23 @@ if ($modelQuestionnaire) {
 
                                                 <?php } ?>
                                             </div>
-                                        </div>
+                                        </div> 
                                         <div class="col-sm-2 margintop25">
-                                            <?php if (Yii::$app->authManager->checkPermissionAccess('check-lists/update')) { ?>
+                                            <?php
+                                            if($eachQuestion['thumbnail']){ ?>
+                                                <a title="image"
+                                                   class="image_questionnaire_btn clickable_btn image_thumb" id="image_thumb"
+                                                   data-token="<?= yii::$app->utils->encryptData($eachQuestion['question_id']); ?>"
+                                                   data-checklist="<?= $eachQuestion['q_checklist_id']; ?>"
+                                                   data-section="<?= $eachQuestion['q_section']; ?>"
+                                                   data-quation="<?= yii::$app->utils->encryptData($eachQuestion['q_text']); ?>"
+                                                   data-auditspan="<?= $cl_audit_span; ?>"> <i
+                                                            class="fa fa-image" title="Delete" style='color: red'></i>
+                                                </a>
+
+                                               <?php } ?>
+                                                           
+                                        <?php if (Yii::$app->authManager->checkPermissionAccess('check-lists/update')) { ?>
                                                 <a title="Update" class="update_questionaire_btn clickable_btn"
                                                    href="<?= yii::$app->urlManager->createUrl('/check-lists/update-questionnaire?id=' . Yii::$app->utils->encryptData($eachQuestion['q_checklist_id'])) . '&question_id=' . yii::$app->utils->encryptData($eachQuestion['question_id']); ?>">
                                                     <i class="fa fa-edit" title="Update"></i>

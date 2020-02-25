@@ -11,6 +11,8 @@ use yii\behaviors\BlameableBehavior;
 use yii\db\Expression;
 use phpDocumentor\Reflection\Types\This;
 use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -29,6 +31,9 @@ use yii\helpers\ArrayHelper;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const SCENARIO_ALL_USER_TYPES = 'all';
+    const SCENARIO_TASK_DOER = 'taskdoer';
+
 
     public $departmentId;
 
@@ -36,10 +41,13 @@ class User extends ActiveRecord implements IdentityInterface
     
     public $locationId;
 
+    public $locationsList = [];
+
     public $hotelsList = [];
 
     public $deparmentList = [];
 
+    public $taskdoer_password2;
     /**
      * @inheritdoc
      */
@@ -56,7 +64,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [
                 [
-                    'email',
+                    
                     'password_hash',
                     'first_name',
                     'last_name',
@@ -79,16 +87,23 @@ class User extends ActiveRecord implements IdentityInterface
                 'integer'
             ],
             [
+                ['profile_picture'],
+                'string',
+                'max' => 200
+            ],
+            [
                 [
                     'password_requested_date',
                     'last_login_time',
                     'created_date',
                     'modified_date',
                     'created_by',
-                    'modified_by'
+                    'modified_by',
+                    'taskdoer_password2'
                 ],
                 'safe'
             ],
+            [['taskdoer_username'],'string', 'max' =>20],
             [
                 [
                     'email'
@@ -141,9 +156,24 @@ class User extends ActiveRecord implements IdentityInterface
             ],
             [['phone'], 'string', 'min' => 10, 'tooShort' => '{attribute} should be at least 10 digits'],
 
+            ['taskdoer_password', 'string', 'min' => 6],
+            ['taskdoer_password2', 'compare', 'compareAttribute'=>'taskdoer_password', 'message'=>"Passwords don't match" ],
+            [['email'], 'required', 'on' => self::SCENARIO_ALL_USER_TYPES],
+            [['taskdoer_username','taskdoer_password'], 'required', 'on' => self::SCENARIO_TASK_DOER],
+            ['profile_picture', 'file', 'extensions' => ['png', 'jpg', 'jpeg'], 'maxSize' => 1024 * 1024 * 5, 'tooBig' => 'Limit is 5 MB'],
+
+
         ];
     }
 
+    public function scenarios()
+    {
+    $scenarios = parent::scenarios();
+    $scenarios[self::SCENARIO_ALL_USER_TYPES] = ['email'];
+    $scenarios[self::SCENARIO_TASK_DOER] = ['taskdoer_username','taskdoer_password'];
+
+    return $scenarios;
+    }
     /**
      * @inheritdoc
      */
@@ -160,7 +190,10 @@ class User extends ActiveRecord implements IdentityInterface
             'created_date' => Yii::t('app', 'Created Date'),
             'modified_date' => Yii::t('app', 'Modified Date'),
             'is_active' => Yii::t('app', 'Status'),
-            'role_id' => Yii::t('app', 'Role')
+            'role_id' => Yii::t('app', 'Role'),
+            'taskdoer_username' => Yii::t('app', 'Taskdoer Username'),
+            'taskdoer_password' => Yii::t('app', 'Taskdoer Password'),
+            'taskdoer_password2' => Yii::t('app', 'Taskdoer Password'),
         ];
     }
 
@@ -357,6 +390,19 @@ class User extends ActiveRecord implements IdentityInterface
         return implode(',', $hotelsArray);
     }
 
+        /**
+     *
+     * @return string
+     */
+    public function getUserLocationsData()
+    {
+        $locationsArr=[];
+        foreach($this->userLocations as $row){
+            $locationsArr[] = $row->location->locationCity->name;
+        }
+        return implode(',', $locationsArr);
+    }
+
     /**
      *
      * @return string
@@ -492,5 +538,41 @@ class User extends ActiveRecord implements IdentityInterface
     public static function getValidUserCount($user_emailid)
     {
         return self::find()->select('email')->where(['email' => $user_emailid, 'is_deleted' => 0])->count();
+    }
+    public function saveProfilePicture($attachment)
+    {
+        $uploadedFile = UploadedFile::getInstanceByName($attachment);
+        if ($uploadedFile) {
+            $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
+            $file_name =  $uploadedFile->name;
+            $complete_path = \Yii::$app->basePath . Yii::$app->params['attachments_save_url'] . $file_name;
+            $path = $file_name;
+            if ($uploadedFile->saveAs($complete_path)) {
+                $user = new User();
+                
+                $user->profile_picture = $path;
+                if ($user->save()) {
+                    return [
+                        'status' => true,
+                        'message' => 'profile picture saved successfully'
+                    ];
+                } else {
+                    return [
+                        'status' => false,
+                        'message' => Json::encode($user->getErrors())
+                    ];
+                }
+            } else {
+                return [
+                    'status' => false,
+                    'message' => 'Error saving the attachment'
+                ];
+            }
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Attachment not received'
+            ];
+        }
     }
 }

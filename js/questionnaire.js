@@ -178,3 +178,18 @@ $(document).on('change', ".checkcheckbox", function () {
 if ($("#questions-q_sub_section_is_dynamic").is(":checked")) {
     $("#questions-q_sub_section").attr('disabled', 'disabled');
 }
+$(document).on('click', ".image_thumb", function () {
+    console.log("hi");
+    $.post({
+        url: $("#image_thumb_url").val(),
+        data: {question_token: $(this).data("token")},
+        success: function (response) {
+            console.log("true");
+            $("#imagethumb").modal("show").html(response);
+        }
+    });
+});
+
+$(document).on('click', "#thumbnailPopupClose", function () {
+    $("#imagethumb").modal("hide");
+});

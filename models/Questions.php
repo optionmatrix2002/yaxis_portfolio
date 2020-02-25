@@ -3,6 +3,7 @@ namespace app\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "{{%questions}}".
  *
@@ -61,7 +62,11 @@ class Questions extends \yii\db\ActiveRecord
                 ],
                 'string'
             ],
-            
+            [
+                ['thumbnail'],
+                'string',
+                'max' => 200
+            ],
             [
                 'q_sub_section',
                 'required',
@@ -141,7 +146,10 @@ class Questions extends \yii\db\ActiveRecord
                         'targetAttribute' => [
                             'q_response_type' => 'response_type_id'
                         ]
-                    ]
+                        ],
+                        ['thumbnail', 'file', 'extensions' => ['png', 'jpg', 'jpeg'], 'maxSize' => 1024 * 1024 * 5, 'tooBig' => 'Limit is 5 MB'],
+
+
                     ];
     }
     
@@ -236,4 +244,5 @@ class Questions extends \yii\db\ActiveRecord
             'is_deleted' => 0
         ])->all();
     }
+  
 }

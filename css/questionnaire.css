@@ -197,3 +197,10 @@ div .ridge {
 form span {
 	vertical-align: top !important;
 }
+
+.question_thumbnail{
+	width: 80%;
+    height: 400px;
+    margin: 0px auto;
+    display: block;
+}

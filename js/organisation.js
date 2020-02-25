@@ -109,6 +109,14 @@ $('#organisation_hierarchy')
                         break;
                     case "department":
                         items = {
+                            addCabin: { // The "rename" menu
+                                // item
+                                label: "Add Cabin",
+                                "icon": "fa fa-plus text-success",
+                                action: function() {
+                                    openPopup(node.original.action_url);
+                                }
+                            },
                             configureEmails: { // The "rename" menu
                                 // item
                                 label: "Configure Emails",
@@ -143,24 +151,16 @@ $('#organisation_hierarchy')
                             }
                         };
                         break;
-                        /* case "section":
+                         case "cabin":
                              items = {
-                                 createSubsection: { // The "rename" menu
-                                     // item
-                                     label: "Add Subsection",
-                                     "icon": "fa fa-plus text-success",
-                                     action: function() {
-                                         openPopup(node.original.action_url);
-                                     }
-                                 },
-                                 editSection: { // The "delete" menu item
+                                 editCabin: { 
                                      label: "Edit",
                                      "icon": "fa fa-pencil-square-o text-info",
                                      action: function() {
                                          openPopup(node.original.edit_url);
                                      }
                                  },
-                                 deleteSection: { // The "delete" menu
+                                 deleteCabin: { // The "delete" menu
                                      // item
                                      label: "Delete",
                                      "icon": "fa fa-times text-danger",
@@ -170,7 +170,7 @@ $('#organisation_hierarchy')
                                  }
                              };
                              break;
-                         case "subsection":
+                      /*   case "subsection":
                              items = {
                                  editSubsection: { // The "delete" menu
                                      // item
@@ -217,8 +217,14 @@ $('#organisation_hierarchy')
             "department": {
                 "icon": icons_location +
                     "/icons8_Department_18px.png",
-                "valid_children": ["section"]
+                "valid_children": ["cabins"]
             },
+            "cabin": {
+                "icon": icons_location +
+                    "/icons8_User_Groups_18px.png",
+                "valid_children": []
+            },
+            
             /* "section": {
                  "icon": icons_location +
                      "/icons8_User_Groups_18px.png",
@@ -443,6 +449,7 @@ $(document).on(
                             .jstree(true);
                         jsTreeInstance.delete_node(jsTreeInstance
                             .get_node(response.node));
+                            jsTreeInstance.refresh();
                     }
                 } else if (response.error) {
                     toastr.error(response.error);
@@ -535,6 +542,7 @@ $(document)
 renameNodes = function(list) {
     var jsTreeInstance = $('#organisation_hierarchy').jstree(true);
     $.each(list, function(i, value) {
+        console.log(list);
         jsTreeInstance.rename_node(jsTreeInstance.get_node(value.node),
             value.node.text);
 
@@ -587,6 +595,59 @@ $(document)
                 });
             return false;
         });
+
+        $(document)
+    .on(
+        "beforeSubmit",
+        "#cabin_form",
+        function() {
+            inProcessBtn("save_cabin_submit_btn");
+
+            $
+                .post({
+                    url: $(this).attr("action"),
+                    data: $(this).serializeArray(),
+                    success: function(data) {
+                        response = JSON.parse(data);
+                        if (response.success) {
+                            toastr.success(response.success);
+                            $("#popup_model").modal("hide");
+                            if (response.nodes) {
+                                var nodesList = response.nodes;
+                                renameNodes(nodesList);
+                            }
+                        } else if (response.error) {
+                            // toastr.error(response.error);
+                            var errors = response.error;
+                            if (errors['delete_form_name']) {
+                                var deparmentNameField = $('.field-cabins-cabin_name');
+                                deparmentNameField
+                                    .addClass("has-error");
+                                deparmentNameField.find('p').html(
+                                    errors['cabin_name']);
+                            }
+                            if (errors['department_description']) {
+                                var deparmentNameField = $('.field-sections-cabin_description');
+                                deparmentNameField
+                                    .addClass("has-error");
+                                deparmentNameField
+                                    .find('p')
+                                    .html(
+                                        errors['cabin_description']);
+                            }
+                        }
+                    },
+                    complete: function() {
+                        outProcessBtn("save_cabin_submit_btn");
+                    }
+                });
+            return false;
+        });
+
+
+
+
+
 
 $(document).on("beforeSubmit", "#dept_hotel_configure_email_form", function() {
     inProcessBtn("dept_hotel_configure_email_submit_btn");

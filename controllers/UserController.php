@@ -1,7 +1,7 @@
 <?php
 
 namespace app\controllers;
-
+use yii\web\UploadedFile;
 use app\models\AuditsSchedules;
 use Yii;
 use app\models\User;
@@ -23,15 +23,17 @@ use app\models\UserHotels;
 use app\models\UserDepartments;
 use yii\helpers\ArrayHelper;
 use app\models\Tickets;
+use yii\base\Model;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
 class UserController extends Controller {
-
     public $layout = 'dashboard_layout';
     public $phoneNumbermask = "999 9999999";
 
+    const SCENARIO_ALL_USER_TYPES = 'all';
+    const SCENARIO_TASK_DOER = 'taskdoer';
     /**
      *
      * {@inheritdoc}
@@ -146,9 +148,30 @@ class UserController extends Controller {
                 $model->password_hash = Yii::$app->getSecurity()->generateRandomString(30);
                 $confirmation_token = Yii::$app->getSecurity()->generateRandomString(30);
                 $model->confirmation_token = $confirmation_token;
+                  
+                $uploadedFile = UploadedFile::getInstanceByName("User[profile_picture]");
+                if ($uploadedFile) {
+                    $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
+                    $file_name =  $uploadedFile->name.date('Y-m-d-H-i-s').date('Y-m-d-H-i-s').'.'.$ext;
+                    $complete_path = \Yii::$app->basePath . Yii::$app->params['profile_pictures_save_url'] . $file_name;
+                    $path = $file_name;
+                    if ($uploadedFile->saveAs($complete_path)) {
+                        $model->profile_picture=$path;
+                    }
+                }
 
+
+                if($model->user_type != 4){
+                    //all user types (except task doer)
+                    $model->scenario = User::SCENARIO_ALL_USER_TYPES;
+                }else{
+                    //task doer
+                    $model->is_email_verified = 1;
+                    $model->scenario = User::SCENARIO_TASK_DOER;
+                }
+
+              
                 if ($model->save()) {
-
                     $locations = $postInfo['UserLocations']['location_id'];
                     $this->saveLocations($locations, $model);
 
@@ -164,7 +187,9 @@ class UserController extends Controller {
                     $recipientMail = $model->email;
                     $link = '<a href="' . \Yii::$app->urlManager->createAbsoluteUrl('/site/set-password') . '?user_id=' . $getUserId . '&token=' . $confirmation_token . '">Click Here</a>';
                     $result = true;
-                    $result = EmailsComponent::sendUserVerificationLinkEmail($model->first_name, $recipientMail, $link, $action = "set");
+                    if($model->user_type != 4){
+                        $result = EmailsComponent::sendUserVerificationLinkEmail($model->first_name, $recipientMail, $link, $action = "set");
+                    }
                     if ($result) {
                         $transaction->commit();
                         Yii::$app->session->setFlash('success', 'User created successfully');
@@ -273,6 +298,7 @@ class UserController extends Controller {
     public function actionUpdate($id) {
         $valid = false;
         $model = $this->findModel(Yii::$app->utils->decryptData($id));
+        $old_profile_picture = $model->profile_picture;
         $user_type = $model->user_type;
         $userLocaltionModels = $model->userLocations;
         $userHotelModels = $model->userHotels;
@@ -325,10 +351,37 @@ class UserController extends Controller {
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $model->user_type = $user_type;
+                if($model->user_type != 4){
+                    //all user types (except task doer)
+                    $model->scenario = User::SCENARIO_ALL_USER_TYPES;
+                }else{
+                    //task doer
+                    $model->scenario = User::SCENARIO_TASK_DOER;
+                }
+
+                $uploadedFile = UploadedFile::getInstanceByName("User[profile_picture]");
+                if ($uploadedFile) {
+                  
+                    $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
+                   
+                    $file_name =  preg_replace('/\\.[^.\\s]{3,4}$/', '', $uploadedFile->name).date('Y-m-d-H-i-s').'.'.$ext;
+                
+                    $complete_path = \Yii::$app->basePath . Yii::$app->params['profile_pictures_save_url'] . $file_name;
+                    $old_path = \Yii::$app->basePath . Yii::$app->params['profile_pictures_save_url'] . $old_profile_picture;
+                    $path = $file_name;
+                  
+                    if ($uploadedFile->saveAs($complete_path)) {
+                        if(file_exists($old_path))
+                        {  
+                            unlink($old_path);
+                        }
+                        $model->profile_picture=$path;
+                    }
+                }
+                
                 if ($model->save()) {
-
+                 
                     $this->assignRole($model->role_id, $model->user_id);
-
                     $locations = $postInfo['UserLocations']['location_id'];
                     $this->saveLocations($locations, $model);
 
@@ -338,6 +391,7 @@ class UserController extends Controller {
                     $departments = $postInfo['UserDepartments']['hotel_department_id'];
                     $hodDepartments = $postInfo['UserDepartments']['hodDepartmentList'];
                     $this->saveDepartments($departments, $model, $hodDepartments);
+                 
 
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'User details updated successfully');
@@ -345,7 +399,7 @@ class UserController extends Controller {
                         '/user'
                     ]);
                 } else {
-
+                    
                     return $this->render('update', [
                         'model' => $model,
                         'userLocationsModel' => $userLocationsModel,
@@ -372,7 +426,7 @@ class UserController extends Controller {
             ]);
         }
     }
-
+    
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

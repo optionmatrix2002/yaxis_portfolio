@@ -247,7 +247,12 @@ $("#MenuChecklists").addClass("active");
                                             
                                         </div>
                                     </div>
-        
+                                    <div class="col-lg-12 col-md-12 col-sm-12 ">
+        <div class="col-lg-3 col-md-4 col-sm-3 marginTB10"  style="margin-left: 18px">
+        <label class="required-label">File Upload</label>
+                </div>
+                                           <?= $form->field($model, 'thumbnail')->fileInput()->label(false) ?>
+                </div>
         
         
         <div class="col-sm-12  ">

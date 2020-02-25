@@ -47,7 +47,17 @@ use yii\bootstrap\Html;
                     <label>
                         Are you sure you want to delete this <?= ucwords($node_type); ?>? You can't undo this action.
 
-                    </label> <br>
+					</label> <br>
+					
+<?php } else if ($node_type == 'cabin') { ?>
+
+<label>
+	Are you sure you want to delete this <?= ucwords($node_type); ?>? You can't undo this action.
+
+</label> <br>
+
+
+
 			<!-- 	<p>Note: This will delete all Subsections under it.</p> -->
 
 <?php } else { ?>

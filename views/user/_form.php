@@ -46,10 +46,34 @@ $("#settings-users").addClass("active");
     <div class="user-form">
 
         <?php $form = ActiveForm::begin(); ?>
-
         <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
-                <label class="required-label">First Name :</label>
+                <label class="required-label" >User Type:</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="input-group col-sm-6 radio-button-padding">
+                    <?php
+                    $userType = $model->user_type == 1 ? 0 : 1;
+                    ?>
+                    <?= $form->field($model, 'user_type')->radioList(ArrayHelper::map(UserTypes::find()->select(['user_type_id', 'CONCAT(UCASE(LEFT(ut_name, 1)), 
+                             SUBSTRING(ut_name, 2)) as ut_name'])->where(['!=', 'user_type_id', $userType])->all(), 'user_type_id', 'ut_name'), ['itemOptions' => ['disabled' => $model->isNewRecord ? false : true]])->label(false); ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10" style="display:block"> 
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <label class="required-label" >Role:</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="input-group col-sm-6" id="sample">
+                    <?= $form->field($model, 'role_id')->dropDownList(ArrayHelper::map(\app\models\Roles::find()->where(['is_deleted' => 0])->asArray()->all(), 'role_id', 'role_name'), ['prompt' => 'Select Role','disabled' => $model->isNewRecord ? false : true], ['class' => 'form-control'])->label(false); ?>
+                </div>
+            </div>
+        </div>
+      
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <label class="required-label" >First Name :</label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
@@ -68,7 +92,7 @@ $("#settings-users").addClass("active");
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10" id="email" style="display:<?php echo $model->user_type !=4 && !$model->isNewRecord ? 'block' : 'none';  ?>">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label class="required-label">Email Address:</label>
             </div>
@@ -78,6 +102,40 @@ $("#settings-users").addClass("active");
                 </div>
             </div>
         </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10 " id="uname" style="display:<?php echo $model->user_type ==4 && !$model->isNewRecord ? 'block' : 'none';  ?>">
+            <div class="col-lg-3 col-md-3 col-sm-3 ">
+                <label class="required-label"> UserName</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="input-group col-sm-6">
+                    <?= $form->field($model, 'taskdoer_username')->textInput(['maxlength' => true, 'disabled' => $model->isNewRecord ? false : true])->label(false) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10 " id="taskpass" style="display : <?php echo $model->user_type ==4 && !$model->isNewRecord ? 'block' : 'none';  ?>">
+            <div class="col-lg-3 col-md-3 col-sm-3 ">
+                <label class="required-label"> Password</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="input-group col-sm-6">
+                    <?= $form->field($model, 'taskdoer_password')->textInput(['maxlength' => true])->label(false) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10 " id="taskpass2" style="display:none">
+            <div class="col-lg-3 col-md-3 col-sm-3 ">
+                <label class="required-label">Confirm Password</label>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="input-group col-sm-6">
+                    <?= $form->field($model, 'taskdoer_password2')->textInput(['maxlength' => true, 'disabled' => $model->isNewRecord ? false : true])->label(false) ?>
+                </div>
+            </div>
+        </div>
+
+
         <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label class="required-label">Phone Number :</label>
@@ -198,31 +256,9 @@ $("#settings-users").addClass("active");
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <label class="required-label">Role:</label>
-            </div>
-            <div class="col-lg-9 col-md-9 col-sm-9">
-                <div class="input-group col-sm-6">
-                    <?= $form->field($model, 'role_id')->dropDownList(ArrayHelper::map(\app\models\Roles::find()->where(['is_deleted' => 0])->asArray()->all(), 'role_id', 'role_name'), ['prompt' => 'Select Role'], ['class' => 'form-control'])->label(false); ?>
-                </div>
-            </div>
-        </div>
+      
 
-        <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
-            <div class="col-lg-3 col-md-3 col-sm-3">
-                <label class="required-label">User Type:</label>
-            </div>
-            <div class="col-lg-9 col-md-9 col-sm-9">
-                <div class="input-group col-sm-6 radio-button-padding">
-                    <?php
-                    $userType = $model->user_type == 1 ? 0 : 1;
-                    ?>
-                    <?= $form->field($model, 'user_type')->radioList(ArrayHelper::map(UserTypes::find()->select(['user_type_id', 'CONCAT(UCASE(LEFT(ut_name, 1)), 
-                             SUBSTRING(ut_name, 2)) as ut_name'])->where(['!=', 'user_type_id', $userType])->all(), 'user_type_id', 'ut_name'), ['itemOptions' => ['disabled' => $model->isNewRecord ? false : true]])->label(false); ?>
-                </div>
-            </div>
-        </div>
+   
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label>Floor Head for:</label>
@@ -286,6 +322,15 @@ $("#settings-users").addClass("active");
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 ">
+        <div class="col-lg-3 col-md-4 col-sm-3 marginTB10"  style="margin-left: 18px">
+        <label class="required-label">Profile Picture</label>
+                </div>
+                                           <?= $form->field($model, 'profile_picture')->fileInput()->label(false) ?>
+                </div>
+
+
         <div class="col-lg-12 col-md-12 col-sm-12 margintop10">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label></label>
