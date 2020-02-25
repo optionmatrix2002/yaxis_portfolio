@@ -17,6 +17,14 @@ return [
         "audits/reports-download" => "Audits Reports Download",
         "audits" => "Manage Audits"
     ],
+    "manageTasks" => [
+        "tasks/create" => "Add Tasks",
+        "tasks/update" => "Edit Tasks",
+        "tasks/delete" => "Delete Tasks",
+        //"audits/reports" => "Audits Reports",
+        "tasks/reports-download" => "Tasks Reports Download",
+        "tasks" => "Manage Tasks"
+    ],
     "manageTickets" => [
         "tickets/create" => "Add Tickets",
         "tickets/update" => "Edit Tickets",
@@ -24,6 +32,17 @@ return [
         "tickets/cancel" => "Cancel Tickets",
         //"tickets/reports" => "Tickets Reports",
         "tickets" => "Manage Tickets"
+    ],
+    "manageIncidents" => [
+        "incidents/create" => "Add Incidents",
+        "incidents/update" => "Edit Incidents",
+        "incidents/delete" => "Delete Incidents",
+        "incidents/cancel" => "Cancel Incidents",
+        //"tickets/reports" => "Tickets Reports",
+        "incidents" => "Manage Incidents"
+    ],
+    "manageRcaReport" => [
+        "rcaReport" => "Manage Incidents"
     ],
     "manageUsers" => [
         "user/create" => "Add User",

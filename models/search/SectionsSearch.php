@@ -12,6 +12,7 @@ use app\models\Sections;
  */
 class SectionsSearch extends Sections
 {
+    public $searchKeyWord;
 
     /**
      * @inheritdoc
@@ -34,7 +35,8 @@ class SectionsSearch extends Sections
                     's_section_name',
                     's_section_remarks',
                     'created_date',
-                    'modified_date'
+                    'modified_date',
+                    'searchKeyWord'
                 ],
                 'safe'
             ]
@@ -94,15 +96,11 @@ class SectionsSearch extends Sections
         ]);
         
         $query->andFilterWhere([
-            'like',
-            's_section_name',
-            $this->s_section_name
-        ])->andFilterWhere([
-            'like',
-            's_section_remarks',
-            $this->s_section_remarks
+            'or',
+            ['like', 's_section_name', $this->searchKeyWord],
+            ['like', 's_section_remarks', $this->searchKeyWord],
         ]);
-        
+
         return $dataProvider;
     }
 }
