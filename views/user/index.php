@@ -126,7 +126,7 @@ $("#settings-users").addClass("active");
                         'value' => function ($model) {
                             if( $model->taskdoer_username != '')
                             {
-                                return $model->taskdoer_password;
+                                return Yii::$app->utils->decryptData($model->taskdoer_password);
                             }
                            return '-';
                         }

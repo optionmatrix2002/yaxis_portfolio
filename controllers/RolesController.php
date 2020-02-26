@@ -121,9 +121,8 @@ class RolesController extends Controller
         $modelRoleAlertAssignment = new RolealertAssignment();
         if ($post && isset($post['Roles'])) {
             $auth = yii::$app->authManager;
-            $roleModel = Roles::findOne([
-                'LOWER(role_name)' => strtolower($post['Roles']['role_name'])
-            ]);
+            $roleModel = Roles::find()->where([
+                "LOWER(role_name)" => strtolower($post['Roles']['role_name'])])->one();
             $existingRole = '';//$auth->getRole(trim($post['Roles']['role_name']));
             if (!$existingRole && !$roleModel) {
                 $transaction = yii::$app->db->beginTransaction();
