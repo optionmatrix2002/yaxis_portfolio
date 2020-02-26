@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\rest\ActiveController;
 use app\models;
 use app\components\EmailsComponent;
+use app\models\Cabins;
 use app\models\User;
 use app\models\LoginForm;
 use app\models\UserInfo;
@@ -33,6 +34,7 @@ class UserController extends ActiveController {
         $output = [];
         $model = new LoginForm();
         $email = $model->username = Yii::$app->request->post('email');
+        
         $password_hash = $model->password = Yii::$app->request->post('password');
 
         if (!empty($email) && !empty($password_hash)) {
@@ -253,6 +255,42 @@ class UserController extends ActiveController {
                 'response' => 'success',
                 'data' => $users
             ];
+            return $output;
+        } catch (Exception $ex) {
+            $output = [
+                'response' => [],
+                'message' => 'No data found'
+            ];
+            Yii::$app->response->statusCode = 200;
+        }
+        return $output;
+    }
+
+
+    public function actionGetCabinList() {
+     
+        try {
+            $post = Yii::$app->request->post();
+            if (!$post['hotel_id'] || !$post['department_id'] ) {
+                $output = [
+                    'response' => [],
+                    'message' => 'Invalid Params'
+                ];
+                return $output;
+            }
+            $model = Cabins::find()
+                    ->select(['hotel_id','department_id','cabin_id','cabin_name','cabin_description'])
+                    ->where([
+                        'hotel_id' => $post['hotel_id'],
+                        'department_id' => $post['department_id']
+                        
+                    ])
+                    ->all();
+                    $output = [
+                        'response' => 'success',
+                        'data' => $model
+                    ];
+        
             return $output;
         } catch (Exception $ex) {
             $output = [

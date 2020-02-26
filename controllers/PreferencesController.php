@@ -61,7 +61,7 @@ class PreferencesController extends Controller {
     public function actionIndex() {
 
         $dataProvider = new ActiveDataProvider([
-            'query' => Preferences::find()
+            'query' => Preferences::find()->where(['<>','preferences_id','6'])
         ]);
 
         $query = ProcessCriticalPreferences::find();
