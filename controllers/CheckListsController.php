@@ -1225,7 +1225,7 @@ class CheckListsController extends Controller
 
                 if($thumbnail){
                     $ext = pathinfo($thumbnail->name, PATHINFO_EXTENSION);
-                    $file_name =  preg_replace('/\\.[^.\\s]{3,4}$/', '', $thumbnail->name).date('Y-m-d-H-i-s').'.'.$ext;
+                    $file_name =  'Question_thumbnail_'.date('Y-m-d-H-i-s').'.'.$ext;
                     $complete_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $file_name;
                     $old_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $old_thumbnail;
                     $path = $file_name;
@@ -1273,7 +1273,7 @@ class CheckListsController extends Controller
             }
             if($thumbnail){
                 $ext = pathinfo($thumbnail->name, PATHINFO_EXTENSION);
-                $file_name =  preg_replace('/\\.[^.\\s]{3,4}$/', '', $thumbnail->name).date('Y-m-d-H-i-s').'.'.$ext;
+                $file_name =  'Question_thumbnail_'.date('Y-m-d-H-i-s').'.'.$ext;
                 $complete_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $file_name;
                 $old_path = \Yii::$app->basePath . Yii::$app->params['thumbnail_save_url'] . $old_thumbnail;
                 $path = $file_name;
