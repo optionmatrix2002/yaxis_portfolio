@@ -31,8 +31,8 @@ use yii\helpers\Json;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const SCENARIO_ALL_USER_TYPES = 'all';
-    const SCENARIO_TASK_DOER = 'taskdoer';
+    /*const SCENARIO_ALL_USER_TYPES = 'all';
+    const SCENARIO_TASK_DOER = 'taskdoer';*/
 
 
     public $departmentId;
@@ -87,7 +87,7 @@ class User extends ActiveRecord implements IdentityInterface
                 'integer'
             ],
             [
-                ['profile_picture'],
+                ['image'],
                 'string',
                 'max' => 200
             ],
@@ -158,22 +158,34 @@ class User extends ActiveRecord implements IdentityInterface
 
             ['taskdoer_password', 'string', 'min' => 6],
             ['taskdoer_password2', 'compare', 'compareAttribute'=>'taskdoer_password', 'message'=>"Passwords don't match" ],
-            [['email'], 'required', 'on' => self::SCENARIO_ALL_USER_TYPES],
-            [['taskdoer_username','taskdoer_password'], 'required', 'on' => self::SCENARIO_TASK_DOER],
-            ['profile_picture', 'file', 'extensions' => ['png', 'jpg', 'jpeg'], 'maxSize' => 1024 * 1024 * 5, 'tooBig' => 'Limit is 5 MB'],
+            [['email'], 'required', 'when' =>  function ($model) {
+                return $model->user_type != 5;
+         },
+            'whenClient' => "function (attribute, value) {
+                const scenarios = $('input[name=\'User[user_type]\']:checked').val()
+                return scenarios != 5;
+            }"],
+            [['taskdoer_username','taskdoer_password'], 'required', 'when' =>  function ($model) {
+                return $model->user_type == 5;
+         },
+            'whenClient' => "function (attribute, value) {
+                const scenario = $('input[name=\'User[user_type]\']:checked').val()
+                return scenario == 5;
+            }"],
+            ['image', 'file', 'extensions' => ['png', 'jpg', 'jpeg'], 'maxSize' => 1024 * 1024 * 5, 'tooBig' => 'Limit is 5 MB'],
 
 
         ];
     }
 
-    public function scenarios()
+   /* public function scenarios()
     {
     $scenarios = parent::scenarios();
     $scenarios[self::SCENARIO_ALL_USER_TYPES] = ['email'];
     $scenarios[self::SCENARIO_TASK_DOER] = ['taskdoer_username','taskdoer_password'];
 
     return $scenarios;
-    }
+    }*/
     /**
      * @inheritdoc
      */
@@ -550,7 +562,7 @@ class User extends ActiveRecord implements IdentityInterface
             if ($uploadedFile->saveAs($complete_path)) {
                 $user = new User();
                 
-                $user->profile_picture = $path;
+                $user->image = $path;
                 if ($user->save()) {
                     return [
                         'status' => true,

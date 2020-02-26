@@ -148,27 +148,36 @@ class UserController extends Controller {
                 $model->password_hash = Yii::$app->getSecurity()->generateRandomString(30);
                 $confirmation_token = Yii::$app->getSecurity()->generateRandomString(30);
                 $model->confirmation_token = $confirmation_token;
-                  
-                $uploadedFile = UploadedFile::getInstanceByName("User[profile_picture]");
+                
+                
+                $path = Yii::getAlias('@webroot/') .Yii::$app->params['profile_pictures_save_url'];
+                if (!file_exists($path)) {
+                    mkdir($path, 0777);
+                }
+
+                $uploadedFile = UploadedFile::getInstanceByName("User[image]");
                 if ($uploadedFile) {
                     $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
                     $file_name =  $uploadedFile->name.date('Y-m-d-H-i-s').date('Y-m-d-H-i-s').'.'.$ext;
                     $complete_path = \Yii::$app->basePath . Yii::$app->params['profile_pictures_save_url'] . $file_name;
                     $path = $file_name;
                     if ($uploadedFile->saveAs($complete_path)) {
-                        $model->profile_picture=$path;
+                        $model->image=$path;
                     }
                 }
 
 
-                if($model->user_type != 4){
-                    //all user types (except task doer)
-                    $model->scenario = User::SCENARIO_ALL_USER_TYPES;
-                }else{
+                if($model->user_type == 5){
                     //task doer
                     $model->is_email_verified = 1;
-                    $model->scenario = User::SCENARIO_TASK_DOER;
-                }
+                    $password = $model->taskdoer_password;
+                    $model->taskdoer_password = Yii::$app->utils->encryptData($password);
+                    $model->taskdoer_password2 = Yii::$app->utils->encryptData($password);
+                  //  $model->scenario = User::SCENARIO_TASK_DOER;
+                }/*else{
+                    //all user types (except task doer)
+                    $model->scenario = User::SCENARIO_ALL_USER_TYPES;
+                }*/
 
               
                 if ($model->save()) {
@@ -187,7 +196,7 @@ class UserController extends Controller {
                     $recipientMail = $model->email;
                     $link = '<a href="' . \Yii::$app->urlManager->createAbsoluteUrl('/site/set-password') . '?user_id=' . $getUserId . '&token=' . $confirmation_token . '">Click Here</a>';
                     $result = true;
-                    if($model->user_type != 4){
+                    if($model->user_type != 5){
                         $result = EmailsComponent::sendUserVerificationLinkEmail($model->first_name, $recipientMail, $link, $action = "set");
                     }
                     if ($result) {
@@ -200,7 +209,6 @@ class UserController extends Controller {
                         throw new \Exception('Error occurred while sending mail');
                     }
                 } else {
-
                     return $this->render('create', [
                         'model' => $model,
                         'userLocationsModel' => $userLocationsModel,
@@ -298,7 +306,9 @@ class UserController extends Controller {
     public function actionUpdate($id) {
         $valid = false;
         $model = $this->findModel(Yii::$app->utils->decryptData($id));
-        $old_profile_picture = $model->profile_picture;
+        $old_profile_picture = $model->image;
+        $encryptedPassword =$model->taskdoer_password;
+        $model->taskdoer_password = Yii::$app->utils->decryptData($model->taskdoer_password);
         $user_type = $model->user_type;
         $userLocaltionModels = $model->userLocations;
         $userHotelModels = $model->userHotels;
@@ -351,15 +361,21 @@ class UserController extends Controller {
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $model->user_type = $user_type;
-                if($model->user_type != 4){
+                if($model->user_type == 5){
+                    //task doer
+                 //   $model->scenario = User::SCENARIO_TASK_DOER;
+                 $model->taskdoer_password = Yii::$app->utils->encryptData($model->taskdoer_password);
+                }/*else{
                     //all user types (except task doer)
                     $model->scenario = User::SCENARIO_ALL_USER_TYPES;
-                }else{
-                    //task doer
-                    $model->scenario = User::SCENARIO_TASK_DOER;
+                }*/
+
+                $path = Yii::getAlias('@webroot/') .Yii::$app->params['profile_pictures_save_url'];
+                if (!file_exists($path)) {
+                    mkdir($path, 0777);
                 }
 
-                $uploadedFile = UploadedFile::getInstanceByName("User[profile_picture]");
+                $uploadedFile = UploadedFile::getInstanceByName("User[image]");
                 if ($uploadedFile) {
                   
                     $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
@@ -375,7 +391,7 @@ class UserController extends Controller {
                         {  
                             unlink($old_path);
                         }
-                        $model->profile_picture=$path;
+                        $model->image=$path;
                     }
                 }
                 
