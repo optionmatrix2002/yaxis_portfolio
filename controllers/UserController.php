@@ -158,7 +158,7 @@ class UserController extends Controller {
                 $uploadedFile = UploadedFile::getInstanceByName("User[image]");
                 if ($uploadedFile) {
                     $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
-                    $file_name =  $uploadedFile->name.date('Y-m-d-H-i-s').date('Y-m-d-H-i-s').'.'.$ext;
+                    $file_name =  'User_profile_picture_'.date('Y-m-d-H-i-s').'.'.$ext;
                     $complete_path = \Yii::$app->basePath . Yii::$app->params['profile_pictures_save_url'] . $file_name;
                     $path = $file_name;
                     if ($uploadedFile->saveAs($complete_path)) {
@@ -380,7 +380,7 @@ class UserController extends Controller {
                   
                     $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
                    
-                    $file_name =  preg_replace('/\\.[^.\\s]{3,4}$/', '', $uploadedFile->name).date('Y-m-d-H-i-s').'.'.$ext;
+                    $file_name = 'User_profile_picture_'.date('Y-m-d-H-i-s').'.'.$ext;
                 
                     $complete_path = \Yii::$app->basePath . Yii::$app->params['profile_pictures_save_url'] . $file_name;
                     $old_path = \Yii::$app->basePath . Yii::$app->params['profile_pictures_save_url'] . $old_profile_picture;
