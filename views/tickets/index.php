@@ -17,11 +17,61 @@ $this->title = 'Tickets';
 $this->params['breadcrumbs'][] = $this->title;
 
 AppAsset::register($this);
+
+View::registerJs("save_url = '". yii::$app->urlManager->createUrl('tickets/save-columns')."';",View::POS_HEAD);
+
+View::registerCssFile(yii::$app->urlManager->createUrl('css/bootstrap-multiselect.css'));
+
 View::registerJsFile(yii::$app->urlManager->createUrl('js/modelpopup.js'), ['depends' => JqueryAsset::className()]);
+View::registerJsFile(yii::$app->urlManager->createUrl('js/bootstrap-multiselect.js'), [
+    'depends' => JqueryAsset::className()
+]);
 $this->registerJs('
 $(".nav-bids").removeClass("active");
 $("#tickets").addClass("active");
 $(".dropdown-toggle").dropdown();
+var selectedVals=[];
+$("#example-getting-started option:selected").map(function(a, item){selectedVals.push(item.value);});
+console.log(selectedVals);
+$("#example-getting-started").multiselect({
+    onChange: function(option, checked, select) {
+        var selectedVal = option.val();
+        console.log(option.val(), checked, select);
+        if(!checked){
+            $(".tab-content").find("."+selectedVal).addClass("hidden");
+            for( var i = 0; i < selectedVals.length; i++){ 
+                if ( selectedVals[i] === option.val()) {
+                    selectedVals.splice(i, 1); 
+                }
+             }
+        }else{
+            selectedVals.push(option.val());
+            $(".tab-content").find("."+selectedVal).removeClass("hidden");
+        }
+        console.log(selectedVals);
+    }
+});
+
+$(".multiselect-native-select .btn-group").click(function(){
+ $(this).toggleClass("open");
+});
+
+$("#submitGridSelectionBtn").click(function(){
+    console.log("dd");
+    $.post({
+            url: save_url,
+            data: {selected_columns:selectedVals,grid_type:$(this).data("type")},
+            success: function(data) {
+                console.log(data);
+                response = JSON.parse(data);
+                if(response.output){
+                    toastr.success("Columns saved successfully");
+                }
+                
+            }
+        });   
+
+});
 ', \yii\web\View::POS_END);
 ?>
 <div class="container-fluid">
@@ -38,7 +88,6 @@ $(".dropdown-toggle").dropdown();
 
     </p>
 </div>
-
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php
 $buttons = '';
@@ -501,6 +550,22 @@ $archivedTickets = [
 ];
 ?>
 <div class="row">
+<div class="col-md-12 nopadding">
+            <div class="col-md-3">
+                <select id="example-getting-started" multiple="multiple">
+                    <?php
+                        foreach($tableColumnsArr as $index=>$column){
+                            ?>
+                            <option value="<?=$index?>" <?=$columnsArr[$index] ? 'selected' : ''?>><?=$column?></option>
+                            <?php
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-success" id="submitGridSelectionBtn" data-type="tickets">Save</button>
+            </div>
+        </div>
     <div class="col-lg-12 nopadding">
         <ul class="nav nav-tabs">
             <li class="active">
@@ -628,7 +693,8 @@ $archivedTickets = [
 
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden c1' : 'c1'],
+                                'headerOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden theadcolor c1' : 'theadcolor c1']
                             ],
                             [
                                 'attribute' => 'audit_id',
@@ -637,7 +703,8 @@ $archivedTickets = [
                                     return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden c2' : 'c2'],
+                                'headerOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden theadcolor c2' : 'theadcolor c2']
                             ],
                             [
                                 'attribute' => 'hotel_id',
@@ -646,7 +713,8 @@ $archivedTickets = [
                                     return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden c3' : 'c3'],
+                                'headerOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden theadcolor c3' : 'theadcolor c3']
                             ],
                             [
                                 'attribute' => 'department_id',
@@ -655,7 +723,8 @@ $archivedTickets = [
                                     return ($model->department_id) ? $model->department->department_name : '--';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden c4' : 'c4'],
+                                'headerOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden theadcolor c4' : 'theadcolor c4']
                             ],
                             [
                                 'attribute' => 'subject',
@@ -668,7 +737,8 @@ $archivedTickets = [
 
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden c5' : 'c5'],
+                                'headerOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden theadcolor c5' : 'theadcolor c5']
                             ],
                             /* [
                                  'attribute' => 'section_id',
@@ -687,7 +757,8 @@ $archivedTickets = [
                                     return ucfirst($model->assignedUser->first_name) . ' ' . ucfirst($model->assignedUser->last_name);
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden c6' : 'c6'],
+                                'headerOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden theadcolor c6' : 'theadcolor c6']
                             ],
                             [
                                 'attribute' => 'created_at',
@@ -697,7 +768,8 @@ $archivedTickets = [
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden c7' : 'c7'],
+                                'headerOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden theadcolor c7' : 'theadcolor c7']
                             ],
                             [
                                 'attribute' => 'due_date',
@@ -714,7 +786,8 @@ $archivedTickets = [
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden c8' : 'c8'],
+                                'headerOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden theadcolor c8' : 'theadcolor c8']
                             ],
                             [
                                 'attribute' => 'overDueTicket',
@@ -728,7 +801,8 @@ $archivedTickets = [
                                     return 'No';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden c9' : 'c9'],
+                                'headerOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden theadcolor c9' : 'theadcolor c9']
                             ],
                             [
                                 'attribute' => 'chronic',
@@ -745,7 +819,8 @@ $archivedTickets = [
                                     return $chronicity;
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden c10' : 'c10'],
+                                'headerOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden theadcolor c10' : 'theadcolor c10']
                             ],
                             [
                                 'attribute' => 'priority_type_id',
@@ -761,12 +836,14 @@ $archivedTickets = [
                                     }
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c11']) ? 'hidden c11' : 'c11'],
+                                'headerOptions' => ['class' => (!$columnsArr['c11']) ? 'hidden theadcolor c11' : 'theadcolor c11']
                             ],
                             [
                                 'attribute' => 'process_critical',
                                 'header' => 'Process Critical (Audit)',
-                                'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c12']) ? 'hidden c12' : 'c12'],
+                                'headerOptions' => ['class' => (!$columnsArr['c12']) ? 'hidden theadcolor c12' : 'theadcolor c12'],
                                 'value' => function ($model) {
                                 $data=Tickets::getAnswers($model->answer_id);
                                
@@ -809,7 +886,8 @@ $archivedTickets = [
                                     return \app\models\Tickets::$statusList[$model->status];
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c13']) ? 'hidden c13' : 'c13'],
+                                'headerOptions' => ['class' => (!$columnsArr['c13']) ? 'hidden theadcolor c13' : 'theadcolor c13']
                             ],
                             [
                                 'class' => 'yii\grid\ActionColumn',
@@ -875,7 +953,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
 
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden c1' : 'c1'],
+                                'headerOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden theadcolor c1' : 'theadcolor c1']
                             ],
                             [
                                 'attribute' => 'audit_id',
@@ -884,7 +963,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden c2' : 'c2'],
+                                'headerOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden theadcolor c2' : 'theadcolor c2']
                             ],
                             [
                                 'attribute' => 'hotel_id',
@@ -893,7 +973,9 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden c3' : 'c3'],
+                                'headerOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden theadcolor c3' : 'theadcolor c3']
                             ],
                             [
                                 'attribute' => 'department_id',
@@ -902,7 +984,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return ($model->department_id) ? $model->department->department_name : '--';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden c4' : 'c4'],
+                                'headerOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden theadcolor c4' : 'theadcolor c4']
                             ],
                             
                             [
@@ -916,7 +999,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return $str;
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden c5' : 'c5'],
+                                'headerOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden theadcolor c5' : 'theadcolor c5']
                             ],
 
                             [
@@ -926,7 +1010,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return ucfirst($model->assignedUser->first_name) . ' ' . ucfirst($model->assignedUser->last_name);
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden c6' : 'c6'],
+                                'headerOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden theadcolor c6' : 'theadcolor c6']
                             ],
                             [
                                 'attribute' => 'created_at',
@@ -936,7 +1021,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden c7' : 'c7'],
+                                'headerOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden theadcolor c7' : 'theadcolor c7']
                             ],
                             [
                                 'attribute' => 'due_date',
@@ -946,7 +1032,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden c8' : 'c8'],
+                                'headerOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden theadcolor c8' : 'theadcolor c8']
                             ],
                             [
                                 'attribute' => 'overDueTicket',
@@ -960,7 +1047,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return 'No';
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden c9' : 'c9'],
+                                'headerOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden theadcolor c9' : 'theadcolor c9']
                             ],
                             [
                                 'attribute' => 'chronic',
@@ -977,7 +1065,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return $chronicity;
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden c10' : 'c10'],
+                                'headerOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden theadcolor c10' : 'theadcolor c10']
                             ],
                             [
                                 'attribute' => 'priority_type_id',
@@ -986,12 +1075,14 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return $model->priorityType->priority_name;
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c11']) ? 'hidden c11' : 'c11'],
+                                'headerOptions' => ['class' => (!$columnsArr['c11']) ? 'hidden theadcolor c11' : 'theadcolor c11']
                             ],
                             [
                                 'attribute' => 'process_critical',
                                 'header' => 'Process Critical (Audit)',
-                                'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c12']) ? 'hidden c12' : 'c12'],
+                                'headerOptions' => ['class' => (!$columnsArr['c12']) ? 'hidden theadcolor c12' : 'theadcolor c12'],
                                 'value' => function ($model) {
                                 $data=Tickets::getAnswers($model->answer_id);
                                 
@@ -1035,7 +1126,8 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                     return \app\models\Tickets::$statusList[$model->status];
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c13']) ? 'hidden c13' : 'c13'],
+                                'headerOptions' => ['class' => (!$columnsArr['c13']) ? 'hidden theadcolor c13' : 'theadcolor c13']
                             ],
                             [
                                 'class' => 'yii\grid\ActionColumn',
