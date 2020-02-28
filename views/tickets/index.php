@@ -250,27 +250,6 @@ $gridColumnsInfo = [
         },
         'visible'=>(!$columnsArr['c12']) ? false :true
         ],
-        
-        [
-            'attribute' => 'process_critical_dynamic',
-            'header' => 'Process Critical (Dynamic)',
-            'value' => function ($model) {
-            $process='-';
-            if($model->audit_schedule_id==null){
-                switch ($model->process_critical_dynamic) {
-                    case 0:
-                        $process = 'No';
-                        break;
-                    case 1:
-                        $process = 'Yes';
-                        break;
-                }
-            }
-            
-            return $process;
-            },
-            'visible'=>(!$columnsArr['c13']) ? false :true
-            ],
             
     [
         'attribute' => 'status',
