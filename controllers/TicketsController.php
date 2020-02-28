@@ -58,7 +58,7 @@ class TicketsController extends Controller {
         'c2'=>'Audit',
         'c3'=>'Office',
         'c4'=>'Floor',
-        'c5'=>'Section',
+        'c5'=>'Subject',
         'c6'=>'Assigned To',
         'c7'=>'Created On',
         'c8'=>'Due Date',
@@ -861,31 +861,26 @@ class TicketsController extends Controller {
     }
 
     public function actionSaveColumns() {
-        if (isset($_POST['selected_columns'])) {
-            $selectedColumns = $_POST['selected_columns'];
-            $grid_type = $_POST['grid_type'];
-            if ($selectedColumns) {
+        $selectedColumns = isset($_POST['selected_columns']) ? $_POST['selected_columns'] : [];
+        $grid_type = $_POST['grid_type'];
+        if ($grid_type) {
 
-                header('Content-type: application/json');
-                $model=\app\models\GridColumns::find(['grid_type'=>$_POST['grid_type']])->one();
-                if($model){
-                    $model->grid_type = $grid_type;
-                    $model->columns_data= json_encode($selectedColumns);
-                }else{
-                    $model = new \app\models\GridColumns();
-                    $model->grid_type = $grid_type;
-                    $model->columns_data= json_encode($selectedColumns);
-                }
-                if(!$model->save()){
-                    print_r($model->errors);
-                    exit;
-                }
-                echo Json::encode([
-                    'output' => true,
-                    'selected' => ''
-                ]);
-                return;
+            header('Content-type: application/json');
+            $model=\app\models\GridColumns::find(['grid_type'=>$_POST['grid_type']])->one();
+            if(!$model){
+                $model = new \app\models\GridColumns(); 
             }
+            $model->grid_type = $grid_type;
+            $model->columns_data= json_encode($selectedColumns);
+            if(!$model->save()){
+                print_r($model->errors);
+                exit;
+            }
+            echo Json::encode([
+                'output' => true,
+                'selected' => ''
+            ]);
+            return;
         }
         echo Json::encode([
             'output' => '',

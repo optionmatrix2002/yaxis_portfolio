@@ -34,6 +34,7 @@ var selectedVals=[];
 $("#example-getting-started option:selected").map(function(a, item){selectedVals.push(item.value);});
 console.log(selectedVals);
 $("#example-getting-started").multiselect({
+    includeSelectAllOption: true,
     onChange: function(option, checked, select) {
         var selectedVal = option.val();
         console.log(option.val(), checked, select);
@@ -48,7 +49,13 @@ $("#example-getting-started").multiselect({
             selectedVals.push(option.val());
             $(".tab-content").find("."+selectedVal).removeClass("hidden");
         }
-        console.log(selectedVals);
+    },
+    onSelectAll: function() {
+        selectedVals=[];
+        selectedVals=["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12","c13",];
+    },
+    onDeselectAll: function() {
+        selectedVals=[];
     }
 });
 
@@ -57,7 +64,6 @@ $(".multiselect-native-select .btn-group").click(function(){
 });
 
 $("#submitGridSelectionBtn").click(function(){
-    console.log("dd");
     $.post({
             url: save_url,
             data: {selected_columns:selectedVals,grid_type:$(this).data("type")},
@@ -66,6 +72,7 @@ $("#submitGridSelectionBtn").click(function(){
                 response = JSON.parse(data);
                 if(response.output){
                     toastr.success("Columns saved successfully");
+                    location.reload();
                 }
                 
             }
@@ -74,6 +81,23 @@ $("#submitGridSelectionBtn").click(function(){
 });
 ', \yii\web\View::POS_END);
 ?>
+<style>
+.multiselect.dropdown-toggle{
+    width: 236px;
+}
+.no-padding{
+    padding:0px;
+}
+.columnsFilter{
+    margin: 20px 0px;
+}
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    color: #0a0a0a;
+    text-decoration: none;
+    background-color: #aba9a9;
+    outline: 0;
+}
+</style>
 <div class="container-fluid">
     <h2>Tickets</h2>
 </div>
@@ -109,6 +133,7 @@ $gridColumnsInfo = [
     [
         'attribute' => 'ticket_name',
         'header' => 'Ticket ID',
+        'visible'=>(!$columnsArr['c1']) ? false :true
     ],
     [
         'attribute' => 'audit_id',
@@ -116,6 +141,7 @@ $gridColumnsInfo = [
         'value' => function ($model) use ($audits) {
             return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
         },
+        'visible'=>(!$columnsArr['c2']) ? false :true
     ],
     [
         'attribute' => 'hotel_id',
@@ -123,6 +149,7 @@ $gridColumnsInfo = [
         'value' => function ($model) {
             return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
         },
+        'visible'=>(!$columnsArr['c3']) ? false :true
 
     ],
     [
@@ -131,26 +158,7 @@ $gridColumnsInfo = [
         'value' => function ($model) {
             return ($model->department_id) ? $model->department->department_name : '--';
         },
-    ],
-    [
-        'attribute' => 'section_id',
-        'header' => 'Section',
-        'value' => function ($model) {
-            $str = $model->section->s_section_name;
-            $str = html_entity_decode($str, ENT_QUOTES | ENT_XML1, 'UTF-8');
-            $str = htmlspecialchars_decode($str);
-            $str = html_entity_decode($str);
-            $str = strip_tags($str);
-            return $str;
-            //return $model->section->s_section_name;
-        },
-    ],
-    [
-        'attribute' => 'sub_section_id',
-        'header' => 'Subsection',
-        'value' => function ($model) use ($subSectionList) {
-            return isset($subSectionList[$model->sub_section_id]) ? $subSectionList[$model->sub_section_id] : $model->sub_section_id;
-        },
+        'visible'=>(!$columnsArr['c4']) ? false :true
     ],
     [
         'attribute' => 'subject',
@@ -158,13 +166,7 @@ $gridColumnsInfo = [
         'value' => function ($model) {
             return strip_tags($model->subject);
         },
-    ],
-    [
-        'attribute' => 'description',
-        'header' => 'Observation',
-        'value' => function ($model) {
-            return strip_tags($model->description);
-        },
+        'visible'=>(!$columnsArr['c5']) ? false :true
     ],
     [
         'attribute' => 'assigned_id',
@@ -172,7 +174,7 @@ $gridColumnsInfo = [
         'value' => function ($model) {
             return ucfirst($model->assignedUser->first_name) . ' ' . ucfirst($model->assignedUser->last_name);
         },
-
+        'visible'=>(!$columnsArr['c6']) ? false :true
     ],
     [
         'attribute' => 'created_at',
@@ -181,6 +183,7 @@ $gridColumnsInfo = [
             $timestamp = strtotime($model->created_at);
             return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
         },
+        'visible'=>(!$columnsArr['c7']) ? false :true
     ],
     [
         'attribute' => 'due_date',
@@ -189,6 +192,7 @@ $gridColumnsInfo = [
             $timestamp = strtotime($model->due_date);
             return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
         },
+        'visible'=>(!$columnsArr['c8']) ? false :true
     ],
     [
         'attribute' => 'overDueTicket',
@@ -201,6 +205,7 @@ $gridColumnsInfo = [
 
             return 'No';
         },
+        'visible'=>(!$columnsArr['c9']) ? false :true
     ],
     [
         'attribute' => 'chronic',
@@ -216,7 +221,7 @@ $gridColumnsInfo = [
             }
             return $chronicity;
         },
-
+        'visible'=>(!$columnsArr['c10']) ? false :true
     ],
     [
         'attribute' => 'priority_type_id',
@@ -224,6 +229,7 @@ $gridColumnsInfo = [
         'value' => function ($model) {
             return $model->priorityType->priority_name;
         },
+        'visible'=>(!$columnsArr['c11']) ? false :true
     ],
     [
         'attribute' => 'process_critical',
@@ -242,6 +248,7 @@ $gridColumnsInfo = [
         unset($data);
         return $process;
         },
+        'visible'=>(!$columnsArr['c12']) ? false :true
         ],
         
         [
@@ -262,63 +269,8 @@ $gridColumnsInfo = [
             
             return $process;
             },
+            'visible'=>(!$columnsArr['c13']) ? false :true
             ],
-        
-        [
-            'attribute' => 'prob_module_id',
-            'header' => 'Problem Classification',
-            'value' => function ($model) {
-            $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-            
-            $val = empty($process_data)?'-':$process_data->probModule->module_option;
-            
-            unset($process_data);
-            
-            return $val;
-            },
-            ],
-            
-        [
-            'attribute' => 'root_cause',
-            'header' => 'Root Cause',
-            'value' => function ($model) {
-            $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-            
-            $val = empty($process_data)?'-':$process_data->root_cause;
-            
-            unset($process_data);
-            
-            return $val;
-            },
-            ],
-            
-            [
-                'attribute' => 'improvement_plan',
-                'header' => 'Improvement Plan for Zero Deviation',
-                'value' => function ($model) {
-                $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-                
-                $val = empty($process_data)?'-':$process_data->improvement_plan;
-                
-                unset($process_data);
-                
-                return $val;
-                },
-                ],
-                
-            [
-                'attribute' => 'improve_plan_module_id',
-                'header' => 'Improvement Plan Classification',
-                'value' => function ($model) {
-                $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-                
-                $val = empty($process_data)?'-':$process_data->improvePlanModule->module_option;
-                
-                unset($process_data);
-                
-                return $val;
-                },
-                ],
             
     [
         'attribute' => 'status',
@@ -333,6 +285,7 @@ $archivedTickets = [
     [
         'attribute' => 'ticket_name',
         'header' => 'Ticket ID',
+        'visible'=>(!$columnsArr['c1']) ? false :true
     ],
     [
         'attribute' => 'audit_id',
@@ -340,6 +293,7 @@ $archivedTickets = [
         'value' => function ($model) use ($audits) {
             return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
         },
+        'visible'=>(!$columnsArr['c2']) ? false :true
     ],
     [
         'attribute' => 'hotel_id',
@@ -347,6 +301,7 @@ $archivedTickets = [
         'value' => function ($model) {
             return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
         },
+        'visible'=>(!$columnsArr['c3']) ? false :true
     ],
     [
         'attribute' => 'department_id',
@@ -354,26 +309,7 @@ $archivedTickets = [
         'value' => function ($model) {
             return ($model->department_id) ? $model->department->department_name : '--';
         },
-    ],
-    [
-        'attribute' => 'section_id',
-        'header' => 'Section',
-        'value' => function ($model) {
-            $str = $model->section->s_section_name;
-            $str = html_entity_decode($str, ENT_QUOTES | ENT_XML1, 'UTF-8');
-            $str = htmlspecialchars_decode($str);
-            $str = html_entity_decode($str);
-            $str = strip_tags($str);
-            return $str;
-            return $model->section->s_section_name;
-        },
-    ],
-    [
-        'attribute' => 'sub_section_id',
-        'header' => 'Section',
-        'value' => function ($model) use ($subSectionList) {
-            return isset($subSectionList[$model->sub_section_id]) ? $subSectionList[$model->sub_section_id] : $model->sub_section_id;
-        },
+        'visible'=>(!$columnsArr['c4']) ? false :true
     ],
     [
         'attribute' => 'subject',
@@ -381,13 +317,7 @@ $archivedTickets = [
         'value' => function ($model) {
             return strip_tags($model->subject);
         },
-    ],
-    [
-        'attribute' => 'description',
-        'header' => 'Observation',
-        'value' => function ($model) {
-            return strip_tags($model->description);
-        },
+        'visible'=>(!$columnsArr['c5']) ? false :true
     ],
     [
         'attribute' => 'assigned_id',
@@ -395,6 +325,7 @@ $archivedTickets = [
         'value' => function ($model) {
             return ucfirst($model->assignedUser->first_name) . ' ' . ucfirst($model->assignedUser->last_name);
         },
+        'visible'=>(!$columnsArr['c6']) ? false :true
     ],
     [
         'attribute' => 'created_at',
@@ -403,6 +334,7 @@ $archivedTickets = [
             $timestamp = strtotime($model->created_at);
             return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
         },
+        'visible'=>(!$columnsArr['c7']) ? false :true
     ],
     [
         'attribute' => 'due_date',
@@ -411,6 +343,7 @@ $archivedTickets = [
             $timestamp = strtotime($model->due_date);
             return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
         },
+        'visible'=>(!$columnsArr['c8']) ? false :true
     ],
     [
         'attribute' => 'overDueTicket',
@@ -423,6 +356,7 @@ $archivedTickets = [
 
             return 'No';
         },
+        'visible'=>(!$columnsArr['c9']) ? false :true
     ],
     [
         'attribute' => 'chronic',
@@ -438,6 +372,7 @@ $archivedTickets = [
             }
             return $chronicity;
         },
+        'visible'=>(!$columnsArr['c10']) ? false :true
     ],
     [
         'attribute' => 'priority_type_id',
@@ -445,6 +380,7 @@ $archivedTickets = [
         'value' => function ($model) {
             return $model->priorityType->priority_name;
         },
+        'visible'=>(!$columnsArr['c11']) ? false :true
     ],
     [
         'attribute' => 'process_critical',
@@ -463,82 +399,8 @@ $archivedTickets = [
         unset($data);
         return $process;
         },
-        ],
-        
-        [
-            'attribute' => 'process_critical_dynamic',
-            'header' => 'Process Critical (Dynamic)',
-            'value' => function ($model) {
-            $process='-';
-            if($model->audit_schedule_id==null){
-            switch ($model->process_critical_dynamic) {
-                case 0:
-                    $process = 'No';
-                    break;
-                case 1:
-                    $process = 'Yes';
-                    break;
-            }
-            }
-            
-            return $process;
-            },
-            ],
-        
-        [
-            'attribute' => 'prob_module_id',
-            'header' => 'Problem Classification',
-            'value' => function ($model) {
-            $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-            
-            $val = empty($process_data)?'-':$process_data->probModule->module_option;
-            
-            unset($process_data);
-            
-            return $val;
-            },
-            ],
-            
-            [
-                'attribute' => 'root_cause',
-                'header' => 'Root Cause',
-                'value' => function ($model) {
-                $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-                
-                $val = empty($process_data)?'-':$process_data->root_cause;
-                
-                unset($process_data);
-                
-                return $val;
-                },
-                ],
-                
-                [
-                    'attribute' => 'improvement_plan',
-                    'header' => 'Improvement Plan for Zero Deviation',
-                    'value' => function ($model) {
-                    $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-                    
-                    $val = empty($process_data)?'-':$process_data->improvement_plan;
-                    unset($process_data);
-                    
-                    return $val;
-                    },
-                    ],
-                    
-                    [
-                        'attribute' => 'improve_plan_module_id',
-                        'header' => 'Improvement Plan Classification',
-                        'value' => function ($model) {
-                        $process_data=TicketProcessCritical::findOne(['ticket_id'=>$model->ticket_id]);
-                        
-                        $val = empty($process_data)?'-':$process_data->improvePlanModule->module_option;
-                        
-                        unset($process_data);
-                        
-                        return $val;
-                        },
-                        ],
+        'visible'=>(!$columnsArr['c12']) ? false :true
+    ],
                         
     [
         'attribute' => 'status',
@@ -546,12 +408,13 @@ $archivedTickets = [
         'value' => function ($model) {
             return \app\models\Tickets::$statusList[$model->status];
         },
+        'visible'=>(!$columnsArr['c13']) ? false :true
     ],
 ];
 ?>
 <div class="row">
-<div class="col-md-12 nopadding">
-            <div class="col-md-3">
+<div class="col-md-12 nopadding columnsFilter">
+            <div class="col-md-2 no-padding">
                 <select id="example-getting-started" multiple="multiple">
                     <?php
                         foreach($tableColumnsArr as $index=>$column){
@@ -562,7 +425,7 @@ $archivedTickets = [
                     ?>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <button class="btn btn-success" id="submitGridSelectionBtn" data-type="tickets">Save</button>
             </div>
         </div>
@@ -989,14 +852,13 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                             ],
                             
                             [
-                                'attribute' => 'section_id',
-                                'header' => 'Section',
+                                'attribute' => 'subject',
+                                'header' => 'Subject',
                                 'value' => function ($model) {
-                                    $str = $model->section->s_section_name;
-                                    /*if (strlen($str) > 8) {
-                                        return '<span title="' . $str . '"> ' . substr($str, 0, 8) . '...</span>';
-                                    }*/
-                                    return $str;
+                                    if (strlen($model->subject) > 25) {
+                                        return '<span title="' . $model->subject . '"> ' . substr($model->subject, 0, 25) . '...</span>';
+                                    }
+                                    return '<span title="' . $model->subject . '"> ' . $model->subject . '</span>';
                                 },
                                 'format' => 'raw',
                                 'contentOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden c5' : 'c5'],
