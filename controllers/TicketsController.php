@@ -28,6 +28,7 @@ use app\models\TicketHistory;
 use app\models\TicketProcessCritical;
 use app\models\Departments;
 use app\components\EmailsComponent;
+use app\models\GridColumns;
 use app\models\UserDepartments;
 
 /**
@@ -36,7 +37,37 @@ use app\models\UserDepartments;
 class TicketsController extends Controller {
 
     public $layout = 'dashboard_layout';
+    public static $columnsArr=[
+        'c1'=>true,
+        'c2'=>true,
+        'c3'=>true,
+        'c4'=>true,
+        'c5'=>true,
+        'c6'=>true,
+        'c7'=>true,
+        'c8'=>true,
+        'c9'=>true,
+        'c10'=>true,
+        'c11'=>true,
+        'c12'=>true,
+        'c13'=>true
+    ];
 
+    public static $tableColumns=[
+        'c1'=>'Ticket ID',
+        'c2'=>'Audit',
+        'c3'=>'Office',
+        'c4'=>'Floor',
+        'c5'=>'Subject',
+        'c6'=>'Assigned To',
+        'c7'=>'Created On',
+        'c8'=>'Due Date',
+        'c9'=>'Over due',
+        'c10'=>'Chronic',
+        'c11'=>'Priority',
+        'c12'=>'Process Critical (Audit)',
+        'c13'=>'Status'
+    ];
     /**
      * @inheritdoc
      */
@@ -105,11 +136,23 @@ class TicketsController extends Controller {
         $searchModel = new TicketsSearch();
         $dataProvider = $searchModel->searchActiveTickets(Yii::$app->request->queryParams);
         $dataArchivedProvider = $searchModel->searchArchivedTickets(Yii::$app->request->queryParams);
-
+        $gridColumns = GridColumns::find()->where(['grid_type'=>'tickets'])->one();
+        if($gridColumns){
+            $gridColumns = $gridColumns->columns_data ? json_decode($gridColumns->columns_data)  : [];
+            foreach(self::$columnsArr as $key=>$column){
+                self::$columnsArr[$key]=false;
+                if(in_array($key,$gridColumns)){
+                    self::$columnsArr[$key]=true;
+                }
+            }
+        }
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
-                    'dataArchivedProvider' => $dataArchivedProvider
+                    'dataArchivedProvider' => $dataArchivedProvider,
+                    'columnsArr'=> self::$columnsArr,
+                    'tableColumnsArr'=>self::$tableColumns
+
         ]);
     }
 
@@ -815,6 +858,34 @@ class TicketsController extends Controller {
             Yii::$app->events->createEvent($data);
             return true;
         }
+    }
+
+    public function actionSaveColumns() {
+        $selectedColumns = isset($_POST['selected_columns']) ? $_POST['selected_columns'] : [];
+        $grid_type = $_POST['grid_type'];
+        if ($grid_type) {
+
+            header('Content-type: application/json');
+            $model=\app\models\GridColumns::find(['grid_type'=>$_POST['grid_type']])->one();
+            if(!$model){
+                $model = new \app\models\GridColumns(); 
+            }
+            $model->grid_type = $grid_type;
+            $model->columns_data= json_encode($selectedColumns);
+            if(!$model->save()){
+                print_r($model->errors);
+                exit;
+            }
+            echo Json::encode([
+                'output' => true,
+                'selected' => ''
+            ]);
+            return;
+        }
+        echo Json::encode([
+            'output' => '',
+            'selected' => ''
+        ]);
     }
 
 }
