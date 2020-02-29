@@ -286,6 +286,12 @@ class Tickets extends \yii\db\ActiveRecord
         ]);
     }
 
+    public function getLocation()
+    {
+        return $this->hasOne(Locations::className(), [
+            'location_id' => 'location_id'
+        ]);
+    }
     /**
      *
      * @return \yii\db\ActiveQuery
@@ -1252,5 +1258,12 @@ class Tickets extends \yii\db\ActiveRecord
         $data = $command->queryAll();
         return $data;
     }
-
+            /**
+     *
+     * @return string
+     */
+    public function getTicketLocationsData()
+    {
+            return $this->location->locationCity->name;
+    }
 }
