@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
+use kartik\depdrop\DepDrop;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\search\AuditsSearch */
@@ -45,46 +47,51 @@ $this->registerJs('
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?= $form->field($model, 'ticket_name')->textInput(['class' => 'form-control', 'placeholder' => 'Ticket ID'])->label(false); ?>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+        <?= $form->field($model, 'location_id')
+                        ->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Locations::find()
+                            ->where(['is_deleted' => 0])->all(), 'location_id', 'locationCity.name'), 'showToggleAll' => false, 'language' => 'en', 'options' => ['multiple' => false, 'placeholder' => 'Select Location'], 'pluginOptions' => ['showToggleAll' => false, 'allowClear' => true]])
+                        ->label(false); ?>
 
+        
+            </div>
 
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?php
-            echo $form->field($model, 'hotel_id')
-                ->dropDownList(ArrayHelper::map(\app\models\Hotels::find()->where(['hotel_status' => 1, 'is_deleted' => 0])->all(), 'hotel_id', 'hotel_name'), [
-                    'prompt' => 'Office',
-                    'onchange' => '
-                $.post( "' . Yii::$app->urlManager->createUrl('site/departments?id=') . '"+$(this).val(), function( data ) {
-                  $( "select#ticketssearch-department_id" ).html( data );
-                });
-                
-            '
-                ], [
-                    'class',
-                    'form-control'
+
+                echo $form->field($model, 'hotel_id')
+                ->widget(DepDrop::classname(), [
+                    'pluginOptions' => [
+                        'initialize' => ($model->hotel_id) ? true : false,
+                        'depends' => [
+                            'ticketssearch-location_id'
+                        ],
+                        'placeholder' => 'Select Office',
+                        'url' => Url::to([
+                            'user/hotel'
+                        ]),
+                        'params' => [
+                            'selectedHotel'
+                        ]
+                    ],
+                    'select2Options' => [
+                        'pluginOptions' => [
+                            'allowClear' => false
+                        ],
+                        'showToggleAll' => false
+                    ],
+
+                    'pluginEvents' => [],
+                    'options' => [
+                        'multiple' => false
+                    ],
+                    'type' => DepDrop::TYPE_SELECT2
                 ])
                 ->label(false);
             ?>
-
+    
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3">
-
-            <?php
-            echo $form->field($model, 'department_id')
-                ->dropDownList([], [
-                    'prompt' => 'Floor',
-                    'onchange' => '
-                $.post( "' . Yii::$app->urlManager->createUrl('site/audits?id=') . '"+$(this).val(), function( data ) {
-                  $( "select#auditssearch-audit_id" ).html( data );
-                });
-                    
-            '], [
-                    'class',
-                    'form-control'
-                ])
-                ->label(false);
-            ?>
-        </div>
-
+      
 
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?php
@@ -142,8 +149,6 @@ $this->registerJs('
         <div class="col-lg-3 col-md-3 col-sm-3 margin-top-5">
             <?= $form->field($model, 'dateAssignedType')->dropDownList(['1' => 'Assigned', '2' => 'Due Date', '3' => 'Last Updated'], ['prompt' => 'Ticket Date Range'], ['class', 'form-control'])->label(false); ?>
         </div>
-
-
         <div class="col-lg-3 col-md-3 col-sm-3 margin-top-5">
             <?= $form->field($model, 'startDate')->textInput(['class' => 'datetimepicker form-control', 'placeholder' => 'Start Date'])->label(false); ?>
         </div>

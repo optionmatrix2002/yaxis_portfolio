@@ -498,10 +498,14 @@ class UserController extends Controller {
             $parents = $postData['depdrop_parents'];
             if ($parents != null) {
                 $locations_arr = $parents[0];
-
                 header('Content-type: application/json');
 
                 if (!empty($locations_arr)) {
+                    
+                    if(!is_array($locations_arr)){
+                        $temp[]=$locations_arr;
+                        $locations_arr = $temp;
+                    }
                     foreach ($locations_arr as $location_id) {
 
                         $location = Locations::findOne($location_id);
@@ -517,7 +521,6 @@ class UserController extends Controller {
                             ])
                             ->asArray()
                             ->all();
-
                         if (!empty($result_array)) {
                             $out[$location->locationCity->name] = $result_array;
                         } else {

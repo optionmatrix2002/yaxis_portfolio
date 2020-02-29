@@ -640,6 +640,15 @@ $archivedTickets = [
                                 'headerOptions' => ['class' => 'theadcolor']
                             ],
                             [
+                                'attribute' => 'location_id',
+                                'header' => 'Location',
+                                'value' => function ($model) {
+                                    return $model->getTicketLocationsData();
+                                },
+                                'format' => 'raw',
+                                'headerOptions' => ['class' => 'theadcolor']
+                            ],
+                            [
                                 'attribute' => 'hotel_id',
                                 'header' => 'Office',
                                 'value' => function ($model) {
@@ -895,6 +904,7 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                 'format' => 'raw',
                                 'headerOptions' => ['class' => 'theadcolor']
                             ],
+
                             [
                                 'attribute' => 'department_id',
                                 'header' => 'Floor',
