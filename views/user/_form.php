@@ -54,9 +54,22 @@ $("#settings-users").addClass("active");
                 <div class="input-group col-sm-6 radio-button-padding">
                     <?php
                     $userType = $model->user_type == 1 ? 0 : 1;
+                    $userTypes=UserTypes::find()->select(['user_type_id', 'CONCAT(UCASE(LEFT(ut_name, 1)), 
+                    SUBSTRING(ut_name, 2)) as ut_name'])->where(['!=', 'user_type_id', $userType])->all();
+                    $customTypes=[];
+                    $tempType=[];
+                    if($userTypes){
+                        foreach($userTypes as $key => $val) {
+                            if($val->user_type_id == '4') {
+                                array_push($tempType,$val);
+                            }else{
+                                array_push($customTypes,$val);
+                            }
+                        }
+                        $customTypes= array_merge($customTypes,$tempType);
+                    }
                     ?>
-                    <?= $form->field($model, 'user_type')->radioList(ArrayHelper::map(UserTypes::find()->select(['user_type_id', 'CONCAT(UCASE(LEFT(ut_name, 1)), 
-                             SUBSTRING(ut_name, 2)) as ut_name'])->where(['!=', 'user_type_id', $userType])->all(), 'user_type_id', 'ut_name'), ['itemOptions' => ['disabled' => $model->isNewRecord ? false : true]])->label(false); ?>
+                    <?= $form->field($model, 'user_type')->radioList(ArrayHelper::map($customTypes, 'user_type_id', 'ut_name'), ['itemOptions' => ['disabled' => $model->isNewRecord ? false : true]])->label(false); ?>
                 </div>
             </div>
         </div>
@@ -92,7 +105,7 @@ $("#settings-users").addClass("active");
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 margintop10" id="email" style="display:<?php echo $model->user_type !=4 && !$model->isNewRecord ? 'block' : 'none';  ?>">
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10" id="email" style="display:<?php echo $model->user_type !=5 && !$model->isNewRecord ? 'block' : 'none';  ?>">
             <div class="col-lg-3 col-md-3 col-sm-3">
                 <label class="required-label">Email Address:</label>
             </div>
@@ -102,9 +115,9 @@ $("#settings-users").addClass("active");
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 margintop10 " id="uname" style="display:<?php echo $model->user_type ==4 && !$model->isNewRecord ? 'block' : 'none';  ?>">
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10 " id="uname" style="display:<?php echo $model->user_type ==5 && !$model->isNewRecord ? 'block' : 'none';  ?>">
             <div class="col-lg-3 col-md-3 col-sm-3 ">
-                <label class="required-label"> UserName</label>
+                <label class="required-label"> Username</label>
             </div>
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="input-group col-sm-6">
@@ -113,7 +126,7 @@ $("#settings-users").addClass("active");
             </div>
         </div>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 margintop10 " id="taskpass" style="display : <?php echo $model->user_type ==4 && !$model->isNewRecord ? 'block' : 'none';  ?>">
+        <div class="col-lg-12 col-md-12 col-sm-12 margintop10 " id="taskpass" style="display : <?php echo $model->user_type ==5 && !$model->isNewRecord ? 'block' : 'none';  ?>">
             <div class="col-lg-3 col-md-3 col-sm-3 ">
                 <label class="required-label"> Password</label>
             </div>
@@ -324,10 +337,15 @@ $("#settings-users").addClass("active");
         </div>
 
         <div class="col-lg-12 col-md-12 col-sm-12 ">
-        <div class="col-lg-3 col-md-4 col-sm-3 marginTB10"  style="margin-left: 18px">
+        <div class="col-lg-3 col-md-4 col-sm-3 marginTB10">
         <label class="required-label">Profile Picture</label>
                 </div>
-                                           <?= $form->field($model, 'profile_picture')->fileInput()->label(false) ?>
+                
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="input-group col-sm-6">
+                                           <?= $form->field($model, 'image')->fileInput()->label(false) ?>
+                                           </div>
+            </div>
                 </div>
 
 
