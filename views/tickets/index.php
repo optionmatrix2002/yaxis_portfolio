@@ -52,7 +52,7 @@ $("#example-getting-started").multiselect({
     },
     onSelectAll: function() {
         selectedVals=[];
-        selectedVals=["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12","c13",];
+        selectedVals=["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12","c13","c14"];
         $(".tab-content").find(".tbl-td").removeClass("hidden");
     },
     onDeselectAll: function() {
@@ -144,6 +144,15 @@ $gridColumnsInfo = [
             return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
         },
         'visible'=>(!$columnsArr['c2']) ? false :true
+    ],
+    [
+        'attribute' => 'location_id',
+        'header' => 'Location',
+        'value' => function ($model) {
+            return $model->getTicketLocationsData();
+        },
+        'format' => 'raw',
+        'visible'=>(!$columnsArr['c14']) ? false :true
     ],
     [
         'attribute' => 'hotel_id',
@@ -275,6 +284,15 @@ $archivedTickets = [
             return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
         },
         'visible'=>(!$columnsArr['c2']) ? false :true
+    ],
+    [
+        'attribute' => 'location_id',
+        'header' => 'Location',
+        'value' => function ($model) {
+            return $model->getTicketLocationsData();
+        },
+        'format' => 'raw',
+        'visible'=>(!$columnsArr['c14']) ? false :true
     ],
     [
         'attribute' => 'hotel_id',
@@ -556,7 +574,8 @@ $archivedTickets = [
                                     return $model->getTicketLocationsData();
                                 },
                                 'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor']
+                                'contentOptions' => ['class' => (!$columnsArr['c14']) ? 'hidden c14 tbl-td' : 'c14 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c14']) ? 'hidden theadcolor c14 tbl-td' : 'theadcolor c14 tbl-td']
                             ],
                             [
                                 'attribute' => 'hotel_id',
@@ -817,6 +836,16 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                 'format' => 'raw',
                                 'contentOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden c2 tbl-td' : 'c2 tbl-td'],
                                 'headerOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden theadcolor c2 tbl-td' : 'theadcolor c2 tbl-td']
+                            ],
+                            [
+                                'attribute' => 'location_id',
+                                'header' => 'Location',
+                                'value' => function ($model) {
+                                    return $model->getTicketLocationsData();
+                                },
+                                'format' => 'raw',
+                                'contentOptions' => ['class' => (!$columnsArr['c14']) ? 'hidden c14 tbl-td' : 'c14 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c14']) ? 'hidden theadcolor c14 tbl-td' : 'theadcolor c14 tbl-td']
                             ],
                             [
                                 'attribute' => 'hotel_id',
