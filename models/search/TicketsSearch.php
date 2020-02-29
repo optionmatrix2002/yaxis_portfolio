@@ -26,7 +26,7 @@ class TicketsSearch extends Tickets
     public function rules()
     {
         return [
-            [['ticket_id', 'audit_schedule_id', 'hotel_id', 'department_id', 'section_id', 'sub_section_id', 'priority_type_id', 'assigned_user_id', 'answer_id', 'chronicity', 'status', 'is_deleted', 'created_by', 'updated_by','process_critical','prob_module_id','improve_plan_module_id'], 'integer'],
+            [['ticket_id', 'audit_schedule_id','location_id', 'hotel_id', 'department_id', 'section_id', 'sub_section_id', 'priority_type_id', 'assigned_user_id', 'answer_id', 'chronicity', 'status', 'is_deleted', 'created_by', 'updated_by','process_critical','prob_module_id','improve_plan_module_id','location_id'], 'integer'],
             [['improvement_plan','root_cause'],'string'],
             [['ticket_name', 'ticket_name', 'due_date', 'subject', 'description', 'created_at', 'updated_at', 'dateAssignedType', 'startDate', 'endDate', 'overDueTicket','process_critical','prob_module_id','improve_plan_module_id','improvement_plan','root_cause'], 'safe'],
         ];
@@ -75,6 +75,7 @@ class TicketsSearch extends Tickets
         // grid filtering conditions
         $query->andFilterWhere([
             'ticket_id' => $this->ticket_id,
+            'location_id' => $this->location_id,
             self::tableName() . '.hotel_id' => $this->hotel_id,
             self::tableName() . '.department_id' => $this->department_id,
             self::tableName() . '.section_id' => $this->section_id,
@@ -176,6 +177,7 @@ class TicketsSearch extends Tickets
         // grid filtering conditions
         $query->andFilterWhere([
             'ticket_id' => $this->ticket_id,
+           self::tableName() . '.location_id' => $this->location_id,
             self::tableName() . '.hotel_id' => $this->hotel_id,
             self::tableName() . '.department_id' => $this->department_id,
             'section_id' => $this->section_id,
