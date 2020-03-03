@@ -105,7 +105,7 @@ $this->registerJs('
 <div class="row">
     
         <div class="col-lg-2 col-md-6 col-sm-12">
-        <a href="/yaxis/audits/tasks#tab2">
+        <a href="<?= Yii::$app->urlManager->createUrl(['/audits/tasks#tab2']);?>">
             <div class="mini-widget">
                 <div class="mini-widget-body background-blue clearfix nocolor">
                     <div class="pull-left  number ">
@@ -128,7 +128,7 @@ $this->registerJs('
         </div>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
-        <a href="/yaxis/audits/tasks#tab2">
+        <a href="<?= Yii::$app->urlManager->createUrl(['/audits/tasks#tab2']);?>">
             <div class="mini-widget">
                 <div class="mini-widget-body background-pink clearfix">
                     <div class="pull-left number">
@@ -140,7 +140,7 @@ $this->registerJs('
         </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
-    <a href="/yaxis/audits/tasks#tab1" >
+    <a href="<?= Yii::$app->urlManager->createUrl(['/audits/tasks#tab1']);?>" >
         <div class="mini-widget">
             <div class="mini-widget-body background-orange clearfix">
                 <div class="pull-left  number">
@@ -172,7 +172,7 @@ $this->registerJs('
         </div>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
-    <a href="/yaxis/tickets">
+    <a href="<?= Yii::$app->urlManager->createUrl(['/tickets']);?>">
         <div class="mini-widget">
             <div class="mini-widget-body background-green clearfix">
                 <div class="pull-left number">
@@ -184,7 +184,7 @@ $this->registerJs('
         </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
-    <a href="/yaxis/audits" >
+    <a href="<?= Yii::$app->urlManager->createUrl(['/audits/tasks#tab2']);?>" >
         <div class="mini-widget">
             <div class="mini-widget-body background-blue clearfix">
                 <div class="pull-left  number">
@@ -197,7 +197,7 @@ $this->registerJs('
     </div>
   
     <div class="col-lg-2 col-md-6 col-sm-12">
-    <a href="/yaxis/audits">
+    <a href="<?= Yii::$app->urlManager->createUrl(['/audits/tasks#tab2']);?>">
         <div class="mini-widget">
             <div class="mini-widget-body background-yellow clearfix">
                 <div class="pull-left number">
@@ -209,7 +209,7 @@ $this->registerJs('
         </a>
     </div>
      <div class="col-lg-2 col-md-6 col-sm-12">
-     <a href="/yaxis/audits">
+     <a href="<?= Yii::$app->urlManager->createUrl(['/audits']);?>">
         <div class="mini-widget">
             <div class="mini-widget-body background-pink clearfix">
                 <div class="pull-left number">
@@ -221,7 +221,7 @@ $this->registerJs('
         </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
-    <a href="/yaxis/audits">
+    <a href="<?= Yii::$app->urlManager->createUrl(['/audits']);?>">
         <div class="mini-widget">
             <div class="mini-widget-body background-orange clearfix">
                 <div class="pull-left  number">
@@ -253,7 +253,7 @@ $this->registerJs('
         </div>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
-    <a href="/yaxis/tickets">
+    <a href="<?= Yii::$app->urlManager->createUrl(['/audits']);?>">
         <div class="mini-widget">
             <div class="mini-widget-body background-green clearfix">
                 <div class="pull-left number">

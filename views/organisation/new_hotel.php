@@ -1,10 +1,16 @@
 <?php
 ?>
+<style>
+    .closebutton{
+        font-size:35px;
+        float:right;
+    }
+    </style>
 <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="closebutton" data-dismiss="modal">&times;</button>
             <h3 class="modal-title organisation_setup_title"><i class="fa fa-building-o"></i> <?= $hotelModel->isNewRecord ? 'Add' :'Edit'; ?> Office</h3>
         </div>
         <div class="modal-body">
