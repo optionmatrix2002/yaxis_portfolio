@@ -23,7 +23,7 @@ use yii\helpers\Html;
             ?>
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <label>Enter Emails : <i class="fa fa-info-circle mr-top-0 padleft5px" title="Use commas(,) for adding multiple emails"></i></label>
+                    <label>Enter Emails : <i class="glyphicon glyphicon-asterisk mr-top-0 padleft5px" title="Use commas(,) for adding multiple emails"></i></label>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <?= $configureMailsForm->field($hotelDepartmentModel, 'configured_emails')->textarea(['rows' => 3, 'placeholder' => 'Use commas(,) for adding multiple emails'])->label(false) ?>
