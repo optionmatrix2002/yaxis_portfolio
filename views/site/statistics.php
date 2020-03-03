@@ -105,16 +105,18 @@ $this->registerJs('
 <div class="row">
     
         <div class="col-lg-2 col-md-6 col-sm-12">
+        <a href="/yaxis/audits/tasks#tab2">
             <div class="mini-widget">
                 <div class="mini-widget-body background-blue clearfix nocolor">
                     <div class="pull-left  number ">
-                    <a href=" http://localhost/yaxis/audits/tasks#tab2" class="nocolor">  <?php echo $countAudits['all']; ?> </a>
+                    <?php echo $countAudits['all']; ?>
                         <p class="bottomtext" >Scheduled Tasks</p>
                     </div>
                 </div>
             </div>
+            </a>
         </div>
-    </a>
+    
     <div class="col-lg-2 col-md-6 col-sm-12">
         <div class="mini-widget">
             <div class="mini-widget-body background-yellow clearfix">
@@ -126,24 +128,28 @@ $this->registerJs('
         </div>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
-        <div class="mini-widget">
-            <div class="mini-widget-body background-pink clearfix">
-                <div class="pull-left number">
-                <a href=" http://localhost/yaxis/audits/tasks#tab2" class="nocolor"> <?php echo $countAudits['active']; ?></a>
-                    <p class="bottomtext">Active Tasks</p>
+        <a href="/yaxis/audits/tasks#tab2">
+            <div class="mini-widget">
+                <div class="mini-widget-body background-pink clearfix">
+                    <div class="pull-left number">
+                        <?php echo $countAudits['active']; ?>
+                        <p class="bottomtext">Active Tasks</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits/tasks#tab1" >
         <div class="mini-widget">
             <div class="mini-widget-body background-orange clearfix">
                 <div class="pull-left  number">
-                <a href=" http://localhost/yaxis/audits/tasks#tab1" class="nocolor"><?php echo $countAudits['completed']; ?></a>
+               <?php echo $countAudits['completed']; ?>
                     <p class="bottomtext">Completed Tasks</p>
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
         <div class="mini-widget">
@@ -166,55 +172,65 @@ $this->registerJs('
         </div>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/tickets">
         <div class="mini-widget">
             <div class="mini-widget-body background-green clearfix">
                 <div class="pull-left number">
-                <a href=" http://localhost/yaxis/tickets" class="nocolor"><?php echo $countAudits['chronic']; ?></a>
+               <?php echo $countAudits['chronic']; ?>
                     <p class="bottomtext">Chronic Issues (Tasks)</p>
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits" >
         <div class="mini-widget">
             <div class="mini-widget-body background-blue clearfix">
                 <div class="pull-left  number">
-                <a href="http://localhost/yaxis/audits" class="nocolor"><?php echo $countAudits['all']; ?></a>
+                <?php echo $countAudits['all']; ?>
                     <p class="bottomtext">Scheduled Audit</p>
                 </div>
             </div>
         </div>
+        </a>
     </div>
   
     <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits">
         <div class="mini-widget">
             <div class="mini-widget-body background-yellow clearfix">
                 <div class="pull-left number">
-                <a href="http://localhost/yaxis/audits" class="nocolor"><?php echo $countAudits['overdue']; ?></a>
+              <?php echo $countAudits['overdue']; ?>
                     <p class="bottomtext">Overdue Audit</p>
                 </div>
             </div>
         </div>
+        </a>
     </div>
      <div class="col-lg-2 col-md-6 col-sm-12">
+     <a href="/yaxis/audits">
         <div class="mini-widget">
             <div class="mini-widget-body background-pink clearfix">
                 <div class="pull-left number">
-                <a href="http://localhost/yaxis/audits" class="nocolor"><?php echo $countAudits['active']; ?></a>
+                 <?php echo $countAudits['active']; ?>
                     <p class="bottomtext">Active Audit</p>
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits">
         <div class="mini-widget">
             <div class="mini-widget-body background-orange clearfix">
                 <div class="pull-left  number">
-                <a href="http://localhost/yaxis/audits" class="nocolor"><?php echo $countAudits['completed']; ?></a>
+             <?php echo $countAudits['completed']; ?>
                     <p class="bottomtext">Completed Audit</p>
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
         <div class="mini-widget">
@@ -237,15 +253,17 @@ $this->registerJs('
         </div>
     </div>
     <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/tickets">
         <div class="mini-widget">
             <div class="mini-widget-body background-green clearfix">
                 <div class="pull-left number">
-                <a href=" http://localhost/yaxis/tickets" class="nocolor"><?php echo $countAudits['chronic']; ?></a>
+               <?php echo $countAudits['chronic']; ?>
                     <p class="bottomtext">Chronic Issues (Audit)</p>
                 </div>
             </div>
         </div>
     </div>
+    </a>
 </div>
 <div class="row">
     <div class="col-xs-12 margintables">
