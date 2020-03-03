@@ -43,47 +43,14 @@ $(".dropdown-toggle").dropdown();
 <div class="row">
     <div class="col-lg-12 nopadding">
         <ul class="nav nav-tabs">
-            <li  class="active">
-                <a href="#" class="archivedaudits tabs" data-toggle="tab" name="tab" data-index="1"><i
-                        class="fa fa-archive" aria-hidden="true" aria-expanded="false"></i>&nbsp;Completed Tasks</a>
-            </li>
-            <li>
-                <a href="#" class="activeaudits tabs active" data-toggle="tab" name="tab" data-index="0"><i
-                        class="fa fa-folder-open" aria-hidden="true" aria-expanded="true"></i>&nbsp;Scheduled
-                    Tasks</a>
-            </li>
-
-            <?php
-            if (Yii::$app->authManager->checkPermissionAccess('audits/create')) {
-                ?>
-                <li class="pull-right">
-                    <a href="<?= yii::$app->urlManager->createUrl('audits/create-task'); ?>" class="btn btn-success"><i
-                            class="fa fa-plus"></i>&nbsp;Schedule Task</a>
-                </li>
-            <?php } ?>
-            
-            <li class="pull-right">
-            <a href="javascript:void(0)" class="btn btn-success"><i
-                            class="fa fa-download icon-white"></i>&nbsp;Completed Tasks</a>
-            </li>
-            <li class="pull-right">
-            <a href="javascript:void(0)" class="btn btn-success"><i
-                            class="fa fa-download icon-white"></i>&nbsp;Scheduled Tasks</a>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class="row schedule_auditid" >
-    <div class="tab-content">
-        <div id="activeaudits" class="tab-pane fade in active">
-            <div class="col-sm-12 nopadding">
-                <div class="audits-index">
-                    <div id="p1" data-pjax-container="" data-pjax-push-state="" data-pjax-timeout="1000"> 
-                        <div id="w51" class="grid-view is-bs3 hide-resize">
-                            <div class="rc-handle-container" style="width: 0px;"></div>
-                            <div id="w5-container11" class="table-responsive kv-grid-container">
-                                <table class="kv-grid-table table table-bordered table-striped kv-table-wrap"><thead>
+            <div class="tabbable">
+            <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Completed Tasks</a></li>
+        <li><a href="#tab2" data-toggle="tab">Scheduled Tasks</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+        <table class="kv-grid-table table table-bordered table-striped kv-table-wrap"><thead>
                                         <tr>
                                             <th class="theadcolor" data-col-seq="0">Scheduled Task ID</th>
                                             <th class="theadcolor" data-col-seq="1">Location</th>
@@ -171,28 +138,9 @@ $(".dropdown-toggle").dropdown();
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>                        
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="row auditid" style="display:none">
-    <div class="tab-content">
-        <div id="activeaudits" class="tab-pane fade in active">
-                <div class="col-sm-12 nopadding">
-                    <div class="audits-index">
-                        <div id="p1" data-pjax-container="" data-pjax-push-state="" data-pjax-timeout="1000"> 
-                            <div id="w5" class="grid-view is-bs3 hide-resize">
-                                <div class="rc-handle-container" style="width: 0px;">
-                                </div>
-                                <div id="w5-container" class="table-responsive kv-grid-container">
-                                    <table class="kv-grid-table table table-bordered table-striped kv-table-wrap"><thead>
+                                 </div>
+                                     <div class="tab-pane" id="tab2">
+                                   <table class="kv-grid-table table table-bordered table-striped kv-table-wrap"><thead>
                                             <tr>
                                                 <th class="theadcolor" data-col-seq="0">Scheduled Task ID</th>
                                                 <th class="theadcolor" data-col-seq="1">Location</th>
@@ -204,7 +152,6 @@ $(".dropdown-toggle").dropdown();
                                                 <th class="theadcolor" data-col-seq="7">End Date</th>
                                                 <th class="theadcolor">Actions</th>
                                             </tr>
-
                                         </thead>
                                         <tbody>
                                             <tr data-key="12">
@@ -314,17 +261,10 @@ $(".dropdown-toggle").dropdown();
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>                        
-                        </div>
-                    </div>
-                </div>
         </div>
+      
+      </div>
     </div>
-</div>
-
-
-
 
 
 <!-- ------------------------------------------Modele POPup start here-------------------------->

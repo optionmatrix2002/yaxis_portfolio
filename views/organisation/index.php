@@ -25,7 +25,7 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/organisation.js?versio
         <span class="fa fa-file-text-o header-icon-fontcolor"></span>
     </span>
     <p id="description-text">
-        Organization hierarchy which includes Locations, Offices, Floors, Sections and Subsections can be managed from here.
+        Organization hierarchy which includes Locations, Offices, Floors and Cabins can be managed from here.
     </p>
 </div>
 

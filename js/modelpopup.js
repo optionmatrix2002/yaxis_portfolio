@@ -229,6 +229,17 @@ $(document).on("beforeSubmit", "#cancel_auditschedule_form", function (e) {
     $("#cancelpopup").modal("hide");
     return true;
 });
+$(function(){
+    var hash = window.location.hash;
+    hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+    $('.nav-tabs a').click(function (e) {
+      $(this).tab('show');
+      var scrollmem = $('body').scrollTop();
+      window.location.hash = this.hash;
+      $('html,body').scrollTop(scrollmem);
+    });
+  });
+/*
 $("a[name=tab]").on("click", function () {
     var a = $(this).data("index");
     if (a == 0) {
@@ -240,7 +251,7 @@ $("a[name=tab]").on("click", function () {
         $(".auditid").hide();
     }
 });
-
+*/
 $("#checklist_id").change(function () {
     $checklistId = $("#checklist_id").val();
     $.ajax({
