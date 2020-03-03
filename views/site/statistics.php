@@ -11,6 +11,9 @@ $this->registerJs('
     $("#scrollable_table").on("scroll", function() {
         $("thead", this).css("transform", "translateY("+ this.scrollTop +"px)");
     });
+    $("#scrollable_table2").on("scroll", function() {
+        $("thead", this).css("transform", "translateY("+ this.scrollTop +"px)");
+    });
 
     var startdate = $("#statisticsFromDate").val();
     if ((startdate == "")) {
@@ -100,67 +103,218 @@ $this->registerJs('
     </div>
 </form>
 <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="mini-widget">
-            <div class="mini-widget-body background-blue clearfix">
-                <div class="pull-left  number">
+    
+        <div class="col-lg-2 col-md-6 col-sm-12">
+        <a href="/yaxis/audits/tasks#tab2">
+            <div class="mini-widget">
+                <div class="mini-widget-body background-blue clearfix nocolor">
+                    <div class="pull-left  number ">
                     <?php echo $countAudits['all']; ?>
-                    <p class="bottomtext">Scheduled Audits</p>
+                        <p class="bottomtext" >Scheduled Tasks</p>
+                    </div>
                 </div>
             </div>
+            </a>
         </div>
-    </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    
+    <div class="col-lg-2 col-md-6 col-sm-12">
         <div class="mini-widget">
             <div class="mini-widget-body background-yellow clearfix">
                 <div class="pull-left number">
                     <?php echo $countAudits['overdue']; ?>
-                    <p class="bottomtext">Overdue Audits</p>
+                    <p class="bottomtext">Overdue Tasks</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
-        <div class="mini-widget">
-            <div class="mini-widget-body background-pink clearfix">
-                <div class="pull-left number">
-                    <?php echo $countAudits['active']; ?>
-                    <p class="bottomtext">Active Audits</p>
+    <div class="col-lg-2 col-md-6 col-sm-12">
+        <a href="/yaxis/audits/tasks#tab2">
+            <div class="mini-widget">
+                <div class="mini-widget-body background-pink clearfix">
+                    <div class="pull-left number">
+                        <?php echo $countAudits['active']; ?>
+                        <p class="bottomtext">Active Tasks</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits/tasks#tab1" >
         <div class="mini-widget">
             <div class="mini-widget-body background-orange clearfix">
                 <div class="pull-left  number">
-                    <?php echo $countAudits['completed']; ?>
-                    <p class="bottomtext">Completed Audits</p>
+               <?php echo $countAudits['completed']; ?>
+                    <p class="bottomtext">Completed Tasks</p>
                 </div>
             </div>
         </div>
+        </a>
     </div>
-
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="col-lg-2 col-md-6 col-sm-12">
         <div class="mini-widget">
             <div class="mini-widget-body background-red clearfix">
                 <div class="pull-left number">
                     <?php echo $countAudits['compliance'] . ' %'; ?>
-                    <p class="bottomtext">Overall Compliance</p>
+                    <p class="bottomtext" id="sizechange">Overall Compliance (Tasks)</p>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="col-lg-2 col-md-6 col-sm-12">
         <div class="mini-widget">
-            <div class="mini-widget-body background-green clearfix">
+            <div class="mini-widget-body background-red clearfix">
                 <div class="pull-left number">
-                    <?php echo $countAudits['chronic']; ?>
-                    <p class="bottomtext">Chronic Issues</p>
+                    <?php echo $countAudits['compliance'] . ' %'; ?>
+                    <p class="bottomtext" id="sizechange">Overall Non-Compliance (Tasks)</p>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/tickets">
+        <div class="mini-widget">
+            <div class="mini-widget-body background-green clearfix">
+                <div class="pull-left number">
+               <?php echo $countAudits['chronic']; ?>
+                    <p class="bottomtext">Chronic Issues (Tasks)</p>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits" >
+        <div class="mini-widget">
+            <div class="mini-widget-body background-blue clearfix">
+                <div class="pull-left  number">
+                <?php echo $countAudits['all']; ?>
+                    <p class="bottomtext">Scheduled Audit</p>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+  
+    <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits">
+        <div class="mini-widget">
+            <div class="mini-widget-body background-yellow clearfix">
+                <div class="pull-left number">
+              <?php echo $countAudits['overdue']; ?>
+                    <p class="bottomtext">Overdue Audit</p>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+     <div class="col-lg-2 col-md-6 col-sm-12">
+     <a href="/yaxis/audits">
+        <div class="mini-widget">
+            <div class="mini-widget-body background-pink clearfix">
+                <div class="pull-left number">
+                 <?php echo $countAudits['active']; ?>
+                    <p class="bottomtext">Active Audit</p>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/audits">
+        <div class="mini-widget">
+            <div class="mini-widget-body background-orange clearfix">
+                <div class="pull-left  number">
+             <?php echo $countAudits['completed']; ?>
+                    <p class="bottomtext">Completed Audit</p>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-lg-2 col-md-6 col-sm-12">
+        <div class="mini-widget">
+            <div class="mini-widget-body background-red clearfix">
+                <div class="pull-left number">
+                    <?php echo $countAudits['compliance'] . ' %'; ?>
+                    <p class="bottomtext" id="sizechange">Overall Compliance (Audit)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-6 col-sm-12">
+        <div class="mini-widget">
+            <div class="mini-widget-body background-red clearfix">
+                <div class="pull-left number">
+                    <?php echo $countAudits['compliance'] . ' %'; ?>
+                    <p class="bottomtext" id="sizechange">Overall Non-Compliance (Audit)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-6 col-sm-12">
+    <a href="/yaxis/tickets">
+        <div class="mini-widget">
+            <div class="mini-widget-body background-green clearfix">
+                <div class="pull-left number">
+               <?php echo $countAudits['chronic']; ?>
+                    <p class="bottomtext">Chronic Issues (Audit)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+</div>
+<div class="row">
+    <div class="col-xs-12 margintables">
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">Overdue Tasks</h4>
+            </div>
+            <!-- /.box-header -->
+            <div id="scrollable_table"  class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="theadcolor">Due Date</th>
+                            <th class="theadcolor">Task ID</th>
+                            <th class="theadcolor">Office</th>
+                            <th class="theadcolor">Location</th>
+                            <th class="theadcolor">TaskDoer</th>
+                            <th class="theadcolor">Checklist</th>
+                            <th class="theadcolor">Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+
+                    if ($overdueAudits) {
+
+                        foreach ($overdueAudits as $values) {
+                            echo '<tr>';
+                            echo '<td>' . date('d-M-Y', strtotime($values['end_date'])) . '</td>';
+                            echo '<td>' . $values['audit_schedule_name'] . '</td>';
+                            echo '<td>' . $values['hotel_name'] . '</td>';
+                            echo '<td>' . $values['hotel_name'] . '</td>';
+                            echo '<td>' . $values['auditor_name'] . '  ' . $values['auditor_lname'] . '</td>';
+                            echo '<td>' . $values['checklist'] . '</td>';
+                            echo '<td><span class="label label-warning">' . \app\models\Audits::$statusList[$values['status']] . '</span></td>';
+                            echo '</tr>';
+                        }
+                    }
+                    ?>
+                    </tbody>
+                </table>
+                <?php if (!$overdueAudits) {
+                    echo 'No Overdue audits are found';
+                } ?>
+            </div>
+
+
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
     </div>
 </div>
 <div class="row">
@@ -208,6 +362,50 @@ $this->registerJs('
             </div>
 
 
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 margintables">
+        <div class="box">
+            <div class="box-header">
+                <h4 class="box-title">Upcoming Tasks</h4>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+                <table class="table table-hover">
+                    <tbody>
+                    <tr>
+                        <th>Scheduled Date</th>
+                        <th>Task ID</th>
+                        <th>Office</th>
+                        <th>Auditor</th>
+                        <th>Checklist</th>
+                        <th>Status</th>
+
+                    </tr>
+                    <?php
+                    if ($upcomingAudits) {
+                        foreach ($upcomingAudits as $values) {
+                            echo '<tr>';
+                            echo '<td>' . date('d-M-Y', strtotime($values['end_date'])) . '</td>';
+                            echo '<td>' . $values['audit_schedule_name'] . '</td>';
+                            echo '<td>' . $values['hotel_name'] . '</td>';
+                            echo '<td>' . $values['auditor_name'] . ' ' . $values['auditor_lname'] . '</td>';
+                            echo '<td>' . $values['checklist'] . '</td>';
+                            echo '<td><span class="label label-warning" style="background-color: #00c0ef !important;">' . \app\models\Audits::$statusList[0] . '</span></td>';
+                            echo '</tr>';
+                        }
+                    }
+                    ?>
+                    </tbody>
+                </table>
+                <?php if (!$upcomingAudits) {
+                    echo 'No Upcoming task are found';
+                } ?>
+            </div>
             <!-- /.box-body -->
         </div>
         <!-- /.box -->

@@ -109,7 +109,17 @@ tbody tr {
 .bottomtext {
     font-size: 16px;
 }
-
+.nocolor{
+    text-decoration:none;
+    color: white;
+}
+#sizechange{
+    font-size: 12px;
+}
+#sizechange2{
+    font-size: 16px;
+    margin-left: 10px;
+}
 .toptext {
     font-size: 19px;
     color: white;
