@@ -280,7 +280,7 @@ $this->registerJs('
                             <th class="theadcolor">Task ID</th>
                             <th class="theadcolor">Office</th>
                             <th class="theadcolor">Location</th>
-                            <th class="theadcolor">TaskDoer</th>
+                            <th class="theadcolor">  Task</th>
                             <th class="theadcolor">Checklist</th>
                             <th class="theadcolor">Status</th>
 
@@ -378,12 +378,12 @@ $this->registerJs('
                 <table class="table table-hover">
                     <tbody>
                     <tr>
-                        <th>Scheduled Date</th>
-                        <th>Task ID</th>
-                        <th>Office</th>
-                        <th>Auditor</th>
-                        <th>Checklist</th>
-                        <th>Status</th>
+                        <th class="theadcolor">Scheduled Date</th>
+                        <th class="theadcolor">Task ID</th>
+                        <th class="theadcolor">Office</th>
+                        <th class="theadcolor">Task</th>
+                        <th class="theadcolor">Checklist</th>
+                        <th class="theadcolor">Status</th>
 
                     </tr>
                     <?php
@@ -422,12 +422,12 @@ $this->registerJs('
                 <table class="table table-hover">
                     <tbody>
                     <tr>
-                        <th>Scheduled Date</th>
-                        <th>Audit ID</th>
-                        <th>Office</th>
-                        <th>Auditor</th>
-                        <th>Checklist</th>
-                        <th>Status</th>
+                        <th class="theadcolor">Scheduled Date</th>
+                        <th class="theadcolor">Audit ID</th>
+                        <th class="theadcolor">Office</th>
+                        <th class="theadcolor">Auditor</th>
+                        <th class="theadcolor">Checklist</th>
+                        <th class="theadcolor">Status</th>
 
                     </tr>
                     <?php

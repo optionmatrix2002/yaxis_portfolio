@@ -26,6 +26,11 @@ $("#settings-roles").addClass("active");
 $this->title = 'Roles';
 
 ?>
+<style>
+    .styleproperty{
+        cursor:pointer;
+    }
+</style>
 <div class="container-fluid">
     <h2>Manage Roles</h2>
 </div>
@@ -90,7 +95,7 @@ if (Yii::$app->authManager->checkPermissionAccess('roles/delete-role')) {
 
 
                 if (Yii::$app->authManager->checkPermissionAccess('roles/load-permissions-by-role')) {
-                    return '<a class="load_permissions_link" data-token=' . $token . '">Configure
+                    return '<a class="load_permissions_link styleproperty" data-token=' . $token . '">Configure
                             </a>';
                 } else {
                     return "--";

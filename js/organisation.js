@@ -98,13 +98,14 @@ $('#organisation_hierarchy')
                                     openPopup(node.original.delete_url);
                                 }
                             },
+                            /*
                             cloneHotel: {
                                 label: "Clone",
                                 "icon": "fa fa-copy text-primary",
                                 action: function() {
                                     openPopup(node.original.clone_url);
                                 }
-                            },
+                            },*/
                         };
                         break;
                     case "department":
@@ -167,7 +168,14 @@ $('#organisation_hierarchy')
                                      action: function() {
                                          openPopup(node.original.delete_url);
                                      }
-                                 }
+                                 },
+                                 cloneHotel: {
+                                    label: "Clone",
+                                    "icon": "fa fa-copy text-primary",
+                                    action: function() {
+                                        openPopup(node.original.clone_url);
+                                    }
+                                }
                              };
                              break;
                       /*   case "subsection":
