@@ -1,7 +1,7 @@
 <?php ?>
 <style>
     .closebutton{
-        font-size:35px;
+        font-size:23px;
         float:right;
     }
     </style>
