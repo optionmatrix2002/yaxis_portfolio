@@ -280,7 +280,7 @@ $this->registerJs('
                             <th class="theadcolor">Task ID</th>
                             <th class="theadcolor">Office</th>
                             <th class="theadcolor">Location</th>
-                            <th class="theadcolor">  Task</th>
+                            <th class="theadcolor">Task</th>
                             <th class="theadcolor">Checklist</th>
                             <th class="theadcolor">Status</th>
 
