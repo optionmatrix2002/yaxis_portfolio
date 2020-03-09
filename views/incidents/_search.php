@@ -45,8 +45,14 @@ $this->registerJs('
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?= $form->field($model, 'ticket_name')->textInput(['class' => 'form-control', 'placeholder' => 'Incident ID'])->label(false); ?>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-3">
+        <?= $form->field($model, 'location_id')
+                        ->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Locations::find()
+                            ->where(['is_deleted' => 0])->all(), 'location_id', 'locationCity.name'), 'showToggleAll' => false, 'language' => 'en', 'options' => ['multiple' => false, 'placeholder' => 'Select Location'], 'pluginOptions' => ['showToggleAll' => false, 'allowClear' => true]])
+                        ->label(false); ?>
 
-
+        
+            </div>
         <div class="col-lg-3 col-md-3 col-sm-3">
             <?php
             echo $form->field($model, 'hotel_id')
@@ -66,6 +72,7 @@ $this->registerJs('
             ?>
 
         </div>
+        
         <div class="col-lg-3 col-md-3 col-sm-3">
 
             <?php
@@ -151,7 +158,7 @@ $this->registerJs('
         <div class="col-lg-3 col-md-3 col-sm-3 margin-top-5">
             <?= $form->field($model, 'endDate')->textInput(['class' => 'datetimepicker form-control', 'placeholder' => 'End Date'])->label(false); ?>
         </div>
-
+    <?php  /*              
         <div class="col-lg-3 col-md-3 col-sm-3 margin-top-5">
             <?php
             $audits = ArrayHelper::map(\app\models\AuditsSchedules::find()->where(['status' => 3])->orderBy('audit_id,created_at')->all(), 'audit_schedule_id', 'audit_schedule_name');
@@ -159,7 +166,7 @@ $this->registerJs('
             ?>
             <?= $form->field($model, 'audit_schedule_id')->widget(Select2::classname(), ['data' => $audits, 'showToggleAll' => false, 'language' => 'en', 'options' => ['placeholder' => 'Select Audit'], 'pluginOptions' => ['allowClear' => true]])->label(false); ?>
         </div>
-
+*/?>
         <div class="col-lg-3 col-md-3 col-sm-3 margin-top-5">
 
             <?= $form->field($model, 'created_by')->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\User::find()->where(['is_deleted' => 0, 'is_active' => 1])->all(), 'user_id', function ($element) {

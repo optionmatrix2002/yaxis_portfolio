@@ -47,6 +47,22 @@ $(".dropdown-toggle").dropdown();
             <ul class="nav nav-tabs">
         <li class="active"><a href="#tab1" data-toggle="tab">Completed Tasks</a></li>
         <li><a href="#tab2" data-toggle="tab">Scheduled Tasks</a></li>
+        <?php
+            if (Yii::$app->authManager->checkPermissionAccess('audits/create')) {
+                ?>
+                <li class="pull-right">
+                    <a href="<?= yii::$app->urlManager->createUrl('audits/create'); ?>" class="btn btn-success"><i
+                            class="fa fa-plus"></i>&nbsp;Schedule Task</a>
+                </li>
+            <?php } ?>
+            <li class="pull-right">
+            <a href="javascript:void(0)" class="btn btn-success"><i
+                            class="fa fa-download icon-white"></i>&nbsp;Completed Task</a>
+            </li>
+            <li class="pull-right">
+            <a href="javascript:void(0)" class="btn btn-success"><i
+                            class="fa fa-download icon-white"></i>&nbsp;Scheduled Task</a>
+            </li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="tab1">

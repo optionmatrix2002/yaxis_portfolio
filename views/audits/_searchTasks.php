@@ -82,7 +82,14 @@ $this->registerJs('
    </div>
 
      -->
+     <div class="col-lg-3 col-md-3 col-sm-3">
+        <?= $form->field($model, 'location_id')
+                        ->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Locations::find()
+                            ->where(['is_deleted' => 0])->all(), 'location_id', 'locationCity.name'), 'showToggleAll' => false, 'language' => 'en', 'options' => ['multiple' => false, 'placeholder' => 'Select Location'], 'pluginOptions' => ['showToggleAll' => false, 'allowClear' => true]])
+                        ->label(false); ?>
 
+        
+            </div>        
         <div class="col-lg-3 col-md-6 col-sm-12">
                 <?php
                 echo $form->field($model, 'hotel_id')

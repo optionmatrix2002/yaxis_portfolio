@@ -1,7 +1,7 @@
 <?php
 
 namespace app\controllers;
-
+use app\models\GridColumns;
 use app\models\Audits;
 use Yii;
 use app\components\AccessRule;
@@ -36,7 +36,39 @@ use app\models\UserDepartments;
 class IncidentsController extends Controller {
 
     public $layout = 'dashboard_layout';
-
+    public static $columnsArr=[
+        'c1'=>true,
+        'c2'=>true,
+        'c3'=>true,
+        'c4'=>true,
+        'c5'=>true,
+        'c6'=>true,
+        'c7'=>true,
+        'c8'=>true,
+        'c9'=>true,
+        'c10'=>true,
+        'c11'=>true,
+        'c12'=>true,
+        'c13'=>true,
+        'c14'=>true
+    ];
+    
+    public static $tableColumns=[
+        'c1'=>'Incident ID',
+        'c2'=>'Audit',
+        'c3'=>'Office',
+        'c4'=>'Floor',
+        'c5'=>'Cabin',
+        'c6'=>'Subject',
+        'c7'=>'Assigned To',
+        'c8'=>'Created On',
+        'c9'=>'Due Date',
+        'c10'=>'Over due',
+        'c11'=>'Chronic',
+        'c12'=>'Priority',
+        'c13'=>'Process Critical (Audit)',
+        'c14'=>'Status'
+    ];
     /**
      * @inheritdoc
      */
@@ -105,11 +137,23 @@ class IncidentsController extends Controller {
         $searchModel = new TicketsSearch();
         $dataProvider = $searchModel->searchActiveTickets(Yii::$app->request->queryParams,true);
         $dataArchivedProvider = $searchModel->searchArchivedTickets(Yii::$app->request->queryParams,true);
-
+        $dataArchivedProvider = $searchModel->searchArchivedTickets(Yii::$app->request->queryParams);
+        $gridColumns = GridColumns::find()->where(['grid_type'=>'incidents'])->one();
+        if($gridColumns){
+            $gridColumns = $gridColumns->columns_data ? json_decode($gridColumns->columns_data)  : [];
+            foreach(self::$columnsArr as $key=>$column){
+                self::$columnsArr[$key]=false;
+                if(in_array($key,$gridColumns)){
+                    self::$columnsArr[$key]=true;
+                }
+            }
+        }
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
-                    'dataArchivedProvider' => $dataArchivedProvider
+                    'dataArchivedProvider' => $dataArchivedProvider,
+                    'columnsArr'=> self::$columnsArr,
+                    'tableColumnsArr'=>self::$tableColumns
         ]);
     }
 
