@@ -295,6 +295,15 @@ $archivedTickets = [
         'visible'=>(!$columnsArr['c14']) ? false :true
     ],
     [
+        'attribute' => 'task_id',
+        'header' => 'Task',
+        'value' => function ($model) {
+            return $model->getTicketCabinData();
+        },
+        'format' => 'raw',
+        'visible'=>(!$columnsArr['c15']) ? false :true
+    ],
+    [
         'attribute' => 'hotel_id',
         'header' => 'Office',
         'value' => function ($model) {
@@ -559,7 +568,7 @@ $archivedTickets = [
                             ],
                             [
                                 'attribute' => 'audit_id',
-                                'header' => 'Audit',
+                                'header' => 'Audit/Tasks',
                                 'value' => function ($model) use ($audits) {
                                     return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
                                 },
@@ -596,6 +605,16 @@ $archivedTickets = [
                                 'format' => 'raw',
                                 'contentOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden c4 tbl-td' : 'c4 tbl-td'],
                                 'headerOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden theadcolor c4 tbl-td' : 'theadcolor c4 tbl-td']
+                            ],
+                            [
+                                'attribute' => 'cabin_id',
+                                'header' => 'Cabin',
+                                'value' => function ($model) {
+                                    return ($model->cabin_id) ? $model->cabin_id : '--';
+                                },
+                                'format' => 'raw',
+                                'contentOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden c15 tbl-td' : 'c15 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden theadcolor c15 tbl-td' : 'theadcolor c15 tbl-td']
                             ],
                             [
                                 'attribute' => 'subject',
@@ -829,7 +848,7 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                             ],
                             [
                                 'attribute' => 'audit_id',
-                                'header' => 'Audit',
+                                'header' => 'Audit/Tasks',
                                 'value' => function ($model) use ($audits) {
                                     return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
                                 },
@@ -846,6 +865,16 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                 'format' => 'raw',
                                 'contentOptions' => ['class' => (!$columnsArr['c14']) ? 'hidden c14 tbl-td' : 'c14 tbl-td'],
                                 'headerOptions' => ['class' => (!$columnsArr['c14']) ? 'hidden theadcolor c14 tbl-td' : 'theadcolor c14 tbl-td']
+                            ],
+                            [
+                                'attribute' => 'cabin_id',
+                                'header' => 'Cabin',
+                                'value' => function ($model) {
+                                    return $model->getTicketLocationsData();
+                                },
+                                'format' => 'raw',
+                                'contentOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden c15 tbl-td' : 'c15 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden theadcolor c15 tbl-td' : 'theadcolor c15 tbl-td']
                             ],
                             [
                                 'attribute' => 'hotel_id',

@@ -38,6 +38,7 @@ use kartik\mpdf\Pdf;
 use yii\filters\AccessControl;
 use app\components\AccessRule;
 use DateTime;
+use app\models\GridColumns;
 
 /**
  * AuditsController implements the CRUD actions for Audits model.
@@ -45,7 +46,29 @@ use DateTime;
 class AuditsController extends Controller {
 
     public $layout = 'dashboard_layout';
+    public static $columnsArr=[
+        'c1'=>true,
+        'c2'=>true,
+        'c3'=>true,
+        'c4'=>true,
+        'c5'=>true,
+        'c6'=>true,
+        'c7'=>true,
+        'c8'=>true,
+        'c9'=>true
+    ];
 
+    public static $tableColumns=[
+        'c1'=>'Scheduled Audit ID',
+        'c2'=>'Location',
+        'c3'=>'Office',
+        'c4'=>'Floor',
+        'c5'=>'CheckList',
+        'c6'=>'Status',
+        'c7'=>'Start Date',
+        'c8'=>'End Date',
+        'c9'=>'Submission Date'
+    ];
     /**
      * @inheritdoc
      */
@@ -105,7 +128,6 @@ class AuditsController extends Controller {
         ];
         return $behaviors;
     }
-
     /**
      *
      * @return mixed
@@ -158,13 +180,25 @@ class AuditsController extends Controller {
         $dataProviderAudits = $searchModel->searchAudits(Yii::$app->request->queryParams);
         $dataProviderAuditsSchedules = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams, [3, 4]);
         $dataProviderAuditsSchedulesChilds = $searchModel->searchAuditsSchedules(Yii::$app->request->queryParams, [0, 1, 2]);
-
+        $gridColumns = GridColumns::find()->where(['grid_type'=>'audits'])->one();
+        if($gridColumns){
+            $gridColumns = $gridColumns->columns_data ? json_decode($gridColumns->columns_data)  : [];
+            foreach(self::$columnsArr as $key=>$column){
+                self::$columnsArr[$key]=false;
+                if(in_array($key,$gridColumns)){
+                    self::$columnsArr[$key]=true;
+                }
+            }
+        }
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProviderAudits' => $dataProviderAudits,
                     'dataProviderAuditsSchedules' => $dataProviderAuditsSchedules,
                     'dataProviderAuditsSchedulesChilds' => $dataProviderAuditsSchedulesChilds,
-                    'auditScheduleModel' => $auditScheduleModel
+                    'auditScheduleModel' => $auditScheduleModel,
+                    'dataArchivedProvider' => $dataArchivedProvider,
+                    'columnsArr'=> self::$columnsArr,
+                    'tableColumnsArr'=>self::$tableColumns
         ]);
     }
 

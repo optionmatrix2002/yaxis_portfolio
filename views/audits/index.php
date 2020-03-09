@@ -17,12 +17,162 @@ $this->title = 'Audits';
 $this->params['breadcrumbs'][] = $this->title;
 
 AppAsset::register($this);
+
+View::registerJs("save_url = '". yii::$app->urlManager->createUrl('tickets/save-columns')."';",View::POS_HEAD);
+View::registerCssFile(yii::$app->urlManager->createUrl('css/bootstrap-multiselect.css'));
 View::registerJsFile(yii::$app->urlManager->createUrl('js/modelpopup.js'), ['depends' => JqueryAsset::className()]);
+View::registerJsFile(yii::$app->urlManager->createUrl('js/bootstrap-multiselect.js'), [
+    'depends' => JqueryAsset::className()
+]);
+$this->registerJs('
+$(".nav-bids").removeClass("active");
+$("#audits").addClass("active");
+$(".dropdown-toggle").dropdown();
+var selectedVals=[];
+$("#example-getting-started option:selected").map(function(a, item){selectedVals.push(item.value);});
+console.log(selectedVals);
+$("#example-getting-started").multiselect({
+    includeSelectAllOption: true,
+    onChange: function(option, checked, select) {
+        var selectedVal = option.val();
+        console.log(option.val(), checked, select);
+        if(!checked){
+            $(".tab-content").find("."+selectedVal).addClass("hidden");
+            for( var i = 0; i < selectedVals.length; i++){ 
+                if ( selectedVals[i] === option.val()) {
+                    selectedVals.splice(i, 1); 
+                }
+             }
+        }else{
+            selectedVals.push(option.val());
+            $(".tab-content").find("."+selectedVal).removeClass("hidden");
+        }
+    },
+    onSelectAll: function() {
+        selectedVals=[];
+        selectedVals=["c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c11","c12","c13","c14"];
+        $(".tab-content").find(".tbl-td").removeClass("hidden");
+    },
+    onDeselectAll: function() {
+        selectedVals=[];
+        $(".tab-content").find(".tbl-td").addClass("hidden");
+    }
+});
+
+$(".multiselect-native-select .btn-group").click(function(){
+ $(this).toggleClass("open");
+});
+
+$("#submitGridSelectionBtn").click(function(){
+    $.post({
+            url: save_url,
+            data: {selected_columns:selectedVals,grid_type:$(this).data("type")},
+            success: function(data) {
+                console.log(data);
+                response = JSON.parse(data);
+                if(response.output){
+                    toastr.success("Columns saved successfully");
+                    location.reload();
+                }
+                
+            }
+        });   
+
+});
+', \yii\web\View::POS_END);
+
 $this->registerJs('
 $(".nav-bids").removeClass("active");
 $("#MenuAudits").addClass("active");
 $(".dropdown-toggle").dropdown();
 ', \yii\web\View::POS_END);
+?>
+<style>
+.columnsFilter{
+    margin: 20px 0px;
+}
+</style>
+<?php
+$gridColumnsInfo = [
+    [
+        'attribute' => 'ticket_name',
+        'header' => 'Scheduled Audit ID',
+        'visible'=>(!$columnsArr['c1']) ? false :true
+    ],
+    [
+        'attribute' => 'audit_id',
+        'header' => 'Location',
+        'value' => function ($model) use ($audits) {
+            return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
+        },
+        'visible'=>(!$columnsArr['c2']) ? false :true
+    ],
+    [
+        'attribute' => 'hotel_id',
+        'header' => 'Office',
+        'value' => function ($model) {
+            return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
+        },
+        'visible'=>(!$columnsArr['c3']) ? false :true
+    ],
+    [
+        'attribute' => 'department_id',
+        'header' => 'Floor',
+        'value' => function ($model) {
+            return ($model->department_id) ? $model->department->department_name : '--';
+        },
+        'visible'=>(!$columnsArr['c4']) ? false :true
+
+    ],
+    [
+        'attribute' => 'cabin_id',
+        'header' => 'CheckList',
+        'value' => function ($model) {
+            return $model->getTicketCabinData();
+        },
+        'format' => 'raw',
+        'visible'=>(!$columnsArr['c5']) ? false :true
+    ],
+    [
+        'attribute' => 'subject',
+        'header' => 'Status',
+        'value' => function ($model) {
+            return strip_tags($model->subject);
+        },
+        'visible'=>(!$columnsArr['c6']) ? false :true
+
+    ],
+    [
+        'attribute' => 'assigned_id',
+        'header' => 'Start Date',
+        'value' => function ($model) {
+            return ucfirst($model->assignedUser->first_name) . ' ' . ucfirst($model->assignedUser->last_name);
+        },
+        'visible'=>(!$columnsArr['c7']) ? false :true
+
+    ],
+    [
+        'attribute' => 'created_at',
+        'header' => 'End Date',
+        'value' => function ($model) {
+            $timestamp = strtotime($model->created_at);
+            return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
+        },
+        'visible'=>(!$columnsArr['c8']) ? false :true
+
+    ],
+    [
+        'attribute' => 'due_date',
+        'header' => 'Submission Date',
+        'value' => function ($model) {
+            $timestamp = strtotime($model->due_date);
+            return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
+        },
+        'visible'=>(!$columnsArr['c9']) ? false :true
+
+    ]
+
+];
 ?>
 <div class="container-fluid">
     <h2>Manage Audits</h2>
@@ -72,7 +222,21 @@ $(".dropdown-toggle").dropdown();
         </ul>
     </div>
 </div>
-
+<table class="columnsFilter">
+<tr>
+<td> <select id="example-getting-started" multiple="multiple">
+                    <?php
+                        foreach($tableColumnsArr as $index=>$column){
+                            ?>
+                            <option value="<?=$index?>" <?=$columnsArr[$index] ? 'selected' : ''?>><?=$column?></option>
+                            <?php
+                        }
+                    ?>
+                </select>
+                </td>
+<td><button class="btn btn-success" id="submitGridSelectionBtn" data-type="audits" style="margin-left: 15px;">Save</button></td>
+</tr>
+</table>
 <div class="row schedule_auditid" >
     <div class="tab-content">
         <div id="activeaudits" class="tab-pane fade in active">
@@ -91,6 +255,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'Scheduled Audit ID',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden c1 tbl-td' : 'c1 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden theadcolor c1 tbl-td' : 'theadcolor c1 tbl-td'],
                                 'value' => function ($model) {
                                     return '<a  data-pjax="0" target="_blank" href="' . yii::$app->urlManager->createUrl('audits/reports?id=' . Yii::$app->utils->encryptData($model->audit_schedule_id)) . '" title="View Scheduled Audit">' . $model->audit_schedule_name . '</a>';
                                 }
@@ -100,6 +266,8 @@ $(".dropdown-toggle").dropdown();
                                     'format' => 'raw',
                                     'header' => 'Location',
                                     'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden c2 tbl-td' : 'c2 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden theadcolor c2 tbl-td' : 'theadcolor c2 tbl-td'],
                                     'value' => function ($model) {
                                         return $model->audit->location->locationCity->name;
                                     }
@@ -109,6 +277,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'Office',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden c3 tbl-td' : 'c3 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden theadcolor c3 tbl-td' : 'theadcolor c3 tbl-td'],
                                 'value' => function ($model) {
                                     return $model->audit->hotel->hotel_name;
                                 }
@@ -118,6 +288,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'Floor',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden c4 tbl-td' : 'c4 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden theadcolor c4 tbl-td' : 'theadcolor c4 tbl-td'],
                                 'value' => function ($model) {
                                     return $model->audit->department->department_name;
                                 }
@@ -127,6 +299,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'CheckList',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden c1 tbl-td' : 'c5 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden theadcolor c5 tbl-td' : 'theadcolor c5 tbl-td'],
                                 'value' => function ($model) {
                                     return $model->audit->checklist->cl_name;
                                 }
@@ -136,6 +310,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'Status',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden c6 tbl-td' : 'c6 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden theadcolor c6 tbl-td' : 'theadcolor c6 tbl-td'],
                                 'value' => function ($model) {
                                     $value = "";
                                     switch (intval($model->status)) {
@@ -158,6 +334,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'Start Date',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden c7 tbl-td' : 'c7 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden theadcolor c7 tbl-td' : 'theadcolor c7 tbl-td'],
                                 'value' => function ($model) {
                                     $timestamp = strtotime($model->start_date);
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
@@ -168,6 +346,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'End Date',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden c8 tbl-td' : 'c8 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden theadcolor c8 tbl-td' : 'theadcolor c8 tbl-td'],
                                 'value' => function ($model) {
                                     $timestamp = strtotime($model->end_date);
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
@@ -178,6 +358,8 @@ $(".dropdown-toggle").dropdown();
                                 'format' => 'raw',
                                 'header' => 'Submission&nbsp;Date',
                                 'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden c9 tbl-td' : 'c9 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden theadcolor c9 tbl-td' : 'theadcolor c9 tbl-td'],
                                 'value' => function ($model) {
                                     if ($model->status == 3) {
                                         $timestamp = strtotime($model->updated_at);
@@ -279,61 +461,67 @@ $(".dropdown-toggle").dropdown();
                             //'filterModel' => $searchModel,
                             'columns' => [
                                 [
-                                    'class' => 'kartik\grid\ExpandRowColumn',
-                                    'width' => '50px',
-                                    'enableRowClick' => false,
-                                    'value' => function ($model, $key, $index, $column) {
-                                        return GridView::ROW_COLLAPSED;
-                                    },
-                                    'detailUrl' => yii::$app->urlManager->createUrl('audits/get-row-details'),
-                                    /* 'detail' => function ($model, $key, $index, $column) {
-                                      return Yii::$app->controller->renderPartial('expandActiveAudits', ['model' => $model]);
-                                      }, */
-                                    'headerOptions' => ['class' => 'kartik-sheet-style'],
-                                    'expandOneOnly' => true
-                                ],
-                                [
-                                    'attribute' => 'audit_name',
+                                    'attribute' => 'audit_schedule_name',
                                     'format' => 'raw',
-                                    'header' => 'Audit ID',
+                                    'header' => 'Scheduled Audit ID',
                                     'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden c1 tbl-td' : 'c1 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden theadcolor c1 tbl-td' : 'theadcolor c1 tbl-td'],
                                     'value' => function ($model) {
-                                        return '<a href=' . yii::$app->urlManager->createUrl('audits/view-audit?id=' . Yii::$app->utils->encryptData($model->audit_id)) . ' title="View" target="_blank">' . $model->audit_name . '</a>';
+                                        return '<a  data-pjax="0" target="_blank" href="' . yii::$app->urlManager->createUrl('audits/reports?id=' . Yii::$app->utils->encryptData($model->audit_schedule_id)) . '" title="View Scheduled Audit">' . $model->audit_schedule_name . '</a>';
                                     }
                                 ],
+                                    [
+                                        'attribute' => 'audit.location_id',
+                                        'format' => 'raw',
+                                        'header' => 'Location',
+                                        'headerOptions' => ['class' => 'theadcolor'],
+                                        'contentOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden c2 tbl-td' : 'c2 tbl-td'],
+                                        'headerOptions' => ['class' => (!$columnsArr['c2']) ? 'hidden theadcolor c2 tbl-td' : 'theadcolor c2 tbl-td'],
+                                        'value' => function ($model) {
+                                            return $model->audit->location->locationCity->name;
+                                        }
+                                    ],
                                 [
-                                    'attribute' => 'location_id',
-                                    'format' => 'raw',
-                                    'header' => 'Location',
-                                    'headerOptions' => ['class' => 'theadcolor'],
-                                    'value' => function ($model) {
-
-                                        return $model->location->locationCity->name;
-                                    }
-                                ],
-                                [
-                                    'attribute' => 'hotel_id',
+                                    'attribute' => 'audit.hotel_id',
                                     'format' => 'raw',
                                     'header' => 'Office',
                                     'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden c3 tbl-td' : 'c3 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c3']) ? 'hidden theadcolor c3 tbl-td' : 'theadcolor c3 tbl-td'],
                                     'value' => function ($model) {
-                                        return $model->hotel->hotel_name;
+                                        return $model->audit->hotel->hotel_name;
                                     }
                                 ],
                                 [
-                                    'attribute' => 'department_id',
+                                    'attribute' => 'audit.department_id',
                                     'format' => 'raw',
                                     'header' => 'Floor',
                                     'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden c4 tbl-td' : 'c4 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden theadcolor c4 tbl-td' : 'theadcolor c4 tbl-td'],
                                     'value' => function ($model) {
-                                        return $model->department->department_name;
+                                        return $model->audit->department->department_name;
                                     }
                                 ],
                                 [
-                                    'attribute' => 'checklist_id',
+                                    'attribute' => 'audit.checklist_id',
                                     'format' => 'raw',
                                     'header' => 'CheckList',
                                     'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden c1 tbl-td' : 'c5 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c5']) ? 'hidden theadcolor c5 tbl-td' : 'theadcolor c5 tbl-td'],
+                                    'value' => function ($model) {
+                                        return $model->audit->checklist->cl_name;
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'status',
+                                    'format' => 'raw',
+                                    'header' => 'Status',
+                                    'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden c6 tbl-td' : 'c6 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c6']) ? 'hidden theadcolor c6 tbl-td' : 'theadcolor c6 tbl-td'],
                                     'value' => function ($model) {
                                         return $model->checklist->cl_name;
                                     }
@@ -343,6 +531,8 @@ $(".dropdown-toggle").dropdown();
                                     'format' => 'raw',
                                     'header' => 'Start Date',
                                     'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden c7 tbl-td' : 'c7 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden theadcolor c7 tbl-td' : 'theadcolor c7 tbl-td'],
                                     'value' => function ($model) {
                                         $timestamp = strtotime($model->start_date);
                                         return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
@@ -353,6 +543,8 @@ $(".dropdown-toggle").dropdown();
                                     'format' => 'raw',
                                     'header' => 'End Date',
                                     'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden c8 tbl-td' : 'c8 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c8']) ? 'hidden theadcolor c8 tbl-td' : 'theadcolor c8 tbl-td'],
                                     'value' => function ($model) {
                                         $timestamp = strtotime($model->end_date);
                                         return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
@@ -361,6 +553,8 @@ $(".dropdown-toggle").dropdown();
                                 [
                                     'class' => 'yii\grid\ActionColumn',
                                     'header' => 'Actions',
+                                    'contentOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden c9 tbl-td' : 'c9 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c9']) ? 'hidden theadcolor c9 tbl-td' : 'theadcolor c9 tbl-td'],
                                     'headerOptions' => ['class' => 'theadcolor'],
                                     'template' => $buttons,
                                     'buttons' => [

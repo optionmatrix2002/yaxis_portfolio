@@ -80,6 +80,7 @@ class Tickets extends \yii\db\ActiveRecord
                     'audit_schedule_id',
                     'hotel_id',
                     'department_id',
+                    'task_id',
                     'section_id',
                     'priority_type_id',
                     'assigned_user_id',
@@ -107,6 +108,7 @@ class Tickets extends \yii\db\ActiveRecord
                     'due_date',
                     'is_deleted',
                     'location_id',
+                    'task_id',
                     'status',
                     'subject'
                 ],
@@ -160,6 +162,17 @@ class Tickets extends \yii\db\ActiveRecord
                 'targetClass' => Departments::className(),
                 'targetAttribute' => [
                     'department_id' => 'department_id'
+                ]
+            ],
+            [
+                [
+                    'cabin_id'
+                ],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Cabins::className(),
+                'targetAttribute' => [
+                    'cabin_id' => 'cabin_id'
                 ]
             ],
             [
@@ -232,6 +245,7 @@ class Tickets extends \yii\db\ActiveRecord
             'audit_schedule_id' => Yii::t('app', 'Audit Schedule ID'),
             'hotel_id' => Yii::t('app', 'Hotel'),
             'department_id' => Yii::t('app', 'Department'),
+            'cabin_id' => Yii::t('app', 'Cabin'),
             'section_id' => Yii::t('app', 'Section'),
             'sub_section_id' => Yii::t('app', 'Sub Section'),
             'priority_type_id' => Yii::t('app', 'Priority Type'),
@@ -290,6 +304,12 @@ class Tickets extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Locations::className(), [
             'location_id' => 'location_id'
+        ]);
+    }
+    public function getCabin()
+    {
+        return $this->hasOne(Cabin::className(), [
+            'cabin_id' => 'cabin_id'
         ]);
     }
     /**
@@ -390,7 +410,12 @@ class Tickets extends \yii\db\ActiveRecord
             'location_id' => 'location_id'
         ]);
     }
-
+    public function getCabins()
+    {
+        return $this->hasOne(Cabins::className(), [
+            'cabin_id' => 'cabin_id'
+        ]);
+    }
     /**
      *
      * @return \yii\db\ActiveQuery
@@ -1069,6 +1094,7 @@ class Tickets extends \yii\db\ActiveRecord
             $ticketModel->location_id = $auditsScheduleModel->audit->location_id;
             $ticketModel->hotel_id = $auditsScheduleModel->audit->hotel_id;
             $ticketModel->department_id = $auditsScheduleModel->audit->department_id;
+            $ticketModel->cabin_id = $auditsScheduleModel->audit->cabin_id;
             $ticketModel->section_id = $input_answer['section_id'];
             $ticketModel->sub_section_id = $input_answer['subsection_id'];
             $ticketModel->priority_type_id = 2;
@@ -1265,5 +1291,9 @@ class Tickets extends \yii\db\ActiveRecord
     public function getTicketLocationsData()
     {
             return $this->location->locationCity->name;
+    }
+    public function getTicketCabinData()
+    {
+            return $this->cabins->cabinId->name;
     }
 }
