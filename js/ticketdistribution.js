@@ -29,6 +29,61 @@ AmCharts.addInitHandler(function(chart) {
 
 }, ["pie"]);
 
+console.log(ticketLocData)
+var samplepiechart  = [
+    {name: "Scheduled Tasks", assigned_user_id: "342", ticket_count: "336"},
+    {name: "Overdue Tasks", assigned_user_id: "342", ticket_count: "55"},
+    {name: "Active Tasks", assigned_user_id: "342", ticket_count: "545"},
+    {name: "Pending Tasks", assigned_user_id: "342", ticket_count: "320"},
+    {name: "Chronic Issues", assigned_user_id: "342", ticket_count: "85"},
+    {name: "Completed Tasks", assigned_user_id: "342", ticket_count: "200"}
+];
+var chart = AmCharts.makeChart("taskChat", {
+    "type": "pie",
+    "theme": "light",
+    "labelRadius": -25,
+    "labelText": "[[value]]",
+    "legend": {
+        "markerType": "circle",
+        "position": "right",
+        "valueText": '',
+        "font-size": "10"
+    },
+    "dataProvider": samplepiechart,
+    "valueField": "ticket_count",
+    "titleField": "name",
+    "colorField": "color",
+    "colors" :['#8aa830','#4677af','#F08080','#FF6600','#FF3333','#00FF00'],
+    "labelColorField": "fcolor",
+    "depth3D": 8,
+});
+var samplepiechart2  = [
+    {name: "Scheduled Audit", assigned_user_id: "342", ticket_count: "100"},
+    {name: "Overdue Audit", assigned_user_id: "342", ticket_count: "205"},
+    {name: "Active Audit", assigned_user_id: "342", ticket_count: "55"},
+    {name: "Pending Audit", assigned_user_id: "342", ticket_count: "120"},
+    {name: "Chronic Audit", assigned_user_id: "342", ticket_count: "185"},
+    {name: "Completed Audit", assigned_user_id: "342", ticket_count: "400"}
+];
+var chart = AmCharts.makeChart("taskChat2", {
+    "type": "pie",
+    "theme": "light",
+    "labelRadius": -25,
+    "labelText": "[[value]]",
+    "legend": {
+        "markerType": "circle",
+        "position": "right",
+        "valueText": '',
+        "font-size": "10"
+    },
+    "dataProvider": samplepiechart2,
+    "valueField": "ticket_count",
+    "titleField": "name",
+    "colorField": "color",
+    "colors" :['#8aa830','#4677af','#F08080','#FF6600','#FF3333','#00FF00'],
+    "labelColorField": "fcolor",
+    "depth3D": 8,
+});
 var chart = AmCharts.makeChart("chartdivpie1", {
     "type": "pie",
     "theme": "light",
