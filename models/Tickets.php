@@ -1094,7 +1094,8 @@ class Tickets extends \yii\db\ActiveRecord
             $ticketModel->location_id = $auditsScheduleModel->audit->location_id;
             $ticketModel->hotel_id = $auditsScheduleModel->audit->hotel_id;
             $ticketModel->department_id = $auditsScheduleModel->audit->department_id;
-            $ticketModel->cabin_id = $auditsScheduleModel->audit->cabin_id;
+          //  $ticketModel->cabin_id = $auditsScheduleModel->audit->cabin_id;
+            $ticketModel->cabin_id = $input_answer['cabin_id'];
             $ticketModel->section_id = $input_answer['section_id'];
             $ticketModel->sub_section_id = $input_answer['subsection_id'];
             $ticketModel->priority_type_id = 2;
