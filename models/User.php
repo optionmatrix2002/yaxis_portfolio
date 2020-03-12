@@ -415,6 +415,16 @@ class User extends ActiveRecord implements IdentityInterface
         return implode(',', $locationsArr);
     }
 
+
+    public function getBackUpUsers($taskdoer_id)
+    {
+        $backUpUsers = [];
+        if ($taskdoer_id) {
+            $backUpUsers = User::find()->select(['id' => 'user_id', 'name' => 'taskdoer_username'])->where(['user_type' => 4])->andWhere(['<>','user_id',$taskdoer_id])->asArray()->all();
+        }
+        return $backUpUsers;
+    }
+    
     /**
      *
      * @return string

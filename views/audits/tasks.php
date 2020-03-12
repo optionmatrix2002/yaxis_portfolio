@@ -51,7 +51,7 @@ $(".dropdown-toggle").dropdown();
             if (Yii::$app->authManager->checkPermissionAccess('audits/create')) {
                 ?>
                 <li class="pull-right">
-                    <a href="<?= yii::$app->urlManager->createUrl('audits/create'); ?>" class="btn btn-success"><i
+                    <a href="<?= yii::$app->urlManager->createUrl('tasks/create'); ?>" class="btn btn-success"><i
                             class="fa fa-plus"></i>&nbsp;Schedule Task</a>
                 </li>
             <?php } ?>
@@ -76,6 +76,10 @@ $(".dropdown-toggle").dropdown();
                                             <th class="theadcolor" data-col-seq="5">Status</th>
                                             <th class="theadcolor" data-col-seq="6">Start Date</th>
                                             <th class="theadcolor" data-col-seq="7">End Date</th>
+                                            <th class="theadcolor" data-col-seq="0">Frequency</th>
+                                            <th class="theadcolor" data-col-seq="8">Internal Frequency</th>
+                                            <th class="theadcolor" data-col-seq="9">TaskDoer</th>
+                                            <th class="theadcolor" data-col-seq="10">Backup User</th>
                                         </tr>
 
                                     </thead>
@@ -85,15 +89,18 @@ $(".dropdown-toggle").dropdown();
                                      <div class="tab-pane" id="tab2">
                                    <table class="kv-grid-table table table-bordered table-striped kv-table-wrap"><thead>
                                             <tr>
-                                                <th class="theadcolor" data-col-seq="0">Scheduled Task ID</th>
-                                                <th class="theadcolor" data-col-seq="1">Location</th>
-                                                <th class="theadcolor" data-col-seq="2">Office</th>
-                                                <th class="theadcolor" data-col-seq="3">Floor</th>
-                                                <th class="theadcolor" data-col-seq="4">CheckList</th>
-                                                <th class="theadcolor" data-col-seq="5">Status</th>
-                                                <th class="theadcolor" data-col-seq="6">Start Date</th>
-                                                <th class="theadcolor" data-col-seq="7">End Date</th>
-                                                <th class="theadcolor">Actions</th>
+                                            <th class="theadcolor" data-col-seq="0">Scheduled Task ID</th>
+                                            <th class="theadcolor" data-col-seq="1">Location</th>
+                                            <th class="theadcolor" data-col-seq="2">Office</th>
+                                            <th class="theadcolor" data-col-seq="3">Floor</th>
+                                            <th class="theadcolor" data-col-seq="4">CheckList</th>
+                                            <th class="theadcolor" data-col-seq="5">Status</th>
+                                            <th class="theadcolor" data-col-seq="6">Start Date</th>
+                                            <th class="theadcolor" data-col-seq="7">End Date</th>
+                                            <th class="theadcolor" data-col-seq="0">Frequency</th>
+                                            <th class="theadcolor" data-col-seq="8">Internal Frequency</th>
+                                            <th class="theadcolor" data-col-seq="9">TaskDoer</th>
+                                            <th class="theadcolor" data-col-seq="10">Backup User</th>
                                             </tr>
                                         </thead>
                                         <tbody>

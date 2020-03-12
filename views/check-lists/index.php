@@ -120,7 +120,7 @@ function changeStatus(checklist_id)
                         },
 
                     ],
-                    [
+                /*    [
                         'attribute' => 'cl_frequency_value',
                         'header' => 'Frequency',
                         'format' => 'raw',
@@ -142,7 +142,7 @@ function changeStatus(checklist_id)
 
                         },
 
-                    ],
+                    ],*/
                     [
                         'attribute' => 'cl_status',
                         'format' => 'raw',

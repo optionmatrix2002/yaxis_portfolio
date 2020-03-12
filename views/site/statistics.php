@@ -104,7 +104,7 @@ $this->registerJs('
 </form>
 <div class="row">
     
-        <div class="col-lg-2 col-md-6 col-sm-12">
+      <!--  <div class="col-lg-2 col-md-6 col-sm-12">
         <a href="<?= Yii::$app->urlManager->createUrl(['/audits/tasks#tab2']);?>">
             <div class="mini-widget">
                 <div class="mini-widget-body background-blue clearfix nocolor">
@@ -264,7 +264,26 @@ $this->registerJs('
         </div>
     </div>
     </a>
+    --->
 </div>
+<div class="row">
+
+
+
+<div class="col-lg-6 col-xs-6 col-md-6 text-center">
+    <div style="border: 3px solid #9999FF;">
+        <h4 class="headstyle">Task</h4>
+        <div id="taskChat" style="width: 100%; height: 300px; background-color: #FFFFFF;"></div>
+    </div>
+</div>
+<div class="col-lg-6 col-xs-6 col-md-6 text-center">
+    <div style="border: 3px solid #FFCCCC;">
+        <h4 class="headstyle">Audits</h4>
+        <div id="taskChat2" style="width: 100%; height: 300px; background-color: #FFFFFF;"></div>
+    </div>
+</div>
+</div>
+
 <div class="row">
     <div class="col-xs-12 margintables">
         <div class="box">
