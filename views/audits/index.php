@@ -363,7 +363,7 @@ $gridColumnsInfo = [
                                 'value' => function ($model) {
                                     if ($model->status == 3) {
                                         $timestamp = strtotime($model->updated_at);
-                                        return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
+                                        return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y H:i:s');
                                     }
                                     return '---';
                                 }

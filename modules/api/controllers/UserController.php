@@ -64,7 +64,8 @@ class UserController extends ActiveController {
                         'auth_token' => $usermodel->auth_token,
                         'user_type' => $usermodel->uiUserType->ut_name,
                         'user_role' => $usermodel->uiRole->role_name,
-                        'image_path' => $image
+                        'image_path' => $image,
+                        'location'=>$usermodel->getUserLocationsData()
                     ];
                     Yii::$app->response->statusCode = 200;
                 } else {
@@ -271,7 +272,7 @@ class UserController extends ActiveController {
      
         try {
             $post = Yii::$app->request->post();
-            if (!$post['hotel_id'] || !$post['department_id'] ) {
+            if (!$post['office_id'] || !$post['floor_id'] ) {
                 $output = [
                     'response' => [],
                     'message' => 'Invalid Params'
@@ -281,8 +282,8 @@ class UserController extends ActiveController {
             $model = Cabins::find()
                     ->select(['hotel_id','department_id','cabin_id','cabin_name','cabin_description'])
                     ->where([
-                        'hotel_id' => $post['hotel_id'],
-                        'department_id' => $post['department_id']
+                        'hotel_id' => $post['office_id'],
+                        'department_id' => $post['floor_id']
                         
                     ])
                     ->all();
