@@ -272,7 +272,7 @@ class UserController extends ActiveController {
      
         try {
             $post = Yii::$app->request->post();
-            if (!$post['office_id'] || !$post['floor_id'] ) {
+            if (!$post['hotel_id'] || !$post['department_id'] ) {
                 $output = [
                     'response' => [],
                     'message' => 'Invalid Params'
@@ -282,8 +282,8 @@ class UserController extends ActiveController {
             $model = Cabins::find()
                     ->select(['hotel_id','department_id','cabin_id','cabin_name','cabin_description'])
                     ->where([
-                        'hotel_id' => $post['office_id'],
-                        'department_id' => $post['floor_id']
+                        'hotel_id' => $post['hotel_id'],
+                        'department_id' => $post['department_id']
                         
                     ])
                     ->all();
