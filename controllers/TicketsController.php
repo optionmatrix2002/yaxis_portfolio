@@ -51,7 +51,8 @@ class TicketsController extends Controller {
         'c11'=>true,
         'c12'=>true,
         'c13'=>true,
-        'c14'=>true
+        'c14'=>true,
+        'c15'=>true
     ];
 
     public static $tableColumns=[
@@ -60,6 +61,7 @@ class TicketsController extends Controller {
         'c14'=>'Location',
         'c3'=>'Office',
         'c4'=>'Floor',
+        'c15'=>'Cabin',
         'c5'=>'Subject',
         'c6'=>'Assigned To',
         'c7'=>'Created On',

@@ -476,6 +476,14 @@ class TicketsController extends ActiveController {
                     return $result;
                 }
 
+                if(is_uploaded_file($_FILES['incident_attachment']['tmp_name'])){
+                    $attachmentSaveStatus = $tickets->saveAttachment('incident_attachment', $tickets);
+                    if (!$attachmentSaveStatus['status']) {
+                        throw new HttpException(422, $attachmentSaveStatus['message']);
+                    }    
+                }
+
+              
                 $tickets->ticket_name = $tickets->ticket_name . $tickets->ticket_id;
 
                 Tickets::updateAll([

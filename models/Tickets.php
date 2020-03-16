@@ -80,7 +80,6 @@ class Tickets extends \yii\db\ActiveRecord
                     'audit_schedule_id',
                     'hotel_id',
                     'department_id',
-                    'task_id',
                     'section_id',
                     'priority_type_id',
                     'assigned_user_id',
@@ -108,7 +107,6 @@ class Tickets extends \yii\db\ActiveRecord
                     'due_date',
                     'is_deleted',
                     'location_id',
-                    'task_id',
                     'status',
                     'subject'
                 ],
@@ -304,12 +302,6 @@ class Tickets extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Locations::className(), [
             'location_id' => 'location_id'
-        ]);
-    }
-    public function getCabin()
-    {
-        return $this->hasOne(Cabin::className(), [
-            'cabin_id' => 'cabin_id'
         ]);
     }
     /**
@@ -1151,10 +1143,9 @@ class Tickets extends \yii\db\ActiveRecord
         }
     }
 
-    private function saveAttachment($attachment, $ticketModel)
+    public function saveAttachment($attachment, $ticketModel)
     {
         $uploadedFile = \yii\web\UploadedFile::getInstanceByName($attachment);
-
         if ($uploadedFile) {
             $ext = pathinfo($uploadedFile->name, PATHINFO_EXTENSION);
             $file_name = $ticketModel->ticket_name . '_' . $uploadedFile->name;
@@ -1293,8 +1284,9 @@ class Tickets extends \yii\db\ActiveRecord
     {
             return $this->location->locationCity->name;
     }
+
     public function getTicketCabinData()
     {
-            return $this->cabins->cabinId->name;
+            return  $this->cabins ? $this->cabins->cabin_name : '';
     }
 }
