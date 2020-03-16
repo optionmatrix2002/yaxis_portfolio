@@ -172,6 +172,15 @@ $gridColumnsInfo = [
         'visible'=>(!$columnsArr['c4']) ? false :true
     ],
     [
+        'attribute' => 'cabin_id',
+        'header' => 'Cabin',
+        'value' => function ($model) {
+            return $model->getTicketCabinData();
+        },
+        'format' => 'raw',
+        'visible'=>(!$columnsArr['c15']) ? false :true
+    ],
+    [
         'attribute' => 'subject',
         'header' => 'Subject',
         'value' => function ($model) {
@@ -295,8 +304,8 @@ $archivedTickets = [
         'visible'=>(!$columnsArr['c14']) ? false :true
     ],
     [
-        'attribute' => 'task_id',
-        'header' => 'Task',
+        'attribute' => 'cabin_id',
+        'header' => 'Cabin',
         'value' => function ($model) {
             return $model->getTicketCabinData();
         },
@@ -610,7 +619,7 @@ $archivedTickets = [
                                 'attribute' => 'cabin_id',
                                 'header' => 'Cabin',
                                 'value' => function ($model) {
-                                    return ($model->cabin_id) ? $model->cabin_id : '--';
+                                    return ($model->getTicketCabinData()) ? $model->getTicketCabinData() : '--';
                                 },
                                 'format' => 'raw',
                                 'contentOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden c15 tbl-td' : 'c15 tbl-td'],
@@ -867,16 +876,6 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                 'headerOptions' => ['class' => (!$columnsArr['c14']) ? 'hidden theadcolor c14 tbl-td' : 'theadcolor c14 tbl-td']
                             ],
                             [
-                                'attribute' => 'cabin_id',
-                                'header' => 'Cabin',
-                                'value' => function ($model) {
-                                    return $model->getTicketLocationsData();
-                                },
-                                'format' => 'raw',
-                                'contentOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden c15 tbl-td' : 'c15 tbl-td'],
-                                'headerOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden theadcolor c15 tbl-td' : 'theadcolor c15 tbl-td']
-                            ],
-                            [
                                 'attribute' => 'hotel_id',
                                 'header' => 'Office',
                                 'value' => function ($model) {
@@ -899,6 +898,16 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                 'headerOptions' => ['class' => (!$columnsArr['c4']) ? 'hidden theadcolor c4 tbl-td' : 'theadcolor c4 tbl-td']
                             ],
                             
+                            [
+                                'attribute' => 'cabin_id',
+                                'header' => 'Cabin',
+                                'value' => function ($model) {
+                                    return ($model->getTicketCabinData()) ? $model->getTicketCabinData() : '--';
+                                },
+                                'format' => 'raw',
+                                'contentOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden c15 tbl-td' : 'c15 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c15']) ? 'hidden theadcolor c15 tbl-td' : 'theadcolor c15 tbl-td']
+                            ],
                             [
                                 'attribute' => 'subject',
                                 'header' => 'Subject',
