@@ -71,7 +71,8 @@ class Audits extends \yii\db\ActiveRecord
                     'user_id',
                     'start_date',
                     'end_date',
-                    'deligation_flag'
+                    'deligation_flag',
+                    'frequency_value'
                 ],
                 'required'
             ],
@@ -86,7 +87,9 @@ class Audits extends \yii\db\ActiveRecord
                     'is_deleted',
                     'created_by',
                     'updated_by',
-                    'status'
+                    'status',
+                    'frequency_value',
+                    'frequency_duration'
                 ],
                 'integer'
             ],
@@ -183,8 +186,10 @@ class Audits extends \yii\db\ActiveRecord
                 'targetAttribute' => [
                     'updated_by' => 'user_id'
                 ]
-            ]
-
+                ],
+            ['frequency_duration', 'required','message' => 'Day is required', 'when' => function ($model) {
+                    return $model->frequency_value == 3;
+           }, 'enableClientValidation' => false]
             // ['start_date', 'check'],
             // ['start_date','validateDates'],
 

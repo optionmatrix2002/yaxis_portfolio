@@ -26,8 +26,9 @@ View::registerJsFile(yii::$app->urlManager->createUrl('js/bootstrap-multiselect.
 ]);
 $this->registerJs('
 $(".nav-bids").removeClass("active");
-$("#audits").addClass("active");
+$("#MenuAudits").addClass("active");
 $(".dropdown-toggle").dropdown();
+
 var selectedVals=[];
 $("#example-getting-started option:selected").map(function(a, item){selectedVals.push(item.value);});
 console.log(selectedVals);
@@ -80,12 +81,6 @@ $("#submitGridSelectionBtn").click(function(){
 
 });
 ', \yii\web\View::POS_END);
-
-$this->registerJs('
-$(".nav-bids").removeClass("active");
-$("#MenuAudits").addClass("active");
-$(".dropdown-toggle").dropdown();
-', \yii\web\View::POS_END);
 ?>
 <style>
 .columnsFilter{
@@ -100,10 +95,10 @@ $gridColumnsInfo = [
         'visible'=>(!$columnsArr['c1']) ? false :true
     ],
     [
-        'attribute' => 'audit_id',
+        'attribute' => 'location_id',
         'header' => 'Location',
-        'value' => function ($model) use ($audits) {
-            return (isset($audits[$model->audit_schedule_id])) ? $audits[$model->audit_schedule_id] : 'Dynamic Ticket';
+        'value' => function ($model) {
+            return $model->location->locationCity->name;
         },
         'visible'=>(!$columnsArr['c2']) ? false :true
     ],

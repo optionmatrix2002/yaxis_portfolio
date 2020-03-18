@@ -86,7 +86,7 @@ $(document).on("change","#checklists-cl_frequency_value",function(){
         </div>
         <div class="col-sm-12 col-lg-12 col-md-12">
             <div class="col-sm-3 col-lg-3 col-md-3">
-                <label  class = "required-label">Audit Method  :</label>
+                <label  class = "required-label">Method  :</label>
             </div>
             <div class="col-sm-9 col-lg-9 col-md-9">
                 <div class="input-group col-sm-6">
@@ -104,7 +104,7 @@ $(document).on("change","#checklists-cl_frequency_value",function(){
                 </div>
             </div>
         </div>-->
-        <div class="col-sm-12 col-lg-12 col-md-12">
+        <!--<div class="col-sm-12 col-lg-12 col-md-12">
             <div class="col-sm-3 col-lg-3 col-md-3">
                 <label  class = "required-label">Frequency :</label>
             </div>
@@ -144,10 +144,10 @@ $(document).on("change","#checklists-cl_frequency_value",function(){
                     ?>                      
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="col-sm-12 col-lg-12 col-md-12">
             <div class="col-sm-3 col-lg-3 col-md-3 marginTB10">
-                <label  class = "required-label">Audit Span :</label>
+                <label  class = "required-label">Span :</label>
             </div>
             <div class="col-sm-9 col-lg-9 col-md-9">
                 <div class="input-group col-md-6 col-sm-12">

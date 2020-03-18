@@ -239,7 +239,7 @@ $(function(){
       $('html,body').scrollTop(scrollmem);
     });
   });
-/*
+
 $("a[name=tab]").on("click", function () {
     var a = $(this).data("index");
     if (a == 0) {
@@ -251,7 +251,7 @@ $("a[name=tab]").on("click", function () {
         $(".auditid").hide();
     }
 });
-*/
+
 $("#checklist_id").change(function () {
     $checklistId = $("#checklist_id").val();
     $.ajax({
