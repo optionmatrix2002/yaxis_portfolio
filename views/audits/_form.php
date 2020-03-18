@@ -35,6 +35,13 @@ $id = Yii::$app->request->get('id');
 $this->registerJs('
 $(".nav-bids").removeClass("active");
 $("#MenuAudits").addClass("active");
+$(document).on("change","#audits-frequency_value",function(){
+    var selectedWeekDay=$(this).val();
+    $("#weeklyDays").addClass("hidden");
+    if(selectedWeekDay == 3){
+        $("#weeklyDays").removeClass("hidden");
+    }
+});
 ', \yii\web\View::POS_END);
 ?>
 
@@ -205,55 +212,45 @@ $("#MenuAudits").addClass("active");
                value="<?= yii::$app->urlManager->createUrl('audits/get-check-list-frequency'); ?>">
 
 
-        <?php if ($model->checklist_id) { ?>
             <div class="col-sm-12 margintop10">
                 <div class="col-sm-3 col-lg-3 col-md-3">
                     <label class="required-label">Frequency :</label>
                 </div>
                 <div class="col-sm-9 col-lg-9 col-md-9">
                     <div class="input-group col-sm-6">
-                        <?php
-                        $frequency = Checklists::find()->where([
-                                    'checklist_id' => $model->checklist_id
-                                ])->one();
-                        $frequencyName = Interval::find()->where([
-                                    'interval_id' => $frequency->cl_frequency_value
-                                ])->one();
-
-                        echo $form->field($model, 'checklist_id')
-                                ->textInput([
-                                    'id' => 'getFrequencyName',
-                                    'value' => $frequencyName->interval_name,
-                                    'class' => 'form-control',
-                                    'disabled' => 'disabled'
-                                ])
-                                ->label(false);
-                        ?>
+                    <?= $form->field($model, 'frequency_value')->dropDownList(ArrayHelper::map(\app\models\Interval::find()->asArray()->all(), 'interval_id', 'interval_name'), ['prompt' => 'Select Frequency','disabled' => !$model->isNewRecord], ['class' => 'form-control'])->label(false); ?>
                     </div>
                 </div>
             </div>
-        <?php } else { ?>
-            <div class="col-sm-12 margintop10">
-                <div class="col-sm-3 col-lg-3 col-md-3">
-                    <label class="required-label">Frequency :</label>
-                </div>
-                <div class="col-sm-9 col-lg-9 col-md-9">
-                    <div class="input-group col-sm-6">
-
-                        <?php
-                        echo $form->field($model, 'checklistfrequency')
-                                ->textInput([
-                                    'class' => 'form-control',
-                                    'id' => 'getFrequencyName',
-                                    'disabled' => 'disabled'
-                                ])
-                                ->label(false);
-                        ?>
-
-                    </div>
+            <div class="col-sm-12 col-lg-12 col-md-12 <?php echo $model->frequency_value == 3 ? '' : 'hidden'; ?>"  id="weeklyDays">
+            <div class="col-sm-3 col-lg-3 col-md-3">
+            </div>
+            <div class="col-sm-9 col-lg-9 col-md-9">
+                <div class="input-group col-sm-6 daysBlockForFrequency">
+                    <?php 
+                       echo $form->field($model, 'frequency_duration')
+                                ->radioList(
+                                        ['1' => 'Monday', '2' => 'Tuesday','3'=>'Wednesday','Thursday','Friday','Saturday'], [
+                                    'item' => function($index, $label, $name, $checked, $value) use($model) {
+                                        $disabled = !$model->isNewRecord ? 'disabled' : '';
+                                        $checked = ($checked) ? 'checked' : '';
+                                        $return = '<div class="col-sm-6 radio-button-padding"  id="Weekly">';
+                                        $return .= '<label class="ExternalAudit">';
+                                        $return .= '<input type="radio" '.$disabled.'  name="' . $name . '" value="' . $value . '" ' . $checked . '>';
+                                        $return .= '<i></i>';
+                                        $return .= '&nbsp;&nbsp;&nbsp;<span>' . ucwords($label) . '</span>';
+                                        $return .= '</label>';
+                                        $return .= '</div>';
+                                        return $return;
+                                    }
+                                    , []
+                                        ]
+                                )
+                                ->label(false)
+                    ?>                      
                 </div>
             </div>
-        <?php } ?>
+        </div>
         <?php if ($model->isNewRecord) { ?>
             <div class="col-sm-12 margintop10">
                 <div class="col-sm-3 col-lg-3 col-md-3">

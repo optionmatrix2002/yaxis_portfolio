@@ -196,7 +196,7 @@ class AuditsController extends Controller {
                     'dataProviderAuditsSchedules' => $dataProviderAuditsSchedules,
                     'dataProviderAuditsSchedulesChilds' => $dataProviderAuditsSchedulesChilds,
                     'auditScheduleModel' => $auditScheduleModel,
-                    'dataArchivedProvider' => $dataArchivedProvider,
+                   // 'dataArchivedProvider' => $dataArchivedProvider,
                     'columnsArr'=> self::$columnsArr,
                     'tableColumnsArr'=>self::$tableColumns
         ]);
@@ -424,7 +424,7 @@ class AuditsController extends Controller {
 
                             $arrNotifications['data'] = $attributes;
                             $arrNotifications['userId'] = $user->user_id;
-                            Yii::$app->scheduler->triggerNotifications($arrNotifications);
+                          //  Yii::$app->scheduler->triggerNotifications($arrNotifications);
 
 
                             $arrData = [];
@@ -716,6 +716,7 @@ class AuditsController extends Controller {
     public function actionUpdate($id) {
         $valid = false;
         $model = $this->findModel(Yii::$app->utils->decryptData($id));
+        $oldFrequencyDuration = $model->frequency_duration;
         /* if (!in_array($model->status, [
           0,
           1,
@@ -737,6 +738,7 @@ class AuditsController extends Controller {
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $auditsSchedulesModel->load(Yii::$app->request->post());
+                $model->frequency_duration = $oldFrequencyDuration;
                 if ($model->save()) {
                     $valid = true;
                 } else {
