@@ -589,11 +589,25 @@ $("#tickets").addClass("active");
                                            value="<?= $model->ticket_id ?>">
                                            <?= $form->field($modelComments, 'ticket_comment')->textarea(['rows' => '3', 'placeholder' => 'Enter Comments'])->label(false); ?>
                                 </div>
+                            </div>
+                            <?php if(in_array($model->status,[0,1])){ ?>
+                            <div class="col-md-12 well">
+                                <div class="col-sm-2 nopadding">
+                                    <label>Resolve</label>
+                                </div>
+                                <div class="col-sm-1 nopadding">
+                                    <label>: </label>
+                                </div>
+
+                                <div class="col-sm-6 nopadding resolve-tickets">
+                                           <?= $form->field($model, 'resolveTicket')->checkbox()->label(false); ?>
+                                </div>
+                            </div>
+                            <?php }?>
                                 <div class="col-sm-9 nopadding pull-right"
                                      style="margin-top: 10px;">
                                          <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                                 </div>
-                            </div>
                             <?php ActiveForm::end(); ?>
                             <?php
                         }

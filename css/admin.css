@@ -3111,3 +3111,7 @@ form select option {
         border: 1px solid #ddd;
     margin-top: 10px;
 }
+
+.resolve-tickets #tickets-resolveticket{
+    margin-left: 1px;
+}
