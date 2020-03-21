@@ -92,7 +92,7 @@ class AuditsController extends ActiveController {
        
         $query = Yii::$app->getDb();
         $command = $query->createCommand("SELECT CONCAT_WS(\" \", `u`.`first_name`, `u`.`last_name`) AS `name`, `sa`.`deligation_user_id`,"
-                . " `c`.`name` AS `location_name`, `h`.`hotel_name`, `d`.`department_name`, `sa`.`updated_at` AS `audit_submitted_date`,"
+                . " `c`.`name` AS `location_name`,`h`.`hotel_id`, `h`.`hotel_name`,`d`.`department_id`, `d`.`department_name`, `sa`.`updated_at` AS `audit_submitted_date`,"
                 . " `ck`.`cl_audit_type` AS `audit_type`, `ck`.`cl_name` AS `audit_name`, CONCAT_WS(\" \", `au`.`first_name`, `au`.`last_name`) AS `assignedby`,"
                 . " `a`.`deligation_flag`, `sa`.`audit_schedule_id` AS `audit_id`, `sa`.`status`, `a`.`audit_name` AS `parent`, `sa`.`audit_schedule_name` AS `child`, "
                 . "`sa`.`deligation_status`, `sa`.`start_date`, `sa`.`end_date` FROM `tbl_gp_audits` `a` LEFT JOIN `tbl_gp_audits_schedules` `sa` ON sa.audit_id = a.audit_id"
