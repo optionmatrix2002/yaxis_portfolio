@@ -659,6 +659,7 @@ class TicketsController extends Controller {
         $ticket_id = Yii::$app->utils->encryptData($post['ticket_id']);
         $output = [];
         if ($post && $post['ticket_id']) {
+            $model=Tickets::findOne($post['ticket_id']);
             $modelComments = new TicketComments();
             $modelComments->ticket_id = $post['ticket_id'];
             $modelComments->ticket_comment = $post['TicketComments']['ticket_comment'];
@@ -666,7 +667,10 @@ class TicketsController extends Controller {
 
             $transaction = Yii::$app->db->beginTransaction();
             try {
-
+                if($post['Tickets']['resolveTicket'] == 1){
+                    $model->status = 2;
+                    $model->save();
+                }
                 $modelTicketHistory->load(Yii::$app->request->post());
                 if ($modelComments->save()) {
                     $modelTicketHistory->ticket_id = $post['ticket_id'];

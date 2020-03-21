@@ -44,6 +44,7 @@ use yii\web\HttpException;
  */
 class Tickets extends \yii\db\ActiveRecord
 {
+    public $resolveTicket=0;
 
     public $dateAssignedType;
 
@@ -116,7 +117,7 @@ class Tickets extends \yii\db\ActiveRecord
                 [
                     'due_date',
                     'created_at',
-                    'updated_at', 'sub_section_id'
+                    'updated_at', 'sub_section_id','resolveTicket'
                 ],
                 'safe'
             ],
