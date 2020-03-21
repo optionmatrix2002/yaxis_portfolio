@@ -99,7 +99,7 @@ class AuditsController extends ActiveController {
                 . "  LEFT JOIN `tbl_gp_user` `u` ON u.user_id = sa.auditor_id LEFT JOIN `tbl_gp_locations` `l` ON l.location_id = a.location_id LEFT JOIN `tbl_gp_cities` `c` ON c.id = l.location_city_id "
                 . "LEFT JOIN `tbl_gp_hotels` `h` ON h.hotel_id = a.hotel_id LEFT JOIN `tbl_gp_departments` `d` ON d.department_id = a.department_id"
                 . " LEFT JOIN `tbl_gp_checklists` `ck` ON ck.checklist_id = a.checklist_id LEFT JOIN `tbl_gp_user` `au` ON au.user_id = sa.created_by WHERE"
-                . " (`sa`.`auditor_id` = $user_id OR sa.deligation_user_id = $user_id)  AND(sa.status IN('$status')) AND(`a`.`is_deleted` = 0) AND(`sa`.`is_deleted` = 0) AND(((HOUR(sa.start_time) <= $cHour) AND (`ck`.`cl_frequency_value` = 1) AND (DATE(sa.start_date) <= '" . $cDate . "') AND (DATE(sa.end_date) >= '" . $cDate . "'))OR((`ck`.`checklist_id` IN('$checklistIds') AND (DATE(sa.start_date) <='" . $cDate . "' ) AND (DATE(sa.end_date) >= '" . $cDate . "') AND (HOUR(sa.start_time) IS NULL))))");
+                . " (`sa`.`auditor_id` = $user_id OR sa.deligation_user_id = $user_id)  AND(sa.status IN('$status')) AND(`a`.`is_deleted` = 0) AND(`sa`.`is_deleted` = 0)");
 
         $result = $command->queryAll();
        /* print_r($result);exit;
