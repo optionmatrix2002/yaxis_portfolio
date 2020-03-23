@@ -63,6 +63,28 @@ $this->registerJs('
                 ]
             ],
         ]); ?>
+         <div class="col-lg-3 col-md-3 col-sm-3">
+                <?php
+
+                if(Yii::$app->user && Yii::$app->user->identity->user_type !=1){
+                    $return = \app\models\User::getUserAssingemnts();
+                    $userHotels = $return['userHotels'];
+                    $dimensionTypes = ArrayHelper::map(\app\models\Locations::find()->andFilterWhere(['location_id'=>$userHotels,'is_deleted' => 0])->orderBy('location_description')->all(), 'location_id', 'location_description');
+                }else{
+                    $dimensionTypes = ArrayHelper::map(\app\models\Locations::find()->andFilterWhere(['is_deleted' => 0])->orderBy('location_description')->all(), 'location_id', 'location_description');
+                }
+
+                echo $form->field($model, 'location_id')
+                    ->dropDownList($dimensionTypes, [
+                        'prompt' => 'Locations','id'=>'ranking_aduit_id'
+                    ], [
+                        'class',
+                        'form-control'
+                    ])
+                    ->label(false);
+                ?>
+
+        </div>
         <div class="col-lg-3 col-md-3 col-sm-3">
                 <?php
 

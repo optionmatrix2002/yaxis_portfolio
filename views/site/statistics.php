@@ -52,6 +52,7 @@ $this->registerJs('
 
 
             ?>
+
             <?= Html::dropDownList('statistics_hotel_id', null, $dimensionTypes, array(
                 'class' => 'form-control', 'prompt' => 'Office', 'id' => 'statistics_hotel_id',
                 'options' => array(isset($_GET['statistics_hotel_id']) ? $_GET['statistics_hotel_id'] : '' => array('selected' => true)),
