@@ -11,7 +11,7 @@ use app\assets\AppAsset;
 /* @var $this yii\web\View */
 /* @var $model app\models\Checklists */
 /* @var $form yii\widgets\ActiveForm */
-
+ 
 
 AppAsset::register($this);
 View::registerCssFile(yii::$app->urlManager->createUrl('css/questionnaire.css'));

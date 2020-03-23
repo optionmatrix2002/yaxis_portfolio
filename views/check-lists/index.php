@@ -89,7 +89,7 @@ function changeStatus(checklist_id)
                         'format' => 'raw',
                         'headerOptions' => ['class' => 'theadcolor'],
                     ],
-
+ 
                     [
                         'attribute' => 'cl_audit_type',
                         'header' => 'Type',

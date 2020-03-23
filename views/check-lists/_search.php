@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 /* @var $model app\models\search\SectionsSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+ 
 <div class="sections-search">
 
     <?php $form = ActiveForm::begin([
