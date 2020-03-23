@@ -272,7 +272,7 @@ $this->registerJs('
 
 <div class="col-lg-6 col-xs-6 col-md-6 text-center">
     <div style="border: 3px solid #9999FF;">
-        <h4 class="headstyle">Task</h4>
+        <h4 class="headstyle">Tasks</h4>
         <div id="taskChat" style="width: 100%; height: 300px; background-color: #FFFFFF;"></div>
     </div>
 </div>

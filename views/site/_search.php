@@ -72,9 +72,16 @@ $this->registerJs('
         ], 'enableClientValidation' => true, 'enableAjaxValidation' => false,
             'action' => ['/site/compareaudits'],
             'options' => ['enctype' => 'multipart/form-data']]); ?>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+        <?= $form->field($model, 'location_id')
+                        ->widget(Select2::classname(), ['data' => ArrayHelper::map(\app\models\Locations::find()
+                            ->where(['is_deleted' => 0])->all(), 'location_id', 'locationCity.name'), 'showToggleAll' => false, 'language' => 'en', 'options' => ['multiple' => false, 'placeholder' => 'Select Location'], 'pluginOptions' => ['showToggleAll' => false, 'allowClear' => true]])
+                        ->label(false); ?>
+
+        
+            </div>
         <div class="col-lg-2 col-md-6 col-sm-12">
                 <?php
-
                 $hotels = [];
                 $query = \app\models\Hotels::find()->where(['hotel_status' => 1, 'is_deleted' => 0]);
                 if (Yii::$app->user && Yii::$app->user->identity->user_type != 1) {

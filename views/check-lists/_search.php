@@ -39,7 +39,7 @@ use yii\helpers\ArrayHelper;
                 ?>
         </div>-->
         <div class="col-lg-3 col-md-6 col-sm-12">
-                <?= $form->field($model, 'cl_audit_span')->dropDownList(['1' => 'Section Specific', '2' => 'Across Section'], ['prompt' => 'Select Audit Span'], ['class', 'form-control'])->label(false); ?>
+                <?= $form->field($model, 'cl_audit_span')->dropDownList(['1' => 'Section Specific', '2' => 'Across Section'], ['prompt' => 'Select Span'], ['class', 'form-control'])->label(false); ?>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
                 <?= $form->field($model, 'cl_status')->dropDownList(['0' => 'InActive', '1' => 'Active'], ['prompt' => 'Select status'], ['class', 'form-control'])->label(false); ?>

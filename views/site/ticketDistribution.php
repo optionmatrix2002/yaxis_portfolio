@@ -126,6 +126,15 @@ $this->registerJs('
             'layout' => '{items}',
             'columns' => [
                 [
+                    'attribute' => 'Location',
+                    'header' => 'Location',
+                     'value' => function ($model) {
+                                        return $model->location->locationCity->name;
+                                    },
+                    'format' => 'raw',
+                    'headerOptions' => ['class' => 'theadcolor']
+                ],
+                [
                     'attribute' => 'name',
                     'header' => 'Ticket ID',
                     'value' => function ($model) {
@@ -149,6 +158,16 @@ $this->registerJs('
                     'header' => 'Floor',
                     'value' => function ($model) {
                         return ($model->department_id) ? $model->department->department_name : '--';
+                    },
+                    'format' => 'raw',
+                    'headerOptions' => ['class' => 'theadcolor']
+                ],
+                [
+                    'attribute' => 'Cabin',
+                    'header' => 'Cabin ID',
+                    'value' => function ($model) {
+                        return ($model->getTicketCabinData()) ? $model->getTicketCabinData() : '--';
+
                     },
                     'format' => 'raw',
                     'headerOptions' => ['class' => 'theadcolor']

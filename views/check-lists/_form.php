@@ -57,7 +57,7 @@ $(document).on("change","#checklists-cl_frequency_value",function(){
         </div>
         <div class="col-sm-12 col-lg-12 col-md-12">
             <div class="col-sm-3 col-lg-3 col-md-3 marginTB10">
-                <label class = "-label">Audit Type :</label>
+                <label class = "-label">Type :</label>
             </div>
             <div class="col-sm-9 col-lg-9 col-md-9">
                 <div class="input-group col-sm-6">

@@ -92,7 +92,7 @@ function changeStatus(checklist_id)
 
                     [
                         'attribute' => 'cl_audit_type',
-                        'header' => 'Audit Type',
+                        'header' => 'Type',
                         'format' => 'raw',
                         'headerOptions' => ['class' => 'theadcolor'],
                         'value' => function ($model) {
@@ -111,7 +111,7 @@ function changeStatus(checklist_id)
                     ],*/
                     [
                         'attribute' => 'cl_audit_span',
-                        'header' => 'Audit Span',
+                        'header' => 'Span',
                         'format' => 'raw',
                         'headerOptions' => ['class' => 'theadcolor'],
                         'value' => function ($model) {
