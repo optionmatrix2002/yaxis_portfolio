@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=optinmatrixdb.cggxvyo4407g.us-west-2.rds.amazonaws.com;dbname=yAxis',
-    'username' => 'optionmatrix2002',
-    'password' => 'Frameworks2018!!!',
+    'dsn' => 'mysql:host=localhost;dbname=yaxis',
+    'username' => 'root',
+    'password' => '',
     'charset' => 'utf8',
     'tablePrefix'=>'tbl_gp_'
 ];
