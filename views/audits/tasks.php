@@ -8,7 +8,7 @@ use yii\web\JqueryAsset;
 use yii\web\View;
 use yii\widgets\Pjax;
 use app\models\AuditsSchedules;
-
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\AuditsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -48,10 +48,10 @@ $(".dropdown-toggle").dropdown();
         <li class="active"><a href="#tab1" data-toggle="tab">Completed Tasks</a></li>
         <li><a href="#tab2" data-toggle="tab">Scheduled Tasks</a></li>
         <?php
-            if (Yii::$app->authManager->checkPermissionAccess('audits/create')) {
+            if (Yii::$app->authManager->checkPermissionAccess('audits/createTask')) {
                 ?>
                 <li class="pull-right">
-                    <a href="<?= yii::$app->urlManager->createUrl('tasks/create'); ?>" class="btn btn-success"><i
+                    <a href="<?= yii::$app->urlManager->createUrl('audits/createTask'); ?>" class="btn btn-success"><i
                             class="fa fa-plus"></i>&nbsp;Schedule Task</a>
                 </li>
             <?php } ?>
@@ -76,8 +76,7 @@ $(".dropdown-toggle").dropdown();
                                             <th class="theadcolor" data-col-seq="5">Status</th>
                                             <th class="theadcolor" data-col-seq="6">Start Date</th>
                                             <th class="theadcolor" data-col-seq="7">End Date</th>
-                                            <th class="theadcolor" data-col-seq="0">Frequency</th>
-                                            <th class="theadcolor" data-col-seq="8">Internal Frequency</th>
+                                            <th class="theadcolor" data-col-seq="8">Frequency</th>
                                             <th class="theadcolor" data-col-seq="9">TaskDoer</th>
                                             <th class="theadcolor" data-col-seq="10">Backup User</th>
                                         </tr>
@@ -97,8 +96,7 @@ $(".dropdown-toggle").dropdown();
                                             <th class="theadcolor" data-col-seq="5">Status</th>
                                             <th class="theadcolor" data-col-seq="6">Start Date</th>
                                             <th class="theadcolor" data-col-seq="7">End Date</th>
-                                            <th class="theadcolor" data-col-seq="0">Frequency</th>
-                                            <th class="theadcolor" data-col-seq="8">Internal Frequency</th>
+                                            <th class="theadcolor" data-col-seq="8">Frequency</th>
                                             <th class="theadcolor" data-col-seq="9">TaskDoer</th>
                                             <th class="theadcolor" data-col-seq="10">Backup User</th>
                                             </tr>

@@ -49,8 +49,7 @@
             if (Yii::$app->authManager->checkPermissionAccess('tasks')) { ?>
                 <li id="MenuTasks" class="nav-bids <?php if ($item == "tasks") {
                     echo "active"; ?>  <?php } ?>">
-                    <a href="<?= yii::$app->urlManager->createUrl('tasks'); ?>" class="nav-link">
-                        <div class="floatleft clsprojects clsbackground"><i class="fa fa-tasks"></i>
+                <a href="<?= yii::$app->urlManager->createUrl('audits/tasks'); ?>" class="nav-link">                        <div class="floatleft clsprojects clsbackground"><i class="fa fa-tasks"></i>
                         </div>
                         <span class="title">Tasks</span>
                         <span class="selected"></span>

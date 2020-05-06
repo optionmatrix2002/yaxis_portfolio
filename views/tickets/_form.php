@@ -171,6 +171,52 @@ $this->registerJs('
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 col-sm-12 col-lg-12 margintop10">
+                <div class="col-sm-3 ">
+                    <label class="required-label">Cabin :</label>
+                </div>
+                <div class="col-md-9 col-sm-9 col-lg-9">
+                    <div class="input-group col-sm-6">
+                    <?php
+
+
+                    $cabin = \app\models\Cabins::getHotelAndDepartmentDependCabin($model->cabin_id,$model->hotel_id);
+                    $cabin = ArrayHelper::map($cabin, 'cabin_id', function ($element) {
+                    return $element['cabin']['cabin_name'] . '-' . $element['cabin']['cabin_name'];
+                    });
+
+                    $departmcabinents = $cabin ? $cabin : [];
+
+                    if ($model->isNewRecord) {
+                    echo $form->field($model, 'cabin_id')
+                    ->widget(DepDrop::classname(), [
+                    'options' => [
+                    'id' => 'cabin_id'
+                        ],
+                    'data' => $cabin,
+                    'pluginOptions' => [
+                    'depends' => [
+                    'hotel_id'
+                    ],
+                'placeholder' => 'Select cabin',
+                'url' => Url::to([
+                    'tickets/cabin'
+                ])
+            ]
+        ])
+        ->label(false);
+            } else {
+
+            echo $form->field($model, 'department_id')
+            ->dropDownList($departments, [
+            'disabled' => 'disabled'
+        ])
+        ->label(false);
+        }
+    ?>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="col-md-3 col-sm-3 col-lg-3">
                     <label class="required-label">Section :</label>

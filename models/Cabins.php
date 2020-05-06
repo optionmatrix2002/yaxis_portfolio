@@ -89,9 +89,15 @@ class Cabins extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Departments::className(), ['department_id' => 'department_id']);
     }
-
+    public function getCabinName()
+    {
+        return $this->hasOne(Cabins::className(), ['cabin_id' => 'cabin_name']);
+    }
     public static function getHotelAndDepartmentDependCabin($cabin_id, $hotelId)
     {
         return self::find()->where(['cabin_id' => $cabin_id, 'hotel_id' => $hotelId])->one();
     }
 }
+
+
+

@@ -84,6 +84,14 @@ $('#organisation_hierarchy')
                                     openPopup(node.original.action_url);
                                 }
                             },
+                            configureEmails: { // The "rename" menu
+                            // item
+                            label: "Configure Emails",
+                            "icon": "fa fa-envelope-o text-primary",
+                            action: function() {
+                                openPopup(node.original.configure_email_url);
+                            }
+                        },
                             editHotel: { // The "delete" menu item
                                 label: "Edit",
                                 "icon": "fa fa-pencil-square-o text-info",
@@ -112,20 +120,13 @@ $('#organisation_hierarchy')
                         items = {
                             addCabin: { // The "rename" menu
                                 // item
-                                label: "Add Cabin",
+                                label: "Add Workspace",
                                 "icon": "fa fa-plus text-success",
                                 action: function() {
                                     openPopup(node.original.action_url);
                                 }
                             },
-                            configureEmails: { // The "rename" menu
-                                // item
-                                label: "Configure Emails",
-                                "icon": "fa fa-envelope-o text-primary",
-                                action: function() {
-                                    openPopup(node.original.configure_email_url);
-                                }
-                            },
+                        
                             /*  createSection: { // The "rename" menu
                                   // item
                                   label: "Add Section",
@@ -169,13 +170,7 @@ $('#organisation_hierarchy')
                                          openPopup(node.original.delete_url);
                                      }
                                  },
-                                 cloneHotel: {
-                                    label: "Clone",
-                                    "icon": "fa fa-copy text-primary",
-                                    action: function() {
-                                        openPopup(node.original.clone_url);
-                                    }
-                                }
+                        
                              };
                              break;
                       /*   case "subsection":

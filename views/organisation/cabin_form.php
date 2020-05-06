@@ -60,7 +60,7 @@ if ($cabinModel->isNewRecord) {
 
 
     <div class="textField">
-        <?= $form->field($cabinsModel, 'cabin_name')->textInput(['maxlength' => 50, 'class' => 'cabinName form-control charsSpecialChars'])->label('Cabin Name' . Html::tag('span', '*', ['class' => 'required'])); ?>
+        <?= $form->field($cabinsModel, 'cabin_name')->textInput(['maxlength' => 50, 'class' => 'cabinName form-control charsSpecialChars'])->label('Workspace Name' . Html::tag('span', '*', ['class' => 'required'])); ?>
         <?= $form->field($cabinsModel, 'cabin_description')->textarea(['class' => 'form-control  cabinData cabinDescription', 'rows' => 3])->label('Description'); ?>
     </div>
 

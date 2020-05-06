@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Audits */
 
 $this->title = 'Create Tasks';
-$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Audits', 'url' => ['tasks']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="audits-create">

@@ -95,6 +95,11 @@ $gridColumnsInfo = [
         'visible'=>(!$columnsArr['c1']) ? false :true
     ],
     [
+        'attribute' => 'Auditor',
+        'header' => 'Auditor',
+        'visible'=>(!$columnsArr['c10']) ? false :true
+    ],
+    [
         'attribute' => 'location_id',
         'header' => 'Location',
         'value' => function ($model) {
@@ -254,6 +259,17 @@ $gridColumnsInfo = [
                                 'headerOptions' => ['class' => (!$columnsArr['c1']) ? 'hidden theadcolor c1 tbl-td' : 'theadcolor c1 tbl-td'],
                                 'value' => function ($model) {
                                     return '<a  data-pjax="0" target="_blank" href="' . yii::$app->urlManager->createUrl('audits/reports?id=' . Yii::$app->utils->encryptData($model->audit_schedule_id)) . '" title="View Scheduled Audit">' . $model->audit_schedule_name . '</a>';
+                                }
+                            ],
+                            [
+                                'attribute' => 'auditor',
+                                'format' => 'raw',
+                                'header' => 'Auditor',
+                                'headerOptions' => ['class' => 'theadcolor'],
+                                'contentOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden c10 tbl-td' : 'c10 tbl-td'],
+                                'headerOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden theadcolor c10 tbl-td' : 'theadcolor c10 tbl-td'],
+                                'value' => function ($model) {
+                                    return $model->auditor->first_name . " " . $model->auditor->last_name;
                                 }
                             ],
                                 [
@@ -466,6 +482,17 @@ $gridColumnsInfo = [
                                         return '<a  data-pjax="0" target="_blank" href="' . yii::$app->urlManager->createUrl('audits/reports?id=' . Yii::$app->utils->encryptData($model->audit_schedule_id)) . '" title="View Scheduled Audit">' . $model->audit_schedule_name . '</a>';
                                     }
                                 ],
+                                [
+                                    'attribute' => 'auditor',
+                                    'format' => 'raw',
+                                    'header' => 'Auditor',
+                                    'headerOptions' => ['class' => 'theadcolor'],
+                                    'contentOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden c10 tbl-td' : 'c10 tbl-td'],
+                                    'headerOptions' => ['class' => (!$columnsArr['c10']) ? 'hidden theadcolor c10 tbl-td' : 'theadcolor c10 tbl-td'],
+                                    'value' => function ($model) {
+                                        return $model->auditor->first_name . " " . $model->auditor->last_name;
+                                    }
+                                ],
                                     [
                                         'attribute' => 'audit.location_id',
                                         'format' => 'raw',
@@ -597,6 +624,15 @@ $gridColumnsInfo = [
                                     'headerOptions' => ['class' => 'theadcolor'],
                                     'value' => function ($model) {
                                         return '<a  data-pjax="0" target="_blank" href="' . yii::$app->urlManager->createUrl('audits/reports?id=' . Yii::$app->utils->encryptData($model->audit_schedule_id)) . '" title="View Scheduled Audit">' . $model->audit_schedule_name . '</a>';
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'auditer',
+                                    'format' => 'raw',
+                                    'header' => 'Auditor',
+                                    'headerOptions' => ['class' => 'theadcolor'],
+                                    'value' => function ($model) {
+                                        return $model->auditor->first_name . " " . $model->auditor->last_name;
                                     }
                                 ],
                                 [

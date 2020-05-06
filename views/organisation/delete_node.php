@@ -52,7 +52,7 @@ use yii\bootstrap\Html;
 <?php } else if ($node_type == 'cabin') { ?>
 
 <label>
-	Are you sure you want to delete this <?= ucwords($node_type); ?>? You can't undo this action.
+	Are you sure you want to delete this <?=workspace; ?>? You can't undo this action.
 
 </label> <br>
 

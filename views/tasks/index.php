@@ -155,15 +155,7 @@ $gridColumnsInfo = [
         'visible'=>(!$columnsArr['c6']) ? false :true
 
     ],
-    [
-        'attribute' => 'frequency',
-        'header' => 'Internal frequency',
-        'value' => function ($model) {
-            return ($model->frequency);
-        },
-        'visible'=>(!$columnsArr['c7']) ? false :true
-
-    ],
+  
     [
         'attribute' => 'start_date',
         'header' => 'Start Date',
@@ -258,15 +250,7 @@ $archivedTickets =
         'visible'=>(!$columnsArr['c6']) ? false :true
 
     ],
-    [
-        'attribute' => 'frequency',
-        'header' => 'Internal frequency',
-        'value' => function ($model) {
-            return ($model->frequency);
-        },
-        'visible'=>(!$columnsArr['c7']) ? false :true
 
-    ],
     [
         'attribute' => 'start_date',
         'header' => 'Start Date',
@@ -458,7 +442,7 @@ $archivedTickets =
                             ],
                             [
                                 'attribute' => 'location_id',
-                                'header' => 'location',
+                                'header' => ' Location ',
                                 'value' => function ($model) {
                                     return $model->getUserLocationsData();
 
@@ -470,7 +454,7 @@ $archivedTickets =
                             ],
                             [
                                 'attribute' => 'hotel_id',
-                                'header' => 'Office',
+                                'header' => ' Office ',
                                 'value' => function ($model) {
                                     return ($model->hotel_id) ? $model->hotel->hotel_name : '--';
                                 },
@@ -481,7 +465,7 @@ $archivedTickets =
                             ],
                             [
                                 'attribute' => 'department_id',
-                                'header' => 'Floor',
+                                'header' => ' Floor ',
                                 'value' => function ($model) {
                                     return ($model->department_id) ? $model->department->department_name : '--';
                                 },
@@ -492,7 +476,7 @@ $archivedTickets =
                             ],
                             [
                                 'attribute' => 'cabin',
-                                'header' => 'Cabin',
+                                'header' => ' Cabin ',
                                 'value' => function ($model) {
                                     return ($model->checklist_id) ? $model->checklist->checklist_id : '--';
                                 },
@@ -503,7 +487,7 @@ $archivedTickets =
                             ],
                             [
                                 'attribute' => 'frequency',
-                                'header' => 'Frequency',
+                                'header' => ' Frequency ',
                                 'value' => function ($model) {
                             
                                     return ($model->frequency);
@@ -523,20 +507,10 @@ $archivedTickets =
                                  'headerOptions' => ['class' => 'theadcolor']
                              ],*/
 
-                            [
-                                'attribute' => 'frequency',
-                                'header' => 'Internal Frequency',
-                                'value' => function ($model) {
-                                    return ($model->frequency);
-                                },
-                                'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor'],
-                                'contentOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden c7 tbl-td' : 'c7 tbl-td'],
-                                'headerOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden theadcolor c7 tbl-td' : 'theadcolor c7 tbl-td']
-                            ],
+                            
                             [
                                 'attribute' => 'start_date',
-                                'header' => 'Start Date',
+                                'header' => ' Start Date ',
                                 'value' => function ($model) {
                                     $timestamp = strtotime($model->start_date);
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
@@ -548,7 +522,7 @@ $archivedTickets =
                             ],
                             [
                                 'attribute' => 'end_date',
-                                'header' => 'End Date',
+                                'header' => ' End Date ',
                                 'value' => function ($model) {
                                     $timestamp = strtotime($model->end_date);
                                     return Yii::$app->formatter->asDate($timestamp, 'php:d-m-Y');
@@ -573,7 +547,7 @@ $archivedTickets =
                             ],
                             [
                                 'attribute' => 'back_up_user',
-                                'header' => 'back_up_user',
+                                'header' => ' Back_up_user ',
                                 'value' => function ($model) {
                                     return ($model->back_up_user);
                                 },
@@ -584,7 +558,7 @@ $archivedTickets =
                             ],
                             [
                                 'class' => 'yii\grid\ActionColumn',
-                                'header' => 'Actions',
+                                'header' => ' Actions ',
                                 'headerOptions' => ['class' => 'theadcolor'],
                                 'template' => $buttons,
                                 'buttons' => [
@@ -712,17 +686,7 @@ if (Yii::$app->authManager->checkPermissionAccess('tasks/delete')) {
                                  'headerOptions' => ['class' => 'theadcolor']
                              ],*/
 
-                            [
-                                'attribute' => 'frequency',
-                                'header' => 'Internal Frequency',
-                                'value' => function ($model) {
-                                    return ($model->frequency_interval);
-                                },
-                                'format' => 'raw',
-                                'headerOptions' => ['class' => 'theadcolor'],
-                                'contentOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden c7 tbl-td' : 'c7 tbl-td'],
-                                'headerOptions' => ['class' => (!$columnsArr['c7']) ? 'hidden theadcolor c7 tbl-td' : 'theadcolor c7 tbl-td']
-                            ],
+                            
                             [
                                 'attribute' => 'start_date',
                                 'header' => 'Start Date',

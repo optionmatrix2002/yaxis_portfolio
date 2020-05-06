@@ -931,7 +931,7 @@ if (Yii::$app->authManager->checkPermissionAccess('tickets/delete')) {
                                 'attribute' => 'cabin',
                                 'header' => 'Cabin',
                                 'value' => function ($model) {
-                                    return ($model->cabin_id) ? $model->cabins->cabin_id : '--';
+                                    return ($model->cabin_id) ? $model->cabins->cabin_name : '--';
                                 },
                                 'format' => 'raw',
                                 'headerOptions' => ['class' => 'theadcolor'],
