@@ -75,6 +75,11 @@ class AuditsChecklistQuestions extends \yii\db\ActiveRecord
                 ],
                 'integer'
             ],
+			[
+                ['thumbnail'],
+                'string',
+                'max' => 200
+            ],
             [
                 [
                     'q_text',
@@ -172,7 +177,8 @@ class AuditsChecklistQuestions extends \yii\db\ActiveRecord
             'q_response_type' => Yii::t('app', 'Q Response Type'),
             'process_critical'=> Yii::t('app', 'Process Critical'),
             'options' => Yii::t('app', 'Options'),
-            'is_deleted' => Yii::t('app', 'Is Deleted')
+            'is_deleted' => Yii::t('app', 'Is Deleted'),
+			'thumbnail' => Yii::t('app', 'Thumbnail')
         ];
     }
 

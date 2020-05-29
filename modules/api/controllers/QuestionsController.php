@@ -25,7 +25,8 @@ class QuestionsController extends ActiveController
 {
 
     public $modelClass = 'app\models\Questions';
-
+	public static $isTask =false;
+	
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -44,10 +45,13 @@ class QuestionsController extends ActiveController
             ini_set('max_execution_time','180');
             $output = [];
             $user_id = Yii::$app->request->post('user_id');
+			 $is_task = Yii::$app->request->post('is_task');
             // $user_id = \Yii::$app->user->id;
             $audit_schedule_id = Yii::$app->request->post('audit_id');
             if ($user_id && $audit_schedule_id) {
-
+				if(isset($is_task) && $is_task=='true'){
+                   self::$isTask=true;
+				}
                 $auditScheduled = AuditsSchedules::find()->where([
                     'auditor_id' => $user_id
                 ])
@@ -140,7 +144,7 @@ class QuestionsController extends ActiveController
                         $model->is_deleted = $audit['is_deleted'];
                         $model->isNewRecord = true;
                         $model->audits_checklist_questions_id = '';
-
+                        $model->thumbnail = $audit['thumbnail'];
                         if (!$model->save()) {
                             $transaction->rollBack();
                             // throw new HttpException(422, Json::encode($model->getErrors()));
@@ -383,6 +387,9 @@ class QuestionsController extends ActiveController
                     'access' => $access,
                     'options' => $options,
                 ];
+				if(self::$isTask){
+                    $each_question_arr['thumbnail']=$_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']. Yii::$app->params['thumbnail_save_url'].$value['thumbnail'];
+                }
                 $question_arr[] = $each_question_arr;
             }
         }
