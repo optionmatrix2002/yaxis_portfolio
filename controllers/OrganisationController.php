@@ -2245,7 +2245,7 @@ class OrganisationController extends Controller {
             if ($get['id'] == "#" || $get['id'] == "") { // initial load parent module and getting locations
                 $output[] = [
                     "id" => "root",
-                    "text" => "Y-Axis",
+                    "text" => "OM",
                     'type' => "root",
                     "state" => [
                         "opened" => true, // is the node open

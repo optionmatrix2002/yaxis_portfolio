@@ -168,7 +168,7 @@ class AuditsController extends Controller {
      *
      * @return mixed
      */
-    public function actionCreateTask() {    
+    public function actionCreatetask() {    
             $model = new Audits();
             $auditLocationsModel = new Locations();
             $auditsSchedulesModel = new AuditsSchedules();
@@ -178,7 +178,6 @@ class AuditsController extends Controller {
             if ($model->load(Yii::$app->request->post())) {
                 $checkListId = $model->checklist_id;
                 $frequency = Checklists::find()->select(['cl_frequency_value', 'cl_frequency_duration'])->where(['checklist_id' => $checkListId])->one();
-    
                 if ($frequency && $frequency->cl_frequency_value == 1) {
                     //Hourly
                     $slotResponse = \app\models\Preferences::getAuditSlot();
@@ -190,13 +189,12 @@ class AuditsController extends Controller {
                 $postInfo = Yii::$app->request->post('Audits');
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
-    
                     $stdt = Yii::$app->formatter->asDate($postInfo['start_date'], 'php:Y-m-d');
                     $enddt = Yii::$app->formatter->asDate($postInfo['end_date'], 'php:Y-m-d');
-    
-                    $model->audit_name = "AU00";
+                    $model->audit_name = "TU00";
                     $model->start_date = $stdt;
                     $model->end_date = $enddt;
+                    $model->is_audit = "0";
                     $auditsSchedulesModel->load(Yii::$app->request->post());
                     if ($model->save()) {
                         $model->audit_name = $model->audit_name . $model->audit_id;
@@ -218,31 +216,25 @@ class AuditsController extends Controller {
                             $auditsSchedulesModel->status = 0;
                             $auditsSchedulesModel->is_deleted = 0;
                             if ($auditsSchedulesModel->save()) {
-    
                                 $auditScheduled = AuditsSchedules::find()
                                         ->joinWith(['audit.checklist', 'audit.hotel', 'audit.department'])
                                         ->andWhere([AuditsSchedules::tableName() . '.audit_id' => $model->audit_id])
                                         ->orderBy(['audit_schedule_id' => SORT_ASC])
                                         ->asArray()
                                         ->one();
-    
                                 $user = User::findOne($auditScheduled['auditor_id']);
                                 $arrNotifications = [];
                                 $arrNotifications['type'] = 'auditAssigned';
                                 $arrNotifications['toEmail'] = $user->email;
                                 $arrNotifications['mobileNumber'] = $user->phone;
                                 $arrNotifications['deviceToken'] = $user->device_token;
-    
                                 $attributes = $auditScheduled;
                                 $attributes['department'] = isset($auditScheduled['audit']['department']['department_name']) ? $auditScheduled['audit']['department']['department_name'] : '';
                                 $attributes['checkList'] = isset($auditScheduled['audit']['checklist']['cl_name']) ? $auditScheduled['audit']['checklist']['cl_name'] : '';
                                 $attributes['hotel'] = isset($auditScheduled['audit']['hotel']['hotel_name']) ? $auditScheduled['audit']['hotel']['hotel_name'] : '';
-    
                                 $arrNotifications['data'] = $attributes;
                                 $arrNotifications['userId'] = $user->user_id;
                               //  Yii::$app->scheduler->triggerNotifications($arrNotifications);
-    
-    
                                 $arrData = [];
                                 $arrData['module'] = 'audit';
                                 $arrData['type'] = 'create';
@@ -250,11 +242,11 @@ class AuditsController extends Controller {
                                 Yii::$app->events->createEvent($arrData);
                             }
                         }
-    
+                    
                         $transaction->commit();
                         Yii::$app->session->setFlash('success', "Task  $model->audit_name created successfully");
                         return $this->redirect(\Yii::$app->urlManager->createUrl([
-                                            'tasks'
+                                            'audits/tasks'
                         ]));
                         throw new \Exception('Error saving Tasks');
                     } else {
@@ -270,7 +262,6 @@ class AuditsController extends Controller {
                     Yii::$app->session->setFlash('error', $e->getmessage());
                 }
             }
-    
             if ($model->start_date) {
                 $model->start_date = date('d-m-Y', strtotime($model->start_date));
             }
@@ -554,7 +545,7 @@ class AuditsController extends Controller {
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', "Audit  $model->audit_name created successfully");
                     return $this->redirect(\Yii::$app->urlManager->createUrl([
-                                        'tasks'
+                                        'audits'
                     ]));
                     throw new \Exception('Error saving Audit');
                 } else {
